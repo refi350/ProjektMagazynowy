@@ -2,4 +2,10 @@
     <string name="app_name">WarehouseManagerApp</string>
     <string name="create_warehouse_label">Create Warehouse</string>
     <string name="sign_in_warehouse_label">Sign in to warehouse</string>
+    <string name="name_label">Name</string>
+    <string name="password_label">Password</string>
+    <string name="login_button_label">Login</string>
+    <string name="next_button_label">Next</string>
+    <string name="password_repeat_label">PasswordRepeat</string>
+    <string name="configure_label">Configure</string>
 </resources>

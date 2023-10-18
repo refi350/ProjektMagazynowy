@@ -4,4 +4,10 @@
     <string name="app_name">WarehouseManagerApp</string>
     <string name="create_warehouse_label">Stwórz magazyn</string>
     <string name="sign_in_warehouse_label">Zaloguj do magazynu</string>
+    <string name="name_label">Nazwa</string>
+    <string name="password_label">Hasło</string>
+    <string name="login_button_label">Zaloguj</string>
+    <string name="next_button_label">Dalej</string>
+    <string name="password_repeat_label">Powtórz hasło</string>
+    <string name="configure_label">Konfigurator</string>
 </resources>
