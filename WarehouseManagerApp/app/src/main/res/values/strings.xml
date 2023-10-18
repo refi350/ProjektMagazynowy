@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WarehouseManagerApp</string>
+    <string name="create_warehouse_label">Create Warehouse</string>
+    <string name="sign_in_warehouse_label">Sign in to warehouse</string>
+</resources>

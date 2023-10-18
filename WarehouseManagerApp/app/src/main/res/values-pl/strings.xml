@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">WarehouseManagerApp</string>
+    <string name="create_warehouse_label">Stwórz magazyn</string>
+    <string name="sign_in_warehouse_label">Zaloguj do magazynu</string>
+</resources>
