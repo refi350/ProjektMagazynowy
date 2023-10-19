@@ -2,6 +2,7 @@
 aspnetapp/bin/
 aspnetapp/obj/
 aspnetapp/Properties/launchSettings.json
+aspnetapp/.vs
 
 #Katalog paczek NuGet
 aspnetapp/packages/
