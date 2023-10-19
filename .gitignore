@@ -1,0 +1,18 @@
+#Pliki generowane przez Visual Studio
+aspnetapp/bin/
+aspnetapp/obj/
+aspnetapp/Properties/launchSettings.json
+
+#Katalog paczek NuGet
+aspnetapp/packages/
+
+#Pliki tymczasowe
+aspnetapp/*.user
+
+# Pliki projektów osobistych Visual Studio
+aspnetapp/*.csproj.user
+aspnetapp/*.suo
+aspnetapp/*.userprefs
+aspnetapp/*.sln.docstates
+
+#Poniżej umieszczajcie swoje wyjątki do plików
