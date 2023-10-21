@@ -9,6 +9,7 @@ aspnetapp/packages/
 
 #Pliki tymczasowe
 aspnetapp/*.user
+aspnetapp/Magazyn/Migrations/
 
 # Pliki projektów osobistych Visual Studio
 aspnetapp/*.csproj.user
