@@ -52,13 +52,14 @@
         $("#ColorPick").spectrum({
             color: "#f00",
             flat: true,
+            //showInput: true,  // Pokazuje kolor
             showButtons: false,
             move: function (color) {
-                // Change page background color here 
-                // and put hexcode to a variable from Warehouse class ColorId
                 var selectedColor = color.toHexString();
                 $("body").css("background-color", selectedColor);
-                $("input").css("background-color", lightenHexColor(selectedColor, 30));
+                // Na razie nie działa
+                //var lightColor = lightenHexColor(selectedColor, 20);
+                //$("input").css("background-color", lightColor);
                 $("#ColorId").val(selectedColor);
             }
         });
