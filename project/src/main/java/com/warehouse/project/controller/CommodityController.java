@@ -2,24 +2,43 @@ package com.warehouse.project.controller;
 
 import com.warehouse.project.WarehouseNotFoundException;
 import com.warehouse.project.data.Commodity;
+import com.warehouse.project.data.Warehouse;
 import com.warehouse.project.repository.CommodityRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.warehouse.project.service.CommodityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class CommodityController {
 
-    private final CommodityRepository repository;
+    @Autowired
+    private CommodityService commodityService;
 
-    CommodityController(CommodityRepository repository) {
-        this.repository = repository;
+    @GetMapping("warehouse/{warehouseId}/commodities/{commodityId}")
+    Commodity one(@PathVariable Long warehouseId, @PathVariable int commodityId) {
+        return commodityService.getCommodityById(warehouseId, commodityId);
     }
 
-    @GetMapping("/commodities/{id}")
-    Commodity one(@PathVariable Long id) {
-
-        return repository.findById(id)
-                .orElseThrow(() -> new WarehouseNotFoundException(id));
+    @GetMapping("warehouse/{warehouseId}/commodities/all")
+    public List<Commodity> getAll(@PathVariable Long warehouseId) {
+        return commodityService.getAllCommodities(warehouseId);
     }
+
+    @PostMapping("warehouses/{warehouseId}/commodities")
+    public Commodity newCommodity(@PathVariable Long warehouseId, @RequestBody Commodity newCommodity) {
+        return commodityService.addCommodityToWarehouse(warehouseId, newCommodity);
+    }
+
+//    @PutMapping("/commodities/{id}")
+//    public Commodity updateCommodity(@PathVariable Long id, @RequestBody Commodity commodity) {
+//        commodity.setId(id);
+//        return repository.save(commodity);
+//    }
+//
+//    @DeleteMapping("/commodities/{id}")
+//    public void deleteCommodity(@PathVariable Long id) {
+//        repository.deleteById(id);
+//    }
 }

@@ -1,5 +1,6 @@
 package com.warehouse.project.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,21 @@ public abstract class StoreAction {
     @ManyToOne
     @JoinColumn(name = "contractor_ID")
     private Contractor contractor;
-    @OneToMany(mappedBy = "storeAction")
+    @OneToMany(mappedBy = "store_action")
     private List<ActionCommodity> commodities;
 
-    private Long docNumber;
+    public Long getDoc_number() {
+        return doc_number;
+    }
+
+    public void setDoc_number(Long doc_number) {
+        this.doc_number = doc_number;
+    }
+
+    private Long doc_number;
 
     @ManyToOne
+    @JsonIgnore
     private Warehouse warehouse;
 
     public Long getId() {
@@ -38,14 +48,14 @@ public abstract class StoreAction {
         this.date = date;
         this.commodities = commodities;
         this.contractor = contractor;
-        this.docNumber = docNumber;
+        this.doc_number = docNumber;
     }
 
     public StoreAction(LocalDateTime date, Contractor contractor, List<ActionCommodity> commodities, Long docNumber) {
         this.date = date;
         this.contractor = contractor;
         this.commodities = commodities;
-        this.docNumber = docNumber;
+        this.doc_number = docNumber;
     }
 
     public LocalDateTime getDate() {
@@ -72,11 +82,11 @@ public abstract class StoreAction {
         this.commodities = commodities;
     }
 
-    public Long getDocNumber() {
-        return docNumber;
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 
-    public void setDocNumber(Long docNumber) {
-        this.docNumber = docNumber;
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
 }

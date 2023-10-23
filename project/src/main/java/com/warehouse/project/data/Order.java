@@ -1,5 +1,6 @@
 package com.warehouse.project.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -12,19 +13,23 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Date submitTime;
-    private Date acceptTime;
-    private Date completedTime;
-    OrderStatus orderStatus;
-    @ManyToOne
-    @JoinColumn(name = "contractor_id")
-    private Contractor contractor;
+    private Date submit_time;
+    private Date accept_time;
+    private Date completed_time;
+    OrderStatus order_status;
 
-    @ManyToOne
-    private Warehouse warehouse;
+    @ManyToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "release_id")
+    @JsonIgnore
+    Release release;
 
-    @OneToMany(mappedBy = "order")
-    private List<ActionCommodity> commodityList;
+    public Release getRelease() {
+        return release;
+    }
+
+    public void setRelease(Release release) {
+        this.release = release;
+    }
 
     public Long getId() {
         return id;
@@ -37,57 +42,41 @@ public class Order {
     public Order() {
     }
 
-    public Order(Date submitTime, Contractor contractor, List<ActionCommodity> commodityList) {
-        this.submitTime = submitTime;
-        this.contractor = contractor;
-        this.commodityList = commodityList;
+    public Order(Date submitTime) {
+        this.submit_time = submitTime;
     }
 
-    public Date getSubmitTime() {
-        return submitTime;
+
+    public Date getSubmit_time() {
+        return submit_time;
     }
 
-    public void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
+    public void setSubmit_time(Date submit_time) {
+        this.submit_time = submit_time;
     }
 
-    public Date getAcceptTime() {
-        return acceptTime;
+    public Date getAccept_time() {
+        return accept_time;
     }
 
-    public void setAcceptTime(Date acceptTime) {
-        this.acceptTime = acceptTime;
+    public void setAccept_time(Date accept_time) {
+        this.accept_time = accept_time;
     }
 
-    public Date getCompletedTime() {
-        return completedTime;
+    public Date getCompleted_time() {
+        return completed_time;
     }
 
-    public void setCompletedTime(Date completedTime) {
-        this.completedTime = completedTime;
+    public void setCompleted_time(Date completed_time) {
+        this.completed_time = completed_time;
     }
 
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
+    public OrderStatus getOrder_status() {
+        return order_status;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setOrder_status(OrderStatus order_status) {
+        this.order_status = order_status;
     }
 
-    public Contractor getContractor() {
-        return contractor;
-    }
-
-    public void setContractor(Contractor contractor) {
-        this.contractor = contractor;
-    }
-
-    public List<ActionCommodity> getCommodityList() {
-        return commodityList;
-    }
-
-    public void setCommodityList(List<ActionCommodity> commodityList) {
-        this.commodityList = commodityList;
-    }
 }

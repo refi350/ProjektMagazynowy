@@ -2,6 +2,7 @@ package com.warehouse.project.data;
 
 import jakarta.persistence.*;
 
+//Position on the store action list or order
 @Entity
 public class ActionCommodity {
     @Id
@@ -17,27 +18,16 @@ public class ActionCommodity {
 
     @ManyToOne
     @JoinColumn(name = "store_action_id")
-    private StoreAction storeAction;
+    private StoreAction store_action;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
 
     public ActionCommodity() {
     }
 
-    public Order getOrder() {
-        return order;
-    }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public ActionCommodity(Commodity commodity, int quantity, StoreAction storeAction) {
+    public ActionCommodity(Commodity commodity, int quantity) {
         this.commodity = commodity;
         this.quantity = quantity;
-        this.storeAction = storeAction;
     }
 
     public Commodity getCommodity() {
@@ -48,12 +38,12 @@ public class ActionCommodity {
         this.commodity = commodity;
     }
 
-    public StoreAction getStoreAction() {
-        return storeAction;
+    public StoreAction getStore_action() {
+        return store_action;
     }
 
-    public void setStoreAction(StoreAction storeAction) {
-        this.storeAction = storeAction;
+    public void setStore_action(StoreAction storeAction) {
+        this.store_action = storeAction;
     }
 
     public Long getId() {

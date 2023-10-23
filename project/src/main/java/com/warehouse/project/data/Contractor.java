@@ -1,5 +1,6 @@
 package com.warehouse.project.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,9 +22,28 @@ public class Contractor {
     private boolean recipient;
     private boolean supplier;
 
+    public List<StoreAction> getStore_action_list() {
+        return store_action_list;
+    }
+
+    public void setStore_action_list(List<StoreAction> store_action_list) {
+        this.store_action_list = store_action_list;
+    }
+
     @OneToMany(mappedBy = "contractor")
-    private List<StoreAction> storeActionList;
+    @JsonIgnore
+    private List<StoreAction> store_action_list;
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
     @ManyToOne
+    @JsonIgnore
     private Warehouse warehouse;
 
     public Long getId() {

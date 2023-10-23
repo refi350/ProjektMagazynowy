@@ -23,14 +23,14 @@ public class Commodity {
     // Counter for reservation - if order has READY OrderStatus
     // this counter is decremented
     @Column(name = "temp_counter")
-    private int tempCounter;
+    private int temp_counter;
 
     private long code;
     private String description;
 
 
     @Column(name = "expiration_date")
-    private Date expirationDate;
+    private Date expiration_date;
     @Enumerated(EnumType.ORDINAL)
     private Unit unit;
 
@@ -48,27 +48,6 @@ public class Commodity {
         this.name = name;
     }
 
-    public StoreAction getStoreAction() {
-        return storeAction;
-    }
-
-    public void setStoreAction(StoreAction storeAction) {
-        this.storeAction = storeAction;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    @ManyToOne
-    private StoreAction storeAction;
-
-    @ManyToOne
-    private Order order;
 
     public Commodity() {
     }
@@ -97,12 +76,12 @@ public class Commodity {
         this.counter = counter;
     }
 
-    public int getTempCounter() {
-        return tempCounter;
+    public int getTemp_counter() {
+        return temp_counter;
     }
 
-    public void setTempCounter(int tempCounter) {
-        this.tempCounter = tempCounter;
+    public void setTemp_counter(int tempCounter) {
+        this.temp_counter = tempCounter;
     }
 
     public long getCode() {
@@ -121,12 +100,12 @@ public class Commodity {
         this.description = description;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
+    public Date getExpiration_date() {
+        return expiration_date;
     }
 
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setExpiration_date(Date expirationDate) {
+        this.expiration_date = expirationDate;
     }
 
     public Unit getUnit() {

@@ -1,5 +1,6 @@
 package com.warehouse.project.data;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +18,10 @@ public class Warehouse {
     private Address address;
     private String color;
 
+    public List<StoreAction> getStore_actions() {
+        return store_actions;
+    }
+
     // todo
     private byte[] image;
 
@@ -25,14 +30,13 @@ public class Warehouse {
     private Owner owner;
 
     @OneToMany(mappedBy = "warehouse")
-    private List<Contractor> contractors;
+    List<Contractor> contractors;
     @OneToMany(mappedBy = "warehouse")
     private List<Commodity> commodities;
-    @OneToMany(mappedBy = "warehouse")
-    private List<Order> orders;
+
     @Column(name = "store_actions")
     @OneToMany(mappedBy = "warehouse")
-    private List<StoreAction> storeActions;
+    private List<StoreAction> store_actions;
 
     public Owner getOwner() {
         return owner;
@@ -141,19 +145,13 @@ public class Warehouse {
         this.commodities = commodities;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+
+    public void setStore_actions(List<StoreAction> store_actions) {
+        this.store_actions = store_actions;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void addAction(StoreAction action) {
+        this.store_actions.add(action);
     }
 
-    public List<StoreAction> getStoreActions() {
-        return storeActions;
-    }
-
-    public void setStoreActions(List<StoreAction> storeActions) {
-        this.storeActions = storeActions;
-    }
 }
