@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">WarehouseManagerApp</string>
+    <string name="create_warehouse_label">Stwórz magazyn</string>
+    <string name="sign_in_warehouse_label">Zaloguj do magazynu</string>
+    <string name="name_label">Nazwa</string>
+    <string name="password_label">Hasło</string>
+    <string name="login_button_label">Zaloguj</string>
+    <string name="next_button_label">Dalej</string>
+    <string name="password_repeat_label">Powtórz hasło</string>
+    <string name="configure_label">Konfigurator</string>
+    <string name="address_label">Adres</string>
+    <string name="logo_label">Logo</string>
+    <string name="color_label">Kolor</string>
+    <string name="done_button_label">Gotowe</string>
+    <string name="email_label">Email</string>
+    <string name="owner_label">Właściciel</string>
+    <string name="warehouse_data_label">Dane Magazynu</string>
+    <string name="owner_data_label">Dane Właściciela</string>
+</resources>
