@@ -8,4 +8,12 @@
     <string name="next_button_label">Next</string>
     <string name="password_repeat_label">PasswordRepeat</string>
     <string name="configure_label">Configure</string>
+    <string name="address_label">Address</string>
+    <string name="logo_label">Logo</string>
+    <string name="color_label">Color</string>
+    <string name="done_button_label">Done</string>
+    <string name="email_label">Email</string>
+    <string name="owner_label">Owner</string>
+    <string name="warehouse_data_label">Warehouse Data</string>
+    <string name="owner_data_label">Owner Data</string>
 </resources>

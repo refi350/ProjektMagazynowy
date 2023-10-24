@@ -10,4 +10,12 @@
     <string name="next_button_label">Dalej</string>
     <string name="password_repeat_label">Powtórz hasło</string>
     <string name="configure_label">Konfigurator</string>
+    <string name="address_label">Adres</string>
+    <string name="logo_label">Logo</string>
+    <string name="color_label">Kolor</string>
+    <string name="done_button_label">Gotowe</string>
+    <string name="email_label">Email</string>
+    <string name="owner_label">Właściciel</string>
+    <string name="warehouse_data_label">Dane Magazynu</string>
+    <string name="owner_data_label">Dane Właściciela</string>
 </resources>
