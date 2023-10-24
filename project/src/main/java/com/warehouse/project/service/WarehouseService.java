@@ -1,5 +1,6 @@
 package com.warehouse.project.service;
 
+import com.warehouse.project.WarehouseNotFoundException;
 import com.warehouse.project.data.Warehouse;
 import com.warehouse.project.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,12 @@ public class WarehouseService {
 
     public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
+    }
+
+    public Warehouse editWarehouse(Long id, Warehouse newWarehouse) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new WarehouseNotFoundException(id));
+        warehouse.editWarehouse(newWarehouse);
+        return warehouse;
     }
 }

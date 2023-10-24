@@ -38,7 +38,10 @@ public class CommodityService {
     public Commodity getCommodityById(Long warehouseId, int commodityId) {
         Warehouse warehouse = warehouseRepository.findById(warehouseId).orElse(null);
         if (warehouse != null) {
-            return warehouse.getCommodities().get(commodityId);
+            return warehouse.getCommodities().stream()
+                    .filter(x -> x.getId() == commodityId)
+                    .findFirst()
+                    .orElse(null);
         }
         return null;
     }

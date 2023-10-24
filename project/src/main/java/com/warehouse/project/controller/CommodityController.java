@@ -1,11 +1,10 @@
 package com.warehouse.project.controller;
 
-import com.warehouse.project.WarehouseNotFoundException;
 import com.warehouse.project.data.Commodity;
-import com.warehouse.project.data.Warehouse;
-import com.warehouse.project.repository.CommodityRepository;
 import com.warehouse.project.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +16,14 @@ public class CommodityController {
     private CommodityService commodityService;
 
     @GetMapping("warehouse/{warehouseId}/commodities/{commodityId}")
-    Commodity one(@PathVariable Long warehouseId, @PathVariable int commodityId) {
-        return commodityService.getCommodityById(warehouseId, commodityId);
+    public ResponseEntity<Commodity> one(@PathVariable Long warehouseId, @PathVariable int commodityId) {
+        Commodity commodity = commodityService.getCommodityById(warehouseId, commodityId);
+        if(commodity != null)
+            return new ResponseEntity<>(commodity, HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("warehouse/{warehouseId}/commodities/all")
+    @GetMapping("warehouses/{warehouseId}/commodities/all")
     public List<Commodity> getAll(@PathVariable Long warehouseId) {
         return commodityService.getAllCommodities(warehouseId);
     }

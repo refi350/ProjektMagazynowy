@@ -55,9 +55,9 @@ class WarehouseController {
     }
 
      // ------------------ PUT -----------------------------------------
-//    @PutMapping
-//    public String updateWarehouse(@RequestBody Warehouse warehouse) {
-//        Warehouse w = s;
-//        return "Success!";
-//    }
+    @PutMapping("/warehouses/{id}")
+    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable Long id, @RequestBody Warehouse warehouse) {
+        Warehouse updatedWarehouse = warehouseService.editWarehouse(id, warehouse);
+        return ResponseEntity.ok(updatedWarehouse);
+    }
 }

@@ -57,7 +57,6 @@ public class Warehouse {
         this.color = color;
         this.owner = owner;
         this.commodities = commodityList;
-        System.out.println(this.commodities.get(0).getName());
     }
 
     public Long getId() {
@@ -99,8 +98,12 @@ public class Warehouse {
         if (!(o instanceof Warehouse))
             return false;
         Warehouse warehouse = (Warehouse) o;
-        return Objects.equals(this.id, warehouse.id) && Objects.equals(this.name, warehouse.name)
-                && Objects.equals(this.address, warehouse.address);
+        return Objects.equals(this.id, warehouse.id) &&
+                Objects.equals(this.name, warehouse.name) &&
+                Objects.equals(this.address, warehouse.address) &&
+                Objects.equals(this.color, warehouse.color) &&
+                Objects.equals(this.image, warehouse.image) &&
+                Objects.equals(this.owner, warehouse.owner);
     }
 
     @Override
@@ -152,6 +155,17 @@ public class Warehouse {
 
     public void addAction(StoreAction action) {
         this.store_actions.add(action);
+    }
+
+    public void editWarehouse(Warehouse editedWarehouse) {
+        if(!this.equals(editedWarehouse)) {
+            this.setName(editedWarehouse.getName());
+            this.setPassword(editedWarehouse.getPassword());
+            this.setAddress(editedWarehouse.getAddress());
+            this.setColor(editedWarehouse.getColor());
+            this.setImage(editedWarehouse.getImage());
+            this.setOwner(editedWarehouse.getOwner());
+        }
     }
 
 }
