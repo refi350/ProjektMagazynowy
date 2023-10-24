@@ -18,6 +18,12 @@ repositories {
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	implementation 'com.auth0:java-jwt:4.3.0'
+	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
 	implementation 'mysql:mysql-connector-java:8.0.33'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

@@ -1,5 +1,6 @@
 package com.warehouse.project.service;
 
+import com.warehouse.project.WarehouseNotFoundException;
 import com.warehouse.project.data.Commodity;
 import com.warehouse.project.data.Warehouse;
 import com.warehouse.project.repository.CommodityRepository;
@@ -44,5 +45,16 @@ public class CommodityService {
                     .orElse(null);
         }
         return null;
+    }
+
+    public void deleteCommodity(Long id) {
+        warehouseRepository.deleteById(id);
+    }
+
+    public Warehouse editCommodity(Long id, Warehouse newWarehouse) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new WarehouseNotFoundException(id));
+        warehouse.editWarehouse(newWarehouse);
+        return warehouse;
     }
 }
