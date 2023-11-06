@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MEEEEEEE\\source\\repos\\Magazyn\\Magazyn\\Magazyn.csproj": {}
+    "C:\\Users\\MEEEEEEE\\Documents\\Projekt\\aspnetapp\\Magazyn\\Magazyn.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MEEEEEEE\\source\\repos\\Magazyn\\Magazyn\\Magazyn.csproj": {
+    "C:\\Users\\MEEEEEEE\\Documents\\Projekt\\aspnetapp\\Magazyn\\Magazyn.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MEEEEEEE\\source\\repos\\Magazyn\\Magazyn\\Magazyn.csproj",
+        "projectUniqueName": "C:\\Users\\MEEEEEEE\\Documents\\Projekt\\aspnetapp\\Magazyn\\Magazyn.csproj",
         "projectName": "Magazyn",
-        "projectPath": "C:\\Users\\MEEEEEEE\\source\\repos\\Magazyn\\Magazyn\\Magazyn.csproj",
+        "projectPath": "C:\\Users\\MEEEEEEE\\Documents\\Projekt\\aspnetapp\\Magazyn\\Magazyn.csproj",
         "packagesPath": "C:\\Users\\MEEEEEEE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MEEEEEEE\\source\\repos\\Magazyn\\Magazyn\\obj\\",
+        "outputPath": "C:\\Users\\MEEEEEEE\\Documents\\Projekt\\aspnetapp\\Magazyn\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\MEEEEEEE\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -51,6 +51,10 @@
               "version": "[6.0.23, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.23, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[6.0.23, )"
             },
