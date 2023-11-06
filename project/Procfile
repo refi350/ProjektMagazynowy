@@ -1,1 +1,1 @@
-web: java -jar build/libs/warehouse-manager-app-pz4.jar
+web: java -jar build/libs/project.main.jar
