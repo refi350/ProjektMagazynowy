@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar project\out\artifacts\project_jar\project.jar
+web: java -jar build/libs/warehouse-manager-app-pz4.jar
