@@ -60,7 +60,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Password,Address," +
-            "ColorId,OwnerId,Address.StreetName,Address.HouseNumber,Address.LocalNumber," +
+            "ColorId,Image,OwnerId,Address.StreetName,Address.HouseNumber,Address.LocalNumber," +
             "Address.Place,Address.code")] Warehouse warehouse, IFormFile Image)
         {
             if (ModelState.IsValid)
