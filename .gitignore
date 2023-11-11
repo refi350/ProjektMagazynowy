@@ -9,6 +9,7 @@ aspnetapp/packages/
 
 #Pliki tymczasowe
 aspnetapp/*.user
+aspnetapp/Magazyn/Migrations/
 
 # Pliki projektów osobistych Visual Studio
 aspnetapp/*.csproj.user
@@ -17,3 +18,4 @@ aspnetapp/*.userprefs
 aspnetapp/*.sln.docstates
 
 #Poniżej umieszczajcie swoje wyjątki do plików
+/aspnetapp/Magazyn/Migrations/MagazynContextModelSnapshot.cs
