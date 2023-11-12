@@ -10,85 +10,87 @@ using Magazyn.Models;
 
 namespace Magazyn.Controllers
 {
-    public class TowarsController : Controller
+    public class CommoditiesController : Controller
     {
         private readonly MagazynContext _context;
 
-        public TowarsController(MagazynContext context)
+        public CommoditiesController(MagazynContext context)
         {
             _context = context;
         }
 
-        // GET: Towars
+        // GET: Commodities
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Towar.ToListAsync());
+              return _context.Commodity != null ? 
+                          View(await _context.Commodity.ToListAsync()) :
+                          Problem("Entity set 'MagazynContext.Commodity'  is null.");
         }
 
-        // GET: Towars/Details/5
+        // GET: Commodities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Towar == null)
+            if (id == null || _context.Commodity == null)
             {
                 return NotFound();
             }
 
-            var towar = await _context.Towar
+            var commodity = await _context.Commodity
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (towar == null)
+            if (commodity == null)
             {
                 return NotFound();
             }
 
-            return View(towar);
+            return View(commodity);
         }
 
-        // GET: Towars/Create
+        // GET: Commodities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Towars/Create
+        // POST: Commodities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Towar towar)
+        public async Task<IActionResult> Create([Bind("Id,Name,Counter,TempCounter,Code,Description,Image,ExpirationDate,Unit")] Commodity commodity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(towar);
+                _context.Add(commodity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(towar);
+            return View(commodity);
         }
 
-        // GET: Towars/Edit/5
+        // GET: Commodities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Towar == null)
+            if (id == null || _context.Commodity == null)
             {
                 return NotFound();
             }
 
-            var towar = await _context.Towar.FindAsync(id);
-            if (towar == null)
+            var commodity = await _context.Commodity.FindAsync(id);
+            if (commodity == null)
             {
                 return NotFound();
             }
-            return View(towar);
+            return View(commodity);
         }
 
-        // POST: Towars/Edit/5
+        // POST: Commodities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Towar towar)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Counter,TempCounter,Code,Description,Image,ExpirationDate,Unit")] Commodity commodity)
         {
-            if (id != towar.Id)
+            if (id != commodity.Id)
             {
                 return NotFound();
             }
@@ -97,12 +99,12 @@ namespace Magazyn.Controllers
             {
                 try
                 {
-                    _context.Update(towar);
+                    _context.Update(commodity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TowarExists(towar.Id))
+                    if (!CommodityExists(commodity.Id))
                     {
                         return NotFound();
                     }
@@ -113,49 +115,49 @@ namespace Magazyn.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(towar);
+            return View(commodity);
         }
 
-        // GET: Towars/Delete/5
+        // GET: Commodities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Towar == null)
+            if (id == null || _context.Commodity == null)
             {
                 return NotFound();
             }
 
-            var towar = await _context.Towar
+            var commodity = await _context.Commodity
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (towar == null)
+            if (commodity == null)
             {
                 return NotFound();
             }
 
-            return View(towar);
+            return View(commodity);
         }
 
-        // POST: Towars/Delete/5
+        // POST: Commodities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Towar == null)
+            if (_context.Commodity == null)
             {
-                return Problem("Entity set 'MagazynContext.Towar'  is null.");
+                return Problem("Entity set 'MagazynContext.Commodity'  is null.");
             }
-            var towar = await _context.Towar.FindAsync(id);
-            if (towar != null)
+            var commodity = await _context.Commodity.FindAsync(id);
+            if (commodity != null)
             {
-                _context.Towar.Remove(towar);
+                _context.Commodity.Remove(commodity);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TowarExists(int id)
+        private bool CommodityExists(int id)
         {
-          return _context.Towar.Any(e => e.Id == id);
+          return (_context.Commodity?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

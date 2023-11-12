@@ -14,5 +14,6 @@ namespace Magazyn.Models
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
         public Owner? Owner { get; set; }
+        public List<Commodity> Commodity { get; set; } = new List<Commodity>();
     }
 }
