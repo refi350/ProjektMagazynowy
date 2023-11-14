@@ -21,9 +21,6 @@ public class Warehouse {
         return store_actions;
     }
 
-    // todo
-    private byte[] image;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private Owner owner;
@@ -48,11 +45,10 @@ public class Warehouse {
 
     Warehouse() {}
 
-    Warehouse(String name, String password, Address address, byte[] image, String color, Owner owner, List<Commodity> commodityList) {
+    Warehouse(String name, String password, Address address, String color, Owner owner, List<Commodity> commodityList) {
         this.name = name;
         this.password = password;
         this.address = address;
-        this.image = image;
         this.color = color;
         this.owner = owner;
         this.commodities = commodityList;
@@ -101,13 +97,12 @@ public class Warehouse {
                 Objects.equals(this.name, warehouse.name) &&
                 Objects.equals(this.address, warehouse.address) &&
                 Objects.equals(this.color, warehouse.color) &&
-                Objects.equals(this.image, warehouse.image) &&
                 Objects.equals(this.owner, warehouse.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.address);
+        return Objects.hash(this.id, this.name, this.address, this.color, this.owner);
     }
 
     @Override
@@ -121,14 +116,6 @@ public class Warehouse {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public List<Contractor> getContractors() {
@@ -162,7 +149,6 @@ public class Warehouse {
             this.setPassword(editedWarehouse.getPassword());
             this.setAddress(editedWarehouse.getAddress());
             this.setColor(editedWarehouse.getColor());
-            this.setImage(editedWarehouse.getImage());
             this.setOwner(editedWarehouse.getOwner());
         }
     }
