@@ -2,6 +2,7 @@ package com.example.warehousespring.data;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,13 +27,13 @@ public class Warehouse {
     private Owner owner;
 
     @OneToMany(mappedBy = "warehouse")
-    List<Contractor> contractors;
+    List<Contractor> contractors = Collections.emptyList();
     @OneToMany(mappedBy = "warehouse")
-    private List<Commodity> commodities;
+    private List<Commodity> commodities = Collections.emptyList();
 
     @Column(name = "store_actions")
     @OneToMany(mappedBy = "warehouse")
-    private List<StoreAction> store_actions;
+    private List<StoreAction> store_actions = Collections.emptyList();
 
     public Owner getOwner() {
         return owner;
