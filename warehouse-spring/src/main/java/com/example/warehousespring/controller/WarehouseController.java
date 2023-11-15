@@ -50,8 +50,13 @@ class WarehouseController {
 
     // ------------------ DELETE -----------------------------------------
     @DeleteMapping("/warehouses/{id}")
-    public void deleteWarehouse(@PathVariable("id") Long id) {
-        warehouseService.deleteWarehouse(id);
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable("id") Long id) {
+        if (warehouseService.deleteWarehouse(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
      // ------------------ PUT -----------------------------------------

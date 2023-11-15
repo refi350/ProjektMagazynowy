@@ -33,8 +33,13 @@ public class WarehouseService {
         return warehouseRepository.save(warehouse);
     }
 
-    public void deleteWarehouse(Long id) {
-        warehouseRepository.deleteById(id);
+    public boolean deleteWarehouse(Long id) {
+        if(warehouseRepository.existsById(id)) {
+            warehouseRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Warehouse editWarehouse(Long id, Warehouse newWarehouse) {
