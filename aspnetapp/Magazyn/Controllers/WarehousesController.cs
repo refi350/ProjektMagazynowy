@@ -22,7 +22,7 @@ namespace Magazyn.Controllers
         // GET: Warehouses
         public async Task<IActionResult> Index()
         {
-            var magazynContext = _context.Warehouse.Include(w => w.OsobaEnt);
+            var magazynContext = _context.Warehouse!.Include(w => w.Owner).Include(w =>w.Address);
             return View(await magazynContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Magazyn.Controllers
             }
 
             var warehouse = await _context.Warehouse
-                .Include(w => w.OsobaEnt)
+                .Include(w => w.Owner)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (warehouse == null)
             {
@@ -48,7 +48,9 @@ namespace Magazyn.Controllers
         // GET: Warehouses/Create
         public IActionResult Create()
         {
-            ViewData["OsobaId"] = new SelectList(_context.Set<Osoba>(), "Id", "Id");
+            
+            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name");
+            ViewData["AddressId"] = new SelectList(_context.Set<Address>(),"Id","StreetName");
             return View();
         }
 
@@ -57,15 +59,26 @@ namespace Magazyn.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Password,ColorId,OsobaId")] Warehouse warehouse)
+        public async Task<IActionResult> Create([Bind("Id,Name,Password,Address," +
+            "ColorId,Image,OwnerId,Address.StreetName,Address.HouseNumber,Address.LocalNumber," +
+            "Address.Place,Address.code")] Warehouse warehouse, IFormFile Image)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.Length > 0)
+                {
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        await Image.CopyToAsync(memoryStream);
+                        warehouse.Image = memoryStream.ToArray();
+                    }
+                }
+
                 _context.Add(warehouse);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OsobaId"] = new SelectList(_context.Set<Osoba>(), "Id", "Id", warehouse.OsobaId);
+            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name", warehouse.OwnerId);
             return View(warehouse);
         }
 
@@ -82,7 +95,7 @@ namespace Magazyn.Controllers
             {
                 return NotFound();
             }
-            ViewData["OsobaId"] = new SelectList(_context.Set<Osoba>(), "Id", "Id", warehouse.OsobaId);
+            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
             return View(warehouse);
         }
 
@@ -91,7 +104,7 @@ namespace Magazyn.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Password,ColorId,OsobaId")] Warehouse warehouse)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ColorId,Image,OwnerId")] Warehouse warehouse)
         {
             if (id != warehouse.Id)
             {
@@ -118,7 +131,7 @@ namespace Magazyn.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OsobaId"] = new SelectList(_context.Set<Osoba>(), "Id", "Id", warehouse.OsobaId);
+            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
             return View(warehouse);
         }
 
@@ -131,7 +144,7 @@ namespace Magazyn.Controllers
             }
 
             var warehouse = await _context.Warehouse
-                .Include(w => w.OsobaEnt)
+                .Include(w => w.Owner)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (warehouse == null)
             {
