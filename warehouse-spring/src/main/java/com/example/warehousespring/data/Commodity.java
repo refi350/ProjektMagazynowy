@@ -18,23 +18,18 @@ public class Commodity {
     // Counter for presence of commodity in stock
     // if commodity is released this counter is decremented
     // if commodity is receipted this counter is increased
-    private int counter;
+    private int counter = 0;
 
     // Counter for reservation - if order has READY OrderStatus
     // this counter is decremented
     @Column(name = "temp_counter")
-    private int temp_counter;
+    private int temp_counter = 0;
 
     private long code;
     private String description;
 
+    private String unit;
 
-    @Column(name = "expiration_date")
-    private Date expiration_date;
-    @Enumerated(EnumType.ORDINAL)
-    private Unit unit;
-
-    // todo
     @Lob
     @Column(name = "image", length = 1000)
     private byte[] image;
@@ -100,19 +95,11 @@ public class Commodity {
         this.description = description;
     }
 
-    public Date getExpiration_date() {
-        return expiration_date;
-    }
-
-    public void setExpiration_date(Date expirationDate) {
-        this.expiration_date = expirationDate;
-    }
-
-    public Unit getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 

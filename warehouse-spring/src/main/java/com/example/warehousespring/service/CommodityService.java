@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CommodityService {
@@ -35,14 +37,20 @@ public class CommodityService {
         return null;
     }
 
-    public Commodity getCommodityById(Long warehouseId, int commodityId) {
-        Warehouse warehouse = warehouseRepository.findById(warehouseId).orElse(null);
-        if (warehouse != null) {
-            return warehouse.getCommodities().stream()
-                    .filter(x -> x.getId() == commodityId)
-                    .findFirst()
-                    .orElse(null);
+    public Commodity getCommodityById(Long commodityId) {
+        return commodityRepository.getReferenceById(commodityId);
+    }
+
+    public Commodity editCommodityById(Commodity commodity) {
+        return commodity;
+    }
+
+    public boolean deleteCommodityById(Long commodityId) {
+        if(commodityRepository.existsById(commodityId)){
+            commodityRepository.deleteById(commodityId);
+            return true;
+        } else {
+            return false;
         }
-        return null;
     }
 }

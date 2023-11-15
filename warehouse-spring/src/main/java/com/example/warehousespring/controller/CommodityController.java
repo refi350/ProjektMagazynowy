@@ -15,17 +15,21 @@ public class CommodityController {
     @Autowired
     private CommodityService commodityService;
 
-    @GetMapping("warehouse/{warehouseId}/commodities/{commodityId}")
-    public ResponseEntity<Commodity> one(@PathVariable Long warehouseId, @PathVariable int commodityId) {
-        Commodity commodity = commodityService.getCommodityById(warehouseId, commodityId);
+    @GetMapping("commodities/{commodityId}")
+    public ResponseEntity<Commodity> one(@PathVariable Long commodityId) {
+        Commodity commodity = commodityService.getCommodityById(commodityId);
         if(commodity != null)
             return new ResponseEntity<>(commodity, HttpStatus.OK);
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("warehouses/{warehouseId}/commodities/all")
-    public List<Commodity> getAll(@PathVariable Long warehouseId) {
-        return commodityService.getAllCommodities(warehouseId);
+    public ResponseEntity<List<Commodity>> getAll(@PathVariable Long warehouseId) {
+        List<Commodity> commodities = commodityService.getAllCommodities(warehouseId);
+        if(commodities == null || commodities.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(commodities, HttpStatus.OK);
     }
 
     @PostMapping("warehouses/{warehouseId}/commodities")
@@ -39,8 +43,11 @@ public class CommodityController {
 //        return repository.save(commodity);
 //    }
 //
-//    @DeleteMapping("/commodities/{id}")
-//    public void deleteCommodity(@PathVariable Long id) {
-//        repository.deleteById(id);
-//    }
+    @DeleteMapping("/commodities/{id}")
+    public ResponseEntity<Void> deleteCommodity(@PathVariable Long id) {
+        if(commodityService.deleteCommodityById(id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
