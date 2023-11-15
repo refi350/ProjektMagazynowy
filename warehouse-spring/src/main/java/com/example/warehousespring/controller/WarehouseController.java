@@ -18,17 +18,29 @@ class WarehouseController {
 
     // ------------------ GET -----------------------------------------
     @GetMapping("/warehouses/all")
-    public List<Warehouse> getAll() {
-        return warehouseService.getAllWarehouses();
+    public ResponseEntity<List<Warehouse>> getAll() {
+        List<Warehouse> warehouses = warehouseService.getAllWarehouses();
+        if (warehouses != null) {
+            return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @GetMapping("/warehouses/names")
-    public List<String> getAllNames() {
-        return warehouseService.getAllWarehousesNames();
+    public ResponseEntity<List<String>> getAllNames() {
+        List<String> warehousesNames = warehouseService.getAllWarehousesNames();
+        if(warehousesNames != null) {
+            return new ResponseEntity<>(warehousesNames, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/warehouses/{id}")
-    public Warehouse one(@PathVariable Long id) {
-        return warehouseService.getWarehouseById(id);
+    public ResponseEntity<Warehouse> one(@PathVariable Long id) {
+        Warehouse warehouse = warehouseService.getWarehouseById(id);
+        if(warehouse != null) {
+            return new ResponseEntity<>(warehouse, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/warehouses/login")
