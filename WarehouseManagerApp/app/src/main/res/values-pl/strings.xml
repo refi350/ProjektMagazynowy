@@ -18,4 +18,10 @@
     <string name="owner_label">Właściciel</string>
     <string name="warehouse_data_label">Dane Magazynu</string>
     <string name="owner_data_label">Dane Właściciela</string>
+
+    //BottomBar
+    <string name="orders_bottom_bar_label">ZAMÓW.</string>
+    <string name="documents_bottom_bar_label">DOKUMENT</string>
+    <string name="commodity_bottom_bar_label">TOWAR</string>
+    <string name="persons_bottom_bar_label">OSOBA</string>
 </resources>

@@ -16,4 +16,10 @@
     <string name="owner_label">Owner</string>
     <string name="warehouse_data_label">Warehouse Data</string>
     <string name="owner_data_label">Owner Data</string>
+
+    //BottomBar
+    <string name="orders_bottom_bar_label">ORDERS</string>
+    <string name="documents_bottom_bar_label">DOCUMENTS</string>
+    <string name="commodity_bottom_bar_label">COMMODITY</string>
+    <string name="persons_bottom_bar_label">PERSONS</string>
 </resources>
