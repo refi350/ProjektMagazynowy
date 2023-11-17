@@ -14,15 +14,17 @@ import timber.log.Timber
 import java.util.Calendar
 
 class WarehouseService: Application() {
-    private lateinit var serviceClient: WarehouseApiClient
-    private val user = User(name = "Diamentowa", password = "123")
+    //private val retrofit = WarehouseApiClient.getApiClient()
+    private lateinit var serviceClient: RestApi
+    private val user = User(name = "Testowy", password = "aaa")
 
     fun createWarehouseApiClient() {
-        runBlocking(Dispatchers.Default) {
-            val warehouseApiClient = async { WarehouseApiClient(user.name, user.password) }
-            serviceClient = warehouseApiClient.await()
-            serviceClient.login()
-        }
+
+           //serviceClient = retrofit.create(RestApi::class.java)
+
+            //serviceClient.login()
+
+
     }
 
     fun gsonConvert(warehouseJson: Any?) {
@@ -41,7 +43,7 @@ class WarehouseService: Application() {
     }
 
     fun postWarehouseDelivery(user: User, onResult: (Warehouse?) -> Unit) {
-        val call = serviceClient.warehouseApi.getWarehouses(this.user.name!!, this.user.password!!)
+        val call = serviceClient.getWarehouses(user.name!!, user.password!!)
         call.enqueue(object : Callback<Warehouse> {
             override fun onResponse(call: Call<Warehouse>, response: Response<Warehouse>) {
                 val result: Warehouse? = response.body()
@@ -50,6 +52,7 @@ class WarehouseService: Application() {
             }
 
             override fun onFailure(call: Call<Warehouse>, t: Throwable) {
+                Timber.tag("Fail123")
                 onResult(null)
             }
         })
