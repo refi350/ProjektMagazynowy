@@ -1,5 +1,6 @@
 package com.example.warehousespring.controller;
 
+import com.example.warehousespring.WarehouseNotFoundException;
 import com.example.warehousespring.data.Warehouse;
 import com.example.warehousespring.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,12 @@ class WarehouseController {
      // ------------------ PUT -----------------------------------------
     @PutMapping("/warehouses/{id}")
     public ResponseEntity<Warehouse> updateWarehouse(@PathVariable Long id, @RequestBody Warehouse warehouse) {
-        Warehouse updatedWarehouse = warehouseService.editWarehouse(id, warehouse);
-        return ResponseEntity.ok(updatedWarehouse);
+        try {
+            Warehouse updatedWarehouse = warehouseService.editWarehouse(id, warehouse);
+            return ResponseEntity.ok(updatedWarehouse);
+        } catch (WarehouseNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 }
