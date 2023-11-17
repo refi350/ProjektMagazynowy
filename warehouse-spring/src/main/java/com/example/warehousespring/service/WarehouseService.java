@@ -46,6 +46,7 @@ public class WarehouseService {
         Warehouse warehouse = warehouseRepository.findById(id)
                 .orElseThrow(() -> new WarehouseNotFoundException(id));
         warehouse.editWarehouse(newWarehouse);
+        warehouseRepository.save(warehouse);
         return warehouse;
     }
 }
