@@ -1,181 +1,108 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Magazyn.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Magazyn.Data;
-using Magazyn.Models;
+using Newtonsoft.Json;
 
 namespace Magazyn.Controllers
 {
     public class WarehousesController : Controller
     {
-        private readonly MagazynContext _context;
+        private readonly HttpClient _httpClient;
 
-        public WarehousesController(MagazynContext context)
+        public WarehousesController(HttpClient httpClient)
         {
-            _context = context;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        // GET: Warehouses
+        // GET: WarehousesController
         public async Task<IActionResult> Index()
         {
-            var magazynContext = _context.Warehouse!.Include(w => w.Owner).Include(w =>w.Address);
-            return View(await magazynContext.ToListAsync());
-        }
+            try
+            {
+                var response = await _httpClient.GetAsync("http://monika.alwaysdata.net/warehouses/all");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return NotFound();
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var model = JsonConvert.DeserializeObject<List<Warehouse>>(content);
 
-        // GET: Warehouses/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Warehouse == null)
+                // Przekazanie modelu do widoku
+                return View(model);
+            }
+            catch (Exception)
             {
                 return NotFound();
             }
-
-            var warehouse = await _context.Warehouse
-                .Include(w => w.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (warehouse == null)
-            {
-                return NotFound();
-            }
-
-            return View(warehouse);
         }
 
-        // GET: Warehouses/Create
-        public IActionResult Create()
+        // GET: WarehousesController/Details/5
+        public ActionResult Details(int id)
         {
-            
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name");
-            ViewData["AddressId"] = new SelectList(_context.Set<Address>(),"Id","StreetName");
             return View();
         }
 
-        // POST: Warehouses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET: WarehousesController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: WarehousesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Password,Address," +
-            "ColorId,Image,OwnerId,Address.StreetName,Address.HouseNumber,Address.LocalNumber," +
-            "Address.Place,Address.code")] Warehouse warehouse, IFormFile Image)
+        public ActionResult Create(IFormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (Image != null && Image.Length > 0)
-                {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        await Image.CopyToAsync(memoryStream);
-                        warehouse.Image = memoryStream.ToArray();
-                    }
-                }
-
-                _context.Add(warehouse);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name", warehouse.OwnerId);
-            return View(warehouse);
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Warehouses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: WarehousesController/Edit/5
+        public ActionResult Edit(int id)
         {
-            if (id == null || _context.Warehouse == null)
-            {
-                return NotFound();
-            }
-
-            var warehouse = await _context.Warehouse.FindAsync(id);
-            if (warehouse == null)
-            {
-                return NotFound();
-            }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
-            return View(warehouse);
+            return View();
         }
 
-        // POST: Warehouses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: WarehousesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ColorId,Image,OwnerId")] Warehouse warehouse)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
-            if (id != warehouse.Id)
+            try
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(warehouse);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WarehouseExists(warehouse.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
-            return View(warehouse);
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Warehouses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: WarehousesController/Delete/5
+        public ActionResult Delete(int id)
         {
-            if (id == null || _context.Warehouse == null)
-            {
-                return NotFound();
-            }
-
-            var warehouse = await _context.Warehouse
-                .Include(w => w.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (warehouse == null)
-            {
-                return NotFound();
-            }
-
-            return View(warehouse);
+            return View();
         }
 
-        // POST: Warehouses/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: WarehousesController/Delete/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            if (_context.Warehouse == null)
+            try
             {
-                return Problem("Entity set 'MagazynContext.Warehouse'  is null.");
+                return RedirectToAction(nameof(Index));
             }
-            var warehouse = await _context.Warehouse.FindAsync(id);
-            if (warehouse != null)
+            catch
             {
-                _context.Warehouse.Remove(warehouse);
+                return View();
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool WarehouseExists(int id)
-        {
-          return (_context.Warehouse?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

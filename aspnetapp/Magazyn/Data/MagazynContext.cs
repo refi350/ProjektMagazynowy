@@ -16,7 +16,10 @@ namespace Magazyn.Data
         }
 
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<Warehouse>? Warehouse { get; set; }
         public DbSet<Owner>? Owners { get; set; }

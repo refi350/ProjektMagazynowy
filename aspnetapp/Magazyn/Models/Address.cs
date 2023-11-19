@@ -13,6 +13,7 @@ namespace Magazyn.Models
         public string? code { get; set; }
         [ForeignKey("Warehouse")]
         public int WarehouseId { get; set; }
+        [ForeignKey("WarehouseId")]
         public Warehouse? Warehouse { get; set; }
     }
 }
