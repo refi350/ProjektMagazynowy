@@ -14,8 +14,7 @@ public class Contractor {
     private Long id;
 
     private String name;
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contractor_id")
     private Address address;
     private String NIP;
@@ -103,5 +102,15 @@ public class Contractor {
 
     public void setSupplier(boolean supplier) {
         this.supplier = supplier;
+    }
+
+    public void editContractor(Contractor editedContractor) {
+        if(!this.equals(editedContractor)) {
+            this.setName(editedContractor.getName());
+            this.setAddress(editedContractor.getAddress());
+            this.setNIP(editedContractor.getNIP());
+            this.setRecipient(editedContractor.isRecipient());
+            this.setSupplier(editedContractor.isSupplier());
+        }
     }
 }

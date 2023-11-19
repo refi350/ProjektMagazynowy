@@ -44,6 +44,14 @@ class WarehouseController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/warehouses/check")
+    public boolean checkWarehouse(@RequestParam String name, @RequestParam String password) {
+        Warehouse warehouse = warehouseService.getWarehouseByNameAndPassword(name, password);
+        if(warehouse != null)
+            return true;
+        else return false;
+    }
+
     @GetMapping("/warehouses/login")
     public ResponseEntity<Warehouse> loginWarehouse(@RequestParam String name, @RequestParam String password) {
         Warehouse warehouse = warehouseService.getWarehouseByNameAndPassword(name, password);
