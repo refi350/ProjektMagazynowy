@@ -30,10 +30,6 @@ public class Commodity {
 
     private String unit;
 
-    @Lob
-    @Column(name = "image", length = 1000)
-    private byte[] image;
-
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     @JsonIgnore
@@ -103,19 +99,20 @@ public class Commodity {
         this.unit = unit;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public void editCommodity(Commodity editedCommodity) {
+        if(!this.equals(editedCommodity)) {
+            this.setName(editedCommodity.getName());
+            this.setCode(editedCommodity.getCode());
+            this.setDescription(editedCommodity.getDescription());
+            this.setUnit(editedCommodity.getUnit());
+        }
     }
 }

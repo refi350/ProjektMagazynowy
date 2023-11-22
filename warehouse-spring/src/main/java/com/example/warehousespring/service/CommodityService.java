@@ -1,5 +1,6 @@
 package com.example.warehousespring.service;
 
+import com.example.warehousespring.CommodityNotFoundException;
 import com.example.warehousespring.data.Commodity;
 import com.example.warehousespring.data.Warehouse;
 import com.example.warehousespring.repository.CommodityRepository;
@@ -38,10 +39,14 @@ public class CommodityService {
     }
 
     public Commodity getCommodityById(Long commodityId) {
-        return commodityRepository.getReferenceById(commodityId);
+        return commodityRepository.findById(commodityId).orElse(null);
     }
 
-    public Commodity editCommodityById(Commodity commodity) {
+    public Commodity editCommodityById(Long id, Commodity newCommodity) {
+        Commodity commodity = commodityRepository.findById(id)
+                .orElseThrow(() -> new CommodityNotFoundException(id));
+        commodity.editCommodity(newCommodity);
+        commodityRepository.save(commodity);
         return commodity;
     }
 
