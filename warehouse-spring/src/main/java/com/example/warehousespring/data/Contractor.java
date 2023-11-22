@@ -25,6 +25,11 @@ public class Contractor {
         return store_action_list;
     }
 
+
+    @OneToMany(mappedBy = "contractor")
+    @JsonIgnore
+    private List<Order> orders_list;
+
     public void setStore_action_list(List<StoreAction> store_action_list) {
         this.store_action_list = store_action_list;
     }
@@ -112,5 +117,13 @@ public class Contractor {
             this.setRecipient(editedContractor.isRecipient());
             this.setSupplier(editedContractor.isSupplier());
         }
+    }
+
+    public List<Order> getOrders_list() {
+        return orders_list;
+    }
+
+    public void setOrders_list(List<Order> orders_list) {
+        this.orders_list = orders_list;
     }
 }

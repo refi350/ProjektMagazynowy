@@ -35,6 +35,10 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse")
     private List<StoreAction> store_actions = Collections.emptyList();
 
+    @Column(name = "store_actions")
+    @OneToMany(mappedBy = "warehouse")
+    private List<Order> orders = Collections.emptyList();
+
     public Owner getOwner() {
         return owner;
     }
@@ -154,4 +158,11 @@ public class Warehouse {
         }
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }
