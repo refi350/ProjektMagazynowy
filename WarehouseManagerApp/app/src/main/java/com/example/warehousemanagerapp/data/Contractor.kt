@@ -18,7 +18,7 @@ data class Contractor(
 
     @SerializedName(JsonConst.CONTRACTOR_ADDRESS)
     @Expose
-    var contractorAddress: String? = null,
+    var contractorAddress: Address? = null,
 
     @SerializedName(JsonConst.RECIPIENT)
     @Expose
@@ -35,23 +35,47 @@ data class Contractor(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
-        parcel.readString(),
+        parcel.readValue(Address::class.java.classLoader) as? Address,
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(contractorId)
         parcel.writeString(contractorName)
-        parcel.writeString(contractorAddress)
+        parcel.writeValue(contractorAddress)
         parcel.writeValue(recipient)
         parcel.writeValue(supplier)
         parcel.writeString(nip)
     }
 
     override fun describeContents(): Int = 0
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Contractor
+
+        if (contractorId != other.contractorId) return false
+        if (contractorName != other.contractorName) return false
+        if (contractorAddress != other.contractorAddress) return false
+        if (recipient != other.recipient) return false
+        if (supplier != other.supplier) return false
+        if (nip != other.nip) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = contractorId ?: 0
+        result = 31 * result + (contractorName?.hashCode() ?: 0)
+        result = 31 * result + (contractorAddress?.hashCode() ?: 0)
+        result = 31 * result + (recipient?.hashCode() ?: 0)
+        result = 31 * result + (supplier?.hashCode() ?: 0)
+        result = 31 * result + (nip?.hashCode() ?: 0)
+        return result
+    }
 
     companion object CREATOR : Parcelable.Creator<Contractor> {
         override fun createFromParcel(parcel: Parcel): Contractor {

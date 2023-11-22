@@ -18,7 +18,7 @@ data class Commodity(
 
     @SerializedName(JsonConst.COUNTER)
     @Expose
-    var commoditiesAddress: Int? = null,
+    var counter: Int? = null,
 
     @SerializedName(JsonConst.TEMP_COUNTER)
     @Expose
@@ -32,17 +32,9 @@ data class Commodity(
     @Expose
     var description: String? = null,
 
-    @SerializedName(JsonConst.EXPIRATION_DATE)
-    @Expose
-    var expirationDate: String? = null,
-
     @SerializedName(JsonConst.UNIT)
     @Expose
-    var unit: String? = null,
-
-    @SerializedName(JsonConst.IMAGE)
-    @Expose
-    var image: ByteArray? = null
+    var unit: String? = null
 ): Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -51,12 +43,9 @@ data class Commodity(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.createByteArray()
-    ) {
-    }
-
+        parcel.readString()
+        //parcel.createByteArray()
+    )
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -65,16 +54,15 @@ data class Commodity(
 
         if (commodities != other.commodities) return false
         if (commoditiesName != other.commoditiesName) return false
-        if (commoditiesAddress != other.commoditiesAddress) return false
+        if (counter != other.counter) return false
         if (tempCounter != other.tempCounter) return false
         if (code != other.code) return false
         if (description != other.description) return false
-        if (expirationDate != other.expirationDate) return false
         if (unit != other.unit) return false
-        if (image != null) {
-            if (other.image == null) return false
-            if (!image.contentEquals(other.image)) return false
-        } else if (other.image != null) return false
+//        if (image != null) {
+//            if (other.image == null) return false
+//            if (!image.contentEquals(other.image)) return false
+//        } else if (other.image != null) return false
 
         return true
     }
@@ -82,26 +70,24 @@ data class Commodity(
     override fun hashCode(): Int {
         var result = commodities ?: 0
         result = 31 * result + (commoditiesName?.hashCode() ?: 0)
-        result = 31 * result + (commoditiesAddress ?: 0)
+        result = 31 * result + (counter ?: 0)
         result = 31 * result + (tempCounter ?: 0)
         result = 31 * result + (code ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + (expirationDate?.hashCode() ?: 0)
         result = 31 * result + (unit?.hashCode() ?: 0)
-        result = 31 * result + (image?.contentHashCode() ?: 0)
+        //result = 31 * result + (image?.contentHashCode() ?: 0)
         return result
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(commodities)
         parcel.writeString(commoditiesName)
-        parcel.writeValue(commoditiesAddress)
+        parcel.writeValue(counter)
         parcel.writeValue(tempCounter)
         parcel.writeValue(code)
         parcel.writeString(description)
-        parcel.writeString(expirationDate)
         parcel.writeString(unit)
-        parcel.writeByteArray(image)
+        //parcel.writeByteArray(image)
     }
 
     override fun describeContents(): Int = 0

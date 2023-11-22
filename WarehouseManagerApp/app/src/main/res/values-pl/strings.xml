@@ -10,14 +10,21 @@
     <string name="next_button_label">Dalej</string>
     <string name="password_repeat_label">Powtórz hasło</string>
     <string name="configure_label">Konfigurator</string>
-    <string name="address_label">Adres</string>
-    <string name="logo_label">Logo</string>
+    <string name="street_name_label">Ulica</string>
+    <string name="house_number_label">Numer domu</string>
+    <string name="local_number_label">Numer lokalu</string>
+    <string name="place_label">Miasto</string>
+    <string name="code_label">Kod pocztowy</string>
     <string name="color_label">Kolor</string>
     <string name="done_button_label">Gotowe</string>
     <string name="email_label">Email</string>
     <string name="owner_label">Właściciel</string>
     <string name="warehouse_data_label">Dane Magazynu</string>
     <string name="owner_data_label">Dane Właściciela</string>
+    <string name="add_commodity_label">Dodaj produkt</string>
+    <string name="code_commodity_label">Kod</string>
+    <string name="unit_commodity_label">Jednostka</string>
+    <string name="description_commodity_label">Opis</string>
 
     //BottomBar
     <string name="orders_bottom_bar_label">ZAMÓW.</string>

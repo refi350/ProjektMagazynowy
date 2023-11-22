@@ -30,7 +30,7 @@ data class Order(
 
     @SerializedName(JsonConst.CONTRACTOR)
     @Expose
-    var contractor: String? = null,
+    var contractor: Contractor? = null,
 
     @SerializedName(JsonConst.COMMODITIES_LIST)
     @Expose
@@ -42,10 +42,9 @@ data class Order(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString(),
+        parcel.readValue(Contractor::class.java.classLoader) as? Contractor,
         parcel.createTypedArrayList(Commodity)
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(orderId)
@@ -53,11 +52,38 @@ data class Order(
         parcel.writeString(acceptTime)
         parcel.writeString(completedTime)
         parcel.writeString(orderStatus)
-        parcel.writeString(contractor)
+        parcel.writeValue(contractor)
         parcel.writeTypedList(commoditiesList)
     }
 
     override fun describeContents(): Int = 0
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Order
+
+        if (orderId != other.orderId) return false
+        if (submitTime != other.submitTime) return false
+        if (acceptTime != other.acceptTime) return false
+        if (completedTime != other.completedTime) return false
+        if (orderStatus != other.orderStatus) return false
+        if (contractor != other.contractor) return false
+        if (commoditiesList != other.commoditiesList) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = orderId ?: 0
+        result = 31 * result + (submitTime?.hashCode() ?: 0)
+        result = 31 * result + (acceptTime?.hashCode() ?: 0)
+        result = 31 * result + (completedTime?.hashCode() ?: 0)
+        result = 31 * result + (orderStatus?.hashCode() ?: 0)
+        result = 31 * result + (contractor?.hashCode() ?: 0)
+        result = 31 * result + (commoditiesList?.hashCode() ?: 0)
+        return result
+    }
 
     companion object CREATOR : Parcelable.Creator<Order> {
         override fun createFromParcel(parcel: Parcel): Order {

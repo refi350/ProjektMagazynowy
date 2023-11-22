@@ -12,12 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.warehousemanagerapp.Screen
 import com.example.warehousemanagerapp.R
+import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 
 @Composable
-fun StartScreen(navController: NavController) {
+fun StartScreen(logScreenViewModel: LogScreenViewModel, navController: NavController) {
+    //val logScreenViewModel: LogScreenViewModel = viewModel()
     var text by remember {
         mutableStateOf("")
     }
@@ -36,6 +39,7 @@ fun StartScreen(navController: NavController) {
 //            modifier = Modifier.fillMaxWidth()
 //        )
         Button(onClick = {
+            logScreenViewModel.getWarehousesNames()
             navController.navigate(Screen.ConfigScreenBasic.route + "/{config_screen_basic}")
         },
             modifier = Modifier.align(Alignment.CenterHorizontally)

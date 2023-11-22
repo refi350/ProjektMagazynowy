@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
 data class User (
     @SerializedName(JsonConst.NAME)
     @Expose
-    var name: String = "Testowy",
+    var name: String? = null,
 
     @SerializedName(JsonConst.PASSWORD)
     @Expose
-    var password: String = "aaa"
+    var password: String? = null
 )
