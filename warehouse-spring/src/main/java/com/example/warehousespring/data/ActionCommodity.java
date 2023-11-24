@@ -1,5 +1,6 @@
 package com.example.warehousespring.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 //Position on the store action list or order
@@ -18,7 +19,13 @@ public class ActionCommodity {
 
     @ManyToOne
     @JoinColumn(name = "store_action_id")
+    @JsonIgnore
     private StoreAction store_action;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Order order;
 
 
     public ActionCommodity() {
@@ -52,5 +59,21 @@ public class ActionCommodity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

@@ -18,7 +18,15 @@ public class StoreActionController {
 
     //------------------------------------ GET --------------------------------------------------------
 
-    @GetMapping("warehouses/{warehouseId}/storeactions/all")
+    @GetMapping("/storeactions/{id}")
+    public ResponseEntity<StoreAction> one(@PathVariable Long id) {
+        StoreAction storeAction = storeActionService.getStoreActionById(id);
+        if(storeAction == null ){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(storeAction, HttpStatus.OK);
+    }
+    @GetMapping("/warehouses/{warehouseId}/storeactions/all")
     public ResponseEntity<List<StoreAction>> getAll(@PathVariable Long warehouseId) {
         List<StoreAction> storeActions = storeActionService.getAllStoreActions(warehouseId);
         if(storeActions == null || storeActions.isEmpty()){
@@ -29,8 +37,8 @@ public class StoreActionController {
 
     //------------------------------------ POST --------------------------------------------------------
 
-    @PostMapping("warehouses/{warehouseId}/storeactions")
-    public ResponseEntity<StoreAction> newCommodity(@PathVariable Long warehouseId, @RequestBody StoreAction newStoreAction) {
+    @PostMapping("/warehouses/{warehouseId}/storeactions")
+    public ResponseEntity<StoreAction> newStoreAction(@PathVariable Long warehouseId, @RequestBody StoreAction newStoreAction) {
         StoreAction storeAction = storeActionService.addStoreActionToWarehouse(warehouseId, newStoreAction);
         if(storeAction != null) {
             return new ResponseEntity<>(storeAction, HttpStatus.OK);
@@ -52,13 +60,13 @@ public class StoreActionController {
 //    }
     //------------------------------------ DELETE --------------------------------------------------------
 
-//    @DeleteMapping("/contractors/{id}")
-//    public ResponseEntity<Void> deleteContractor(@PathVariable("id") Long id) {
-//        if (contractorService.deleteContractor(id)) {
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//    }
+    @DeleteMapping("/storeactions/{id}")
+    public ResponseEntity<Void> deleteContractor(@PathVariable("id") Long id) {
+        if (storeActionService.deleteStoreAction(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 }

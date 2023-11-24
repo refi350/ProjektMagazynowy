@@ -35,6 +35,8 @@ public class Commodity {
     @JsonIgnore
     private Warehouse warehouse;
 
+
+
     public Commodity(String name) {
         this.name = name;
     }
