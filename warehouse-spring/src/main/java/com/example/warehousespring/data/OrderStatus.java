@@ -1,5 +1,9 @@
 package com.example.warehousespring.data;
 
 public enum OrderStatus {
-    EXPECTING, COLLECTING, READY, ISSUED
+    EXPECTING ("new"), COLLECTING ("collecting"), READY ("ready"), ISSUED("issued");
+    final String text;
+    OrderStatus(String text) {
+        this.text = text;
+    }
 }
