@@ -16,24 +16,24 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\MEEEEEEE\Documents\Projekt\aspnetapp\Magazyn
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Addresses/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXENyZWF0ZS5jc2h0bWw=
+[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Commodities/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbW9kaXRpZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Addresses/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXERlbGV0ZS5jc2h0bWw=
+[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Commodities/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbW9kaXRpZXNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Addresses/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXERldGFpbHMuY3NodG1s
+[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Commodities/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbW9kaXRpZXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Addresses/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXEVkaXQuY3NodG1s
+[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Commodities/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbW9kaXRpZXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Addresses/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXEluZGV4LmNzaHRtbA==
+[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Commodities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbW9kaXRpZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Home/Index.cshtml]
@@ -48,48 +48,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Owners/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Owners/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Owners/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Owners/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Owners/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Towars/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93YXJzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Towars/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93YXJzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Towars/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93YXJzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Towars/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93YXJzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Towars/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93YXJzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/MEEEEEEE/Documents/Projekt/aspnetapp/Magazyn/Views/Warehouses/Create.cshtml]
