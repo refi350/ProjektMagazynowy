@@ -1,10 +1,10 @@
 ﻿@model Magazyn.Models.Warehouse
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Stwórz";
 }
 
-<h1>Create</h1>
+<h1>Stwórz nowy</h1>
 
 <h4>Warehouse</h4>
 <hr />
@@ -23,49 +23,55 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <!--poniższy div, tylko do debugowania-->
-            <div class="form-group">
-                <label asp-for="ColorId" class="control-label"></label>
-                <input asp-for="ColorId" class="form-control" readonly/>
-                <span asp-validation-for="ColorId" class="text-danger" ></span>
-            </div>
+             <div class="form-group">
+                <input asp-for="ColorId" class="form-control" type="hidden" readonly/>
+            </div> 
             <div>
                 <label class="control-label">Kolor tła</label>
                 <input type="text" id='ColorPick' />                
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label">Logo</label>
-                <input type="file" asp-for="Image" class="form-control" accept=".jpg, .jpeg, .png, .gif, .bmp" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+            <div>
+                <h3>
+                    Właściciel
+                </h3>
             </div>
             <div class="form-group">
-                <label asp-for="OwnerId" class="control-label">Właściciel</label>
-                <select asp-for="OwnerId" class ="form-control" asp-items="ViewBag.OwnerId"></select>
-            </div>
-            <h3>Adres</h3>
-            <div class="form-group">
-                <label asp-for="Address.StreetName" class="control-label">Ulica</label>
-                <input asp-for="Address.StreetName" class="form-control" />
-                <span asp-validation-for="Address.StreetName" class="text-danger"></span>
+                <label asp-for="Owner!.Name" class="control-label">Właściciel</label>
+                <input asp-for="Owner!.Name" class ="form-control"/>
+                <span asp-validation-for="Owner!.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address.HouseNumber" class="control-label">Numer budynku</label>
-                <input asp-for="Address.HouseNumber" class="form-control" />
-                <span asp-validation-for="Address.HouseNumber" class="text-danger"></span>
+                <label asp-for="Owner!.Email" class="control-label">Email</label>
+                <input asp-for="Owner!.Email" class="form-control" />
+                <span asp-validation-for="Owner!.Email" class="text-danger"></span>
+            </div>
+            <div>
+                <h3>Adres</h3>
             </div>
             <div class="form-group">
-                <label asp-for="Address.LocalNumber" class="control-label">Numer lokalu</label>
-                <input asp-for="Address.LocalNumber" class="form-control" />
-                <span asp-validation-for="Address.LocalNumber" class="text-danger"></span>
+                <label asp-for="Address!.StreetName" class="control-label">Ulica</label>
+                <input asp-for="Address!.StreetName" class="form-control" />
+                <span asp-validation-for="Address!.StreetName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address.Place" class="control-label">Miasto</label>
-                <input asp-for="Address.Place" class="form-control" />
-                <span asp-validation-for="Address.Place" class="text-danger"></span>
+                <label asp-for="Address!.HouseNumber" class="control-label">Numer budynku</label>
+                <input asp-for="Address!.HouseNumber" class="form-control" />
+                <span asp-validation-for="Address!.HouseNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address.code" class="control-label">kod pocztowy</label>
-                <input asp-for="Address.code" class="form-control" />
-                <span asp-validation-for="Address.code" class="text-danger"></span>
+                <label asp-for="Address!.LocalNumber" class="control-label">Numer lokalu</label>
+                <input asp-for="Address!.LocalNumber" class="form-control" />
+                <span asp-validation-for="Address!.LocalNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address!.Place" class="control-label">Miasto</label>
+                <input asp-for="Address!.Place" class="form-control" />
+                <span asp-validation-for="Address!.Place" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address!.code" class="control-label">kod pocztowy</label>
+                <input asp-for="Address!.code" class="form-control" />
+                <span asp-validation-for="Address!.code" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
