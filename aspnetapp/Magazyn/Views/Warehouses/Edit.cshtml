@@ -25,10 +25,10 @@
                 </div>
                 <!--poniższy div, tylko do debugowania-->
                  <div class="form-group">
+                    <label class="control-label">Kolor tła</label>
                     <input asp-for="ColorId" class="form-control" type="hidden" readonly/>
                 </div> 
-                <div>
-                    <label class="control-label">Kolor tła</label>
+                <div>            
                     <input type="text" id='ColorPick' value=@Model.ColorId/>                
                 </div>
                 <div>
@@ -75,7 +75,7 @@
                     <span asp-validation-for="Address!.code" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </form>
         </div>
