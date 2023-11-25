@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Magazyn.Data;
 using Magazyn.Models;
-using Magazyn.Repositories;
-using Magazyn.Interfaces;
 using Newtonsoft.Json;
 
 namespace Magazyn.Controllers

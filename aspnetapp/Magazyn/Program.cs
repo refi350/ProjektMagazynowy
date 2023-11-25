@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Magazyn.Data;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using Magazyn.Repositories;
-using Magazyn.Interfaces;
 
 //Repository management
 //using HttpClient client = new();
@@ -43,7 +41,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MagazynContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MagazynContext") ?? throw new InvalidOperationException("Connection string 'MagazynContext' not found.")));
 builder.Services.AddHttpClient();
-builder.Services.AddSingleton<IRepositoryProvider,RepositoryProvider>();
+//builder.Services.AddSingleton<IRepositoryProvider,RepositoryProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

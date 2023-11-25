@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Magazyn.Controllers
 {
@@ -14,18 +15,28 @@ namespace Magazyn.Controllers
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
+        private async Task<T?> HttpToModel<T>(string address)
+        {
+            var response = await _httpClient.GetAsync(address);
+            if (!response.IsSuccessStatusCode)
+            {
+                return default;
+            }
+            var content = await response.Content.ReadAsStringAsync();
+            var model = JsonConvert.DeserializeObject<T>(content);
+            return model;
+        }
+
         // GET: WarehousesController
         public async Task<IActionResult> Index()
         {
             try
             {
-                var response = await _httpClient.GetAsync("http://monika.alwaysdata.net/warehouses/all");
-                if (!response.IsSuccessStatusCode)
+                var model = await HttpToModel<List<Warehouse>>("http://monika.alwaysdata.net/warehouses/all");
+                if (model == null)
                 {
                     return NotFound();
                 }
-                var content = await response.Content.ReadAsStringAsync();
-                var model = JsonConvert.DeserializeObject<List<Warehouse>>(content);
 
                 // Przekazanie modelu do widoku
                 return View(model);
@@ -37,9 +48,21 @@ namespace Magazyn.Controllers
         }
 
         // GET: WarehousesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            try
+            {
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/"+id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // GET: WarehousesController/Create
@@ -51,11 +74,24 @@ namespace Magazyn.Controllers
         // POST: WarehousesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(Warehouse newWarehouse)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var jsonWarehouse = JsonConvert.SerializeObject(newWarehouse);
+                var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
+
+                var postResponse = await _httpClient.PostAsync("http://monika.alwaysdata.net/warehouses", content);
+                if (postResponse.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Wystąpił błąd podczas dodawania danych
+                    Console.WriteLine(postResponse);
+                    return View(newWarehouse);
+                }
             }
             catch
             {
@@ -64,44 +100,96 @@ namespace Magazyn.Controllers
         }
 
         // GET: WarehousesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            try
+            {
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/" + id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // POST: WarehousesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, Warehouse editedWarehouse)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                // W tym miejscu możesz dokonać modyfikacji obiektu przed wysłaniem go na serwer,
+                // na przykład używając JsonConvert.SerializeObject(editedWarehouse)
+
+                var jsonWarehouse = JsonConvert.SerializeObject(editedWarehouse);
+                var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
+
+                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/warehouses/" + id, content);
+
+                if (putResponse.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Wystąpił błąd podczas edycji danych
+                    Console.WriteLine(putResponse);
+                    return View(editedWarehouse);
+                }
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                return BadRequest();
             }
         }
 
         // GET: WarehousesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: WarehousesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/" + id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                return BadRequest();
+            }
+        }
+
+        // POST: WarehousesController/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var deleteResponse = await _httpClient.DeleteAsync("http://monika.alwaysdata.net/warehouses/" + id);
+
+                if (deleteResponse.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Wystąpił błąd podczas usuwania danych
+                    Console.WriteLine(deleteResponse);
+                    return View(id); // lub inną odpowiednią akcję
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
         }
     }

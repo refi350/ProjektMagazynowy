@@ -21,9 +21,9 @@ namespace Magazyn.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Warehouse>? Warehouse { get; set; }
-        public DbSet<Owner>? Owners { get; set; }
-        public DbSet<Address>? Address { get; set; }
-        public DbSet<Magazyn.Models.Commodity>? Commodity { get; set; }
+        //public DbSet<Warehouse>? Warehouse { get; set; }
+        //public DbSet<Owner>? Owners { get; set; }
+        //public DbSet<Address>? Address { get; set; }
+        //public DbSet<Magazyn.Models.Commodity>? Commodity { get; set; }
     }
 }

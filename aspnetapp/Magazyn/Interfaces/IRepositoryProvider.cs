@@ -2,8 +2,8 @@
 
 namespace Magazyn.Interfaces
 {
-    public interface IRepositoryProvider
-    {
-        Task<List<WarehouseRepository>> GetWarehousesAsync();
-    }
+    //public interface IRepositoryProvider
+    //{
+    //    Task<List<WarehouseRepository>> GetWarehousesAsync();
+    //}
 }
