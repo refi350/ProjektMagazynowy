@@ -1,23 +1,31 @@
 package com.example.warehousespring.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 @Entity
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Receipt.class, name = "Receipt"),
+        @JsonSubTypes.Type(value = Release.class, name = "Release")
+})
 public abstract class StoreAction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "contractor_ID")
     private Contractor contractor;
     @OneToMany(mappedBy = "store_action")
-    private List<ActionCommodity> commodities;
+    private List<ActionCommodity> commodities = Collections.emptyList();
 
     public Long getDoc_number() {
         return doc_number;
@@ -41,7 +49,8 @@ public abstract class StoreAction {
         this.id = id;
     }
 
-    protected StoreAction() {
+    public StoreAction() {
+
     }
 
     StoreAction(LocalDateTime date, List<ActionCommodity> commodities, Contractor contractor, Long docNumber){

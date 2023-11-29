@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 
 import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -18,11 +20,14 @@ public class Order {
     private LocalDateTime submit_time = LocalDateTime.now();
     private LocalDateTime accept_time;
     private LocalDateTime completed_time;
-    String order_status;
+    String order_status = OrderStatus.EXPECTING.text;
 
     @ManyToOne
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
+
+    @OneToMany(mappedBy = "order")
+    private List<ActionCommodity> commodities = Collections.emptyList();
 
     @ManyToOne
     @JoinColumn(name = "release_id")
@@ -112,5 +117,13 @@ public class Order {
             this.setOrder_status(editedOrder.getOrder_status());
             this.setContractor(editedOrder.getContractor());
         }
+    }
+
+    public List<ActionCommodity> getCommodities() {
+        return commodities;
+    }
+
+    public void setCommodities(List<ActionCommodity> commodities) {
+        this.commodities = commodities;
     }
 }

@@ -16,11 +16,14 @@ namespace Magazyn.Data
         }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
 
-        public DbSet<Magazyn.Models.Towar> Towar { get; set; } = default!;
-
-        public DbSet<Warehouse>? Warehouse { get; set; }
-        public DbSet<Owner>? Owners { get; set; }
-        public DbSet<Address>? Address { get; set; }
+        //public DbSet<Warehouse>? Warehouse { get; set; }
+        //public DbSet<Owner>? Owners { get; set; }
+        //public DbSet<Address>? Address { get; set; }
+        //public DbSet<Magazyn.Models.Commodity>? Commodity { get; set; }
     }
 }
