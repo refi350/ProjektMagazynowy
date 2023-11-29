@@ -1,5 +1,6 @@
 package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.magnifier
 import androidx.compose.material.BottomNavigation
@@ -9,11 +10,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -23,15 +26,49 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs.HomeNavGraph
 
+//@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(warehouseViewModel: WarehouseViewModel, navController: NavHostController = rememberNavController()) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) },
-    ) {
-        HomeNavGraph(navController = navController)
-    }
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Top App Bar")
+                },
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                ),
+            )
+        },
+        bottomBar = {
+            BottomBar(navController = navController)
+        },
+        content = {
+            HomeNavGraph(warehouseViewModel, navController = navController)
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+            }
+
+        })
+
+
+
 }
 
 @Composable
@@ -55,64 +92,7 @@ fun BottomBar(navController: NavHostController) {
                         )
                     }
                 }
-//                NavigationBar(
-//
-//                ) {
-////                var selectedItem by remember { mutableIntStateOf(0) }
-////                val items = listOf("Zamówienia", "Dokumenty", "Towary", "Osoby")
-//
-//                    screens.forEach { item ->
-//                        NavigationBarItem(
-//                            icon = {
-//                                Icon(
-//                                    getIconForScreen(screen = item.route),
-//                                    contentDescription = item.route
-//                                )
-//                            },
-//                            label = { Text(item.route) },
-//                            selected = selectedScreen == item,
-//                            onClick = { selectedScreen = currentDestination },
-//                            modifier = Modifier.padding(8.dp),
-//                            //alwaysShowLabel = false
-//                        )
-//                    }
-//                }
-            //},
-//            content = {
-//                Column(
-//                    modifier = Modifier.fillMaxSize(),
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Text(text = "Selected screen: $selectedScreen")
-//                    //getScreen(selectedScreen = selectedScreen?.route!!, navController)
-//                }
-//            }
-        //) {
-
-       // }
    // }
-}
-
-@Composable
-fun getIconForScreen(screen: String): ImageVector {
-    return when (screen) {
-        "Zamówienia" -> Icons.Default.Home
-        "Dokumenty" -> Icons.Default.AccountBox
-        "Towary" -> Icons.Default.Add
-        "Osoby" -> Icons.Default.Notifications
-        else -> Icons.Default.Home
-    }
-}
-
-@Composable
-fun getScreen(selectedScreen: String, navController: NavController) {
-//    when (selectedScreen) {
-//        "Zamówienia" -> navController.navigate(Screen.OrderScreen.route + "/{order_screen}")
-//        "Dokumenty" -> Screen.DocumentScreen.route
-//        "Towary" -> Screen.ItemsScreen.route
-//        "Osoby" -> Screen.ContractorScreen.route
-//    }
 }
 
 @Composable

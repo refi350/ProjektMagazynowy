@@ -16,6 +16,8 @@ aspnetapp/*.csproj.user
 aspnetapp/*.suo
 aspnetapp/*.userprefs
 aspnetapp/*.sln.docstates
+aspnetapp/Repositories/
+aspnetapp/Interfaces/
 
 #Poniżej umieszczajcie swoje wyjątki do plików
 /aspnetapp/Magazyn/Migrations/MagazynContextModelSnapshot.cs

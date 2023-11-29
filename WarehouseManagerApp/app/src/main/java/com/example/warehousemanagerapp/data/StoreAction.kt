@@ -34,8 +34,7 @@ data class StoreAction(
         parcel.readParcelable(Contractor::class.java.classLoader),
         parcel.createTypedArrayList(Commodity),
         parcel.readValue(Int::class.java.classLoader) as? Int
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(storeActionId)

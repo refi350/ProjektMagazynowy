@@ -14,18 +14,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.warehousemanagerapp.Screen
 import com.example.warehousemanagerapp.view.Visibility
 import com.example.warehousemanagerapp.view.VisibilityOff
 import com.example.warehousemanagerapp.R
+import com.example.warehousemanagerapp.data.Owner
+import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
+import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 
 @Composable
 fun WarehouseOwner(navController: NavController) {
     var email by rememberSaveable { mutableStateOf("") }
     var owner by rememberSaveable { mutableStateOf("") }
-   // var color by rememberSaveable { mutableStateOf("") }
-    // var passwordHidden by rememberSaveable { mutableStateOf(true) }
     Text(
         text = stringResource(id = R.string.owner_data_label),
         fontSize = 36.sp
@@ -51,49 +53,20 @@ fun WarehouseOwner(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = stringResource(id = R.string.owner_label)) },
             singleLine = true
-//            visualTransformation =
-//            if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            trailingIcon = {
-//                IconButton(onClick = { passwordHidden = !passwordHidden }) {
-//                    val visibilityIcon =
-//                        if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-//                    // Please provide localized description for accessibility services
-//                    val description = if (passwordHidden) "Show password" else "Hide password"
-//                    Icon(imageVector = visibilityIcon, contentDescription = description)
-//                }
-//            }
         )
-
-//        Spacer(modifier = Modifier.height(16.dp))
-//        TextField(
-//            value = color,
-//            onValueChange = { color = it },
-//            modifier = Modifier.fillMaxWidth(),
-//            label = { Text(text = stringResource(id = R.string.color_label)) },
-//            singleLine = true,
-//            visualTransformation =
-//            if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            trailingIcon = {
-//                IconButton(onClick = { passwordHidden = !passwordHidden }) {
-//                    val visibilityIcon =
-//                        if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-//                    // Please provide localized description for accessibility services
-//                    val description = if (passwordHidden) "Show password" else "Hide password"
-//                    Icon(imageVector = visibilityIcon, contentDescription = description)
-//                }
-//            }
-       // )
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
+            WarehouseRepository.warehouse.apply {
+                this.owner = Owner(email = email, ownerName = owner)
+            }
+            //println("asdasd " + WarehouseRepository.warehouse)
+            WarehouseRepository.postWarehouse()
             navController.navigate(Screen.StartScreen.route)
         },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text(text = stringResource(id = R.string.done_button_label))
         }
-        //Text(text = "hello, $name")
     }
 }

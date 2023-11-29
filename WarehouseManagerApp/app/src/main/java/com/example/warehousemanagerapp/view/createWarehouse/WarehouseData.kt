@@ -14,16 +14,25 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.warehousemanagerapp.Screen
 import com.example.warehousemanagerapp.view.Visibility
 import com.example.warehousemanagerapp.view.VisibilityOff
 import com.example.warehousemanagerapp.R
+import com.example.warehousemanagerapp.data.Address
+import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
+import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
+import kotlin.math.log
 
 @Composable
 fun WarehouseData(navController: NavController) {
-    var address by rememberSaveable { mutableStateOf("") }
-    var logo by rememberSaveable { mutableStateOf("") }
+    //val logScreenViewModel: LogScreenViewModel = viewModel()
+    var streetName by rememberSaveable { mutableStateOf("") }
+    var houseNumber by rememberSaveable { mutableStateOf("") }
+    var localNumber by rememberSaveable { mutableStateOf("") }
+    var place by rememberSaveable { mutableStateOf("") }
+    var code by rememberSaveable { mutableStateOf("") }
     var color by rememberSaveable { mutableStateOf("") }
     // var passwordHidden by rememberSaveable { mutableStateOf(true) }
     Text(
@@ -38,32 +47,40 @@ fun WarehouseData(navController: NavController) {
             .padding(horizontal = 50.dp)
     ) {
         TextField(
-            value = address,
-            onValueChange = { address = it },
+            value = streetName,
+            onValueChange = { streetName = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = stringResource(id = R.string.address_label)) }
+            label = { Text(text = stringResource(id = R.string.street_name_label)) }
         )
-
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = logo,
-            onValueChange = { logo = it },
+            value = houseNumber,
+            onValueChange = { houseNumber = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = stringResource(id = R.string.logo_label)) },
-            singleLine = true,
-//            visualTransformation =
-//            if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            trailingIcon = {
-//                IconButton(onClick = { passwordHidden = !passwordHidden }) {
-//                    val visibilityIcon =
-//                        if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-//                    // Please provide localized description for accessibility services
-//                    val description = if (passwordHidden) "Show password" else "Hide password"
-//                    Icon(imageVector = visibilityIcon, contentDescription = description)
-//                }
-//            }
+            label = { Text(text = stringResource(id = R.string.house_number_label)) }
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = localNumber,
+            onValueChange = { value -> localNumber = value.filter { it.isDigit() } },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = stringResource(id = R.string.local_number_label)) }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = place,
+            onValueChange = { place = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = stringResource(id = R.string.place_label)) }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = code,
+            onValueChange = { code = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = stringResource(id = R.string.code_label)) }
+        )
+
 
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
@@ -88,7 +105,14 @@ fun WarehouseData(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            navController.navigate(Screen.ConfigScreenWarehouseOwner.withArgs(address.ifBlank { " " } ))
+            WarehouseRepository.warehouse.apply {
+                this.address = Address(
+                    streetName = streetName, houseNumber = houseNumber,
+                    localNumber = localNumber.toInt(), place = place, code = code
+                )
+                this.color = color
+            }
+            navController.navigate(Screen.ConfigScreenWarehouseOwner.withArgs(streetName.ifBlank { " " } ))
         },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {

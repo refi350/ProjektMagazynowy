@@ -13,7 +13,6 @@ sealed class BottomBarScreen(
     val icon: ImageVector
 ) {
    object Orders : BottomBarScreen(
-
        route = "ORDERS",
        title = R.string.orders_bottom_bar_label,
        icon = Icons.Default.Home

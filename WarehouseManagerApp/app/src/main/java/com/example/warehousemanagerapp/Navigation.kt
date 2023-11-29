@@ -14,6 +14,7 @@ import com.example.warehousemanagerapp.view.createWarehouse.ConfigureLayout
 import com.example.warehousemanagerapp.view.createWarehouse.WarehouseData
 import com.example.warehousemanagerapp.view.createWarehouse.WarehouseOwner
 import com.example.warehousemanagerapp.view.loginWarehouse.LogScreen
+import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 //import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.MainScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseActivity
 
@@ -21,11 +22,11 @@ import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Warehous
 
 //import androidx.navigation.navArgument
 @Composable
-fun Navigation(context: Context) {
+fun Navigation(logScreenViewModel: LogScreenViewModel, context: Context) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.StartScreen.route) {
         composable(route = Screen.StartScreen.route) {
-            StartScreen(navController = navController)
+            StartScreen(logScreenViewModel, navController = navController)
         }
         composable(
             route = Screen.LogScreen.route + "/{name}",
@@ -38,7 +39,7 @@ fun Navigation(context: Context) {
             )
         ) {
 
-                entry -> LogScreen(navController, name = entry.arguments?.getString("name"), context)
+                entry -> LogScreen(logScreenViewModel, navController, name = entry.arguments?.getString("name"), context)
         }
 
         composable(
@@ -50,7 +51,7 @@ fun Navigation(context: Context) {
 //                        defaultValue = "name"
 //                    }
 //                    )
-        ) { ConfigureLayout(navController) }
+        ) { ConfigureLayout(logScreenViewModel, navController) }
         composable(
             route = Screen.ConfigScreenWarehouseData.route + "/{config_screen_warehouse_data}"
         ) { WarehouseData(navController) }

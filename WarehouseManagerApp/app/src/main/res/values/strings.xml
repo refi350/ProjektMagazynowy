@@ -8,14 +8,21 @@
     <string name="next_button_label">Next</string>
     <string name="password_repeat_label">PasswordRepeat</string>
     <string name="configure_label">Configure</string>
-    <string name="address_label">Address</string>
-    <string name="logo_label">Logo</string>
+    <string name="street_name_label">Street name</string>
+    <string name="house_number_label">House number</string>
+    <string name="local_number_label">Local number</string>
+    <string name="place_label">Place</string>
+    <string name="code_label">Code label</string>
     <string name="color_label">Color</string>
     <string name="done_button_label">Done</string>
     <string name="email_label">Email</string>
     <string name="owner_label">Owner</string>
     <string name="warehouse_data_label">Warehouse Data</string>
     <string name="owner_data_label">Owner Data</string>
+    <string name="add_commodity_label">Add Commodity</string>
+    <string name="code_commodity_label">Code</string>
+    <string name="unit_commodity_label">Unit</string>
+    <string name="description_commodity_label">Description</string>
 
     //BottomBar
     <string name="orders_bottom_bar_label">ORDERS</string>

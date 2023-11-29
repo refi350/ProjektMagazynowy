@@ -1,181 +1,196 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Magazyn.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Magazyn.Data;
-using Magazyn.Models;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Magazyn.Controllers
 {
     public class WarehousesController : Controller
     {
-        private readonly MagazynContext _context;
+        private readonly HttpClient _httpClient;
 
-        public WarehousesController(MagazynContext context)
+        public WarehousesController(HttpClient httpClient)
         {
-            _context = context;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        // GET: Warehouses
+        private async Task<T?> HttpToModel<T>(string address)
+        {
+            var response = await _httpClient.GetAsync(address);
+            if (!response.IsSuccessStatusCode)
+            {
+                return default;
+            }
+            var content = await response.Content.ReadAsStringAsync();
+            var model = JsonConvert.DeserializeObject<T>(content);
+            return model;
+        }
+
+        // GET: WarehousesController
         public async Task<IActionResult> Index()
         {
-            var magazynContext = _context.Warehouse!.Include(w => w.Owner).Include(w =>w.Address);
-            return View(await magazynContext.ToListAsync());
-        }
+            try
+            {
+                var model = await HttpToModel<List<Warehouse>>("http://monika.alwaysdata.net/warehouses/all");
+                if (model == null)
+                {
+                    return NotFound();
+                }
 
-        // GET: Warehouses/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Warehouse == null)
+                // Przekazanie modelu do widoku
+                return View(model);
+            }
+            catch (Exception)
             {
                 return NotFound();
             }
-
-            var warehouse = await _context.Warehouse
-                .Include(w => w.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (warehouse == null)
-            {
-                return NotFound();
-            }
-
-            return View(warehouse);
         }
 
-        // GET: Warehouses/Create
-        public IActionResult Create()
+        // GET: WarehousesController/Details/5
+        public async Task<IActionResult> Details(int id)
         {
-            
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name");
-            ViewData["AddressId"] = new SelectList(_context.Set<Address>(),"Id","StreetName");
+            try
+            {
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/"+id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        // GET: WarehousesController/Create
+        public ActionResult Create()
+        {
             return View();
         }
 
-        // POST: Warehouses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: WarehousesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Password,Address," +
-            "ColorId,Image,OwnerId,Address.StreetName,Address.HouseNumber,Address.LocalNumber," +
-            "Address.Place,Address.code")] Warehouse warehouse, IFormFile Image)
+        public async Task<IActionResult> Create(Warehouse newWarehouse)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (Image != null && Image.Length > 0)
+                var jsonWarehouse = JsonConvert.SerializeObject(newWarehouse);
+                var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
+
+                var postResponse = await _httpClient.PostAsync("http://monika.alwaysdata.net/warehouses", content);
+                if (postResponse.IsSuccessStatusCode)
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        await Image.CopyToAsync(memoryStream);
-                        warehouse.Image = memoryStream.ToArray();
-                    }
+                    return RedirectToAction(nameof(Index));
                 }
-
-                _context.Add(warehouse);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    // Wystąpił błąd podczas dodawania danych
+                    Console.WriteLine(postResponse);
+                    return View(newWarehouse);
+                }
             }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Name", warehouse.OwnerId);
-            return View(warehouse);
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Warehouses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: WarehousesController/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Warehouse == null)
+            try
             {
-                return NotFound();
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/" + id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
             }
-
-            var warehouse = await _context.Warehouse.FindAsync(id);
-            if (warehouse == null)
+            catch (Exception)
             {
-                return NotFound();
+                return BadRequest();
             }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
-            return View(warehouse);
         }
 
-        // POST: Warehouses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: WarehousesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ColorId,Image,OwnerId")] Warehouse warehouse)
+        public async Task<IActionResult> Edit(int id, Warehouse editedWarehouse)
         {
-            if (id != warehouse.Id)
+            try
             {
-                return NotFound();
-            }
+                // W tym miejscu możesz dokonać modyfikacji obiektu przed wysłaniem go na serwer,
+                // na przykład używając JsonConvert.SerializeObject(editedWarehouse)
 
-            if (ModelState.IsValid)
-            {
-                try
+                var jsonWarehouse = JsonConvert.SerializeObject(editedWarehouse);
+                var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
+
+                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/warehouses/" + id, content);
+
+                if (putResponse.IsSuccessStatusCode)
                 {
-                    _context.Update(warehouse);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!WarehouseExists(warehouse.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Wystąpił błąd podczas edycji danych
+                    Console.WriteLine(putResponse);
+                    return View(editedWarehouse);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Set<Owner>(), "Id", "Id", warehouse.OwnerId);
-            return View(warehouse);
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
-        // GET: Warehouses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: WarehousesController/Delete/5
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Warehouse == null)
+            try
             {
-                return NotFound();
+                var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/" + id.ToString());
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                return View(model);
             }
-
-            var warehouse = await _context.Warehouse
-                .Include(w => w.Owner)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (warehouse == null)
+            catch (Exception)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            return View(warehouse);
         }
 
-        // POST: Warehouses/Delete/5
+        // POST: WarehousesController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Warehouse == null)
+            try
             {
-                return Problem("Entity set 'MagazynContext.Warehouse'  is null.");
-            }
-            var warehouse = await _context.Warehouse.FindAsync(id);
-            if (warehouse != null)
-            {
-                _context.Warehouse.Remove(warehouse);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                var deleteResponse = await _httpClient.DeleteAsync("http://monika.alwaysdata.net/warehouses/" + id);
 
-        private bool WarehouseExists(int id)
-        {
-          return (_context.Warehouse?.Any(e => e.Id == id)).GetValueOrDefault();
+                if (deleteResponse.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Wystąpił błąd podczas usuwania danych
+                    Console.WriteLine(deleteResponse);
+                    return View(id); // lub inną odpowiednią akcję
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -1,34 +1,42 @@
 package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs
 
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.*
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.AddCommodity
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.InformationDetailsScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.OverviewDetailsScreen
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(warehouseViewModel: WarehouseViewModel, navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Orders.route
+        startDestination = BottomBarScreen.Commodity.route
     ) {
         composable(route = BottomBarScreen.Orders.route) {
-            HomeContentScreen(
-                name = BottomBarScreen.Orders.route,
-                {
+                HomeContentScreen(
+                    name = BottomBarScreen.Orders.route,
+                    {
+                        navController.navigate(Graph.DETAIL)
+                    }
+                ) {
                     navController.navigate(Graph.DETAIL)
                 }
-            ) {
-                navController.navigate(Graph.DETAIL)
-            }
         }
         composable(route = BottomBarScreen.Documents.route) {
             DocumentContentScreen(
@@ -42,13 +50,20 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         composable(route = BottomBarScreen.Commodity.route) {
             CommodityContentScreen(
+                warehouseViewModel,
                 name = BottomBarScreen.Commodity.route,
-                {
-                    navController.navigate(Graph.DETAIL)
-                }
+                navController = navController
+                //{
+                    //navController.navigate(Graph.DETAIL)
+                //}
             ) {
-                navController.navigate(Graph.DETAIL)
+                navController.navigate(CommodityGraph.ADD_COMMODITY)
             }
+        }
+
+        composable(route = CommodityGraph.ADD_COMMODITY) {
+           // val warehouseViewModel: WarehouseViewModel = viewModel()
+            AddCommodity(warehouseViewModel, navController = navController)
         }
 
         composable(route = BottomBarScreen.Persons.route) {

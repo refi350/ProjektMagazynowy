@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Warehouse (
+data class Warehouse(
     @SerializedName(JsonConst.WAREHOUSE_ID)
     @Expose
     var warehouseId: Int? = null,
@@ -30,44 +30,38 @@ data class Warehouse (
     @Expose
     var color: String? = null, //???
 
-    @SerializedName(JsonConst.IMAGE)
-    @Expose
-    var image: ByteArray? = null,
-
     @SerializedName(JsonConst.OWNER)
     @Expose
     var owner: Owner? = null,
 
     @SerializedName(JsonConst.CONTRACTORS)
     @Expose
-    var contractors: List<Contractor>?,
+    var contractors: List<Contractor> = emptyList(),
 
     @SerializedName(JsonConst.COMMODITIES)
     @Expose
-    var commodities: Parcelable?,
+    var commodities: List<Commodity> = emptyList(),
 
     @SerializedName(JsonConst.ORDERS)
     @Expose
-    var orders: Parcelable?,
+    var orders: List<Order> = emptyList(),
 
     @SerializedName(JsonConst.STORE_ACTIONS)
     @Expose
-    var storeActions: Parcelable?
+    var storeActions: List<StoreAction> = emptyList()
 ): Parcelable, Serializable {
     //@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    @Suppress("LeakingThis")
     private constructor(parcel: Parcel) : this (
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Address::class.java.classLoader),
         parcel.readString(),
-        parcel.createByteArray(),
         parcel.readParcelable(Owner::class.java.classLoader),
-        parcel.readParcelable(Contractor::class.java.classLoader),
-        parcel.readParcelable(Commodity::class.java.classLoader),
-        parcel.readParcelable(Order::class.java.classLoader),
-        parcel.readParcelable(StoreAction::class.java.classLoader)
+        parcel.createTypedArrayList(Contractor.CREATOR) ?: emptyList(),
+        parcel.createTypedArrayList(Commodity.CREATOR) ?: emptyList(),
+        parcel.createTypedArrayList(Order.CREATOR) ?: emptyList(),
+        parcel.createTypedArrayList(StoreAction.CREATOR) ?: emptyList()
     )
 
     override fun equals(other: Any?): Boolean {
@@ -81,10 +75,6 @@ data class Warehouse (
         if (password != other.password) return false
         if (address != other.address) return false
         if (color != other.color) return false
-        if (image != null) {
-            if (other.image == null) return false
-            if (!image.contentEquals(other.image)) return false
-        } else if (other.image != null) return false
         if (owner != other.owner) return false
         if (contractors != other.contractors) return false
         if (commodities != other.commodities) return false
@@ -100,7 +90,6 @@ data class Warehouse (
         result = 31 * result + (password?.hashCode() ?: 0)
         result = 31 * result + (address?.hashCode() ?: 0)
         result = 31 * result + (color?.hashCode() ?: 0)
-        result = 31 * result + (image?.contentHashCode() ?: 0)
         result = 31 * result + (owner?.hashCode() ?: 0)
         result = 31 * result + contractors.hashCode()
         result = 31 * result + commodities.hashCode()
@@ -114,10 +103,12 @@ data class Warehouse (
         parcel.writeString(name)
         parcel.writeString(password)
         parcel.writeString(color)
-        parcel.writeByteArray(image)
         parcel.writeParcelable(address, flags)
         parcel.writeParcelable(owner, flags)
-        parcel.writeList(contractors)
+        parcel.writeTypedList(contractors)
+        parcel.writeTypedList(commodities)
+        parcel.writeTypedList(orders)
+        parcel.writeTypedList(storeActions)
     }
 
     override fun describeContents(): Int = 0
@@ -125,7 +116,6 @@ data class Warehouse (
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Warehouse> = object : Parcelable.Creator<Warehouse> {
-            @RequiresApi(Build.VERSION_CODES.TIRAMISU)
             override fun createFromParcel(parcel: Parcel): Warehouse = Warehouse(parcel)
 
             override fun newArray(size: Int): Array<Warehouse?> = arrayOfNulls(size)
