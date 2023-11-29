@@ -4,16 +4,21 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagerapp.data.Commodity
+import com.example.warehousemanagerapp.data.Contractor
 import com.example.warehousemanagerapp.data.Warehouse
 import com.example.warehousemanagerapp.service.RestApi
 import com.example.warehousemanagerapp.service.User
 import com.example.warehousemanagerapp.service.WarehouseApiClient
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.RestrictsSuspension
 
 
 object WarehouseRepository {
@@ -24,23 +29,40 @@ object WarehouseRepository {
 
     private var api: RestApi? = null
 
-    private var warehouseStateFlow: Warehouse? = null
+    //private var warehouse: Warehouse? = null
     private var isUserLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
     //private val todoLiveData: MutableLiveData<Todo> = MutableLiveData<Todo>()
 
 
+    private val _warehouseStateFlow = MutableStateFlow<Warehouse?>(null)
+    val warehouseStateFlow: StateFlow<Warehouse?> = _warehouseStateFlow.asStateFlow()
 
     init {
         api = WarehouseApiClient.warehouse
     }
 
-    fun postWarehouseDelivery(user: User): Warehouse? {
+    suspend fun loadData() = postWarehouseDelivery(user) { response ->
+        _warehouseStateFlow.emit(response)
+    }
+
+    suspend fun setWarehouse(warehouse: Warehouse?) {
+        _warehouseStateFlow.emit(warehouse)
+        //println("ssssssssssss ${warehouseStateFlow.value?.contractors?.get(2)}")
+    }
+
+//    suspend fun setCommodities(commodities: List<Commodity>, warehouse: Warehouse?) {
+//        _warehouseStateFlow.value?.commodities = commodities
+//        setWarehouse(warehouse)
+//        //println("ssssssssssss ${warehouseStateFlow.value?.contractors?.get(2)}")
+//    }
+
+    fun postWarehouseDelivery(user: User, onResult: suspend (Warehouse?) -> Unit) {
         val call = user.name?.let { user.password?.let { it1 -> api?.getWarehouses(it, it1) } }
         call?.enqueue(object : Callback<Warehouse> {
             override fun onResponse(call: Call<Warehouse>, response: Response<Warehouse>) {
                 val result: Warehouse? = response.body()
-                warehouseStateFlow = result
-                //onResult(result)
+                //_warehouseStateFlow.value = result
+                runBlocking { onResult(result) }
                 println("Fail1234444")
                  println(result)
             }
@@ -52,7 +74,6 @@ object WarehouseRepository {
                 //onResult(null)
             }
         })
-        return warehouseStateFlow
     }
 
 //    fun initIsUser() {
@@ -127,13 +148,13 @@ object WarehouseRepository {
         })
     }
 
-    fun getCommodities(id: Int, onResult: (List<Commodity>?) -> Unit) {
+    fun getCommodities(id: Int, onResult: suspend (List<Commodity>?) -> Unit) {
         val call = api?.getCommodities(id)
         call?.enqueue(object : Callback<List<Commodity>> {
             override fun onResponse(call: Call<List<Commodity>>, response: Response<List<Commodity>>) {
                 val result: List<Commodity>? = response.body()
-                onResult(result)
-                println("Fail12344545")
+                runBlocking { onResult(result) }
+                println("Fail123445456666")
                 println(result)
             }
 
@@ -157,6 +178,44 @@ object WarehouseRepository {
             }
 
             override fun onFailure(call: Call<Commodity>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail1234545")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun postContractor(id: Int, contractor: Contractor, onResult: (Contractor?) -> Unit) {
+        val call = api?.postContractor(id, contractor)
+        call?.enqueue(object : Callback<Contractor> {
+            override fun onResponse(call: Call<Contractor>, response: Response<Contractor>) {
+                val result: Contractor? = response.body()
+                onResult(result)
+                println("Fail12344545")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<Contractor>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail1234545")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun getContractors(id: Int, onResult: (List<Contractor>?) -> Unit) {
+        val call = api?.getContractors(id)
+        call?.enqueue(object : Callback<List<Contractor>> {
+            override fun onResponse(call: Call<List<Contractor>>, response: Response<List<Contractor>>) {
+                val result: List<Contractor>? = response.body()
+                onResult(result)
+                println("Fail12344545")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<List<Contractor>>, t: Throwable) {
                 //Timber.tag("Fail123")
                 println("Fail1234545")
                 println(t.message)

@@ -37,6 +37,7 @@ import retrofit2.Response
 import timber.log.Timber
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.warehousemanagerapp.data.Commodity
 import kotlinx.coroutines.*
 
 private lateinit var warehouseRepository: WarehouseRepository
@@ -94,7 +95,12 @@ fun LogScreen(logScreenViewModel: LogScreenViewModel, navController: NavControll
 
 
             //logScreenViewModel.getWarehousesNames()
+
             WarehouseRepository.user = logScreenViewModel.createUser(name, password)
+            runBlocking {
+                WarehouseRepository.loadData()
+            }
+
 
             //logScreenViewModel.initIsUser()
 

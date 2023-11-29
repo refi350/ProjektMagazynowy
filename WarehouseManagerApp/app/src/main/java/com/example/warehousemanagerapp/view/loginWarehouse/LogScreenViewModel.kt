@@ -2,6 +2,7 @@ package com.example.warehousemanagerapp.view.loginWarehouse
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class LogScreenViewModel : ViewModel() {
+    var color: String = ""
     var user: User? = null
     //var isUser: Boolean = false
 //    var serverResponseState by mutableStateOf(false)

@@ -23,10 +23,16 @@
     <string name="code_commodity_label">Code</string>
     <string name="unit_commodity_label">Unit</string>
     <string name="description_commodity_label">Description</string>
+    <string name="contractor_data_label">Data Receiver/Supplier</string>
+    <string name="add_contractor_label">Add Contractor</string>
 
     //BottomBar
     <string name="orders_bottom_bar_label">ORDERS</string>
     <string name="documents_bottom_bar_label">DOCUMENTS</string>
     <string name="commodity_bottom_bar_label">COMMODITY</string>
     <string name="persons_bottom_bar_label">PERSONS</string>
+    <string name="nip_label">Nip</string>
+
+    // color picker
+    <string name="add">Add</string>
 </resources>

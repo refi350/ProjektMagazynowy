@@ -21,19 +21,22 @@ import com.example.warehousemanagerapp.view.Visibility
 import com.example.warehousemanagerapp.view.VisibilityOff
 import com.example.warehousemanagerapp.R
 import com.example.warehousemanagerapp.data.Address
+import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPicker
+import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPickerGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 import kotlin.math.log
 
 @Composable
-fun WarehouseData(navController: NavController) {
+fun WarehouseData(logScreenViewModel: LogScreenViewModel, navController: NavController) {
     //val logScreenViewModel: LogScreenViewModel = viewModel()
     var streetName by rememberSaveable { mutableStateOf("") }
     var houseNumber by rememberSaveable { mutableStateOf("") }
     var localNumber by rememberSaveable { mutableStateOf("") }
     var place by rememberSaveable { mutableStateOf("") }
     var code by rememberSaveable { mutableStateOf("") }
-    var color by rememberSaveable { mutableStateOf("") }
+    var color by remember { mutableStateOf("") }
+    color = logScreenViewModel.color
     // var passwordHidden by rememberSaveable { mutableStateOf(true) }
     Text(
         text = stringResource(id = R.string.warehouse_data_label),
@@ -91,16 +94,18 @@ fun WarehouseData(navController: NavController) {
             singleLine = true,
 //            visualTransformation =
 //            if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            trailingIcon = {
-//                IconButton(onClick = { passwordHidden = !passwordHidden }) {
-//                    val visibilityIcon =
+            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                IconButton(
+                    onClick = { navController.navigate(ColorPickerGraph.ADD_COLOR_PICKER) }
+                ) {
+                    val visibilityIcon = Icons.Filled.Visibility
 //                        if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
 //                    // Please provide localized description for accessibility services
-//                    val description = if (passwordHidden) "Show password" else "Hide password"
-//                    Icon(imageVector = visibilityIcon, contentDescription = description)
-//                }
-//            }
+                    val description = "Show password"
+                    Icon(imageVector = visibilityIcon, contentDescription = description)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -108,7 +113,10 @@ fun WarehouseData(navController: NavController) {
             WarehouseRepository.warehouse.apply {
                 this.address = Address(
                     streetName = streetName, houseNumber = houseNumber,
-                    localNumber = localNumber.toInt(), place = place, code = code
+                    localNumber = if (localNumber.isNotBlank())
+                        localNumber.toInt() else 0,
+                    place = place,
+                    code = code
                 )
                 this.color = color
             }

@@ -1,28 +1,26 @@
 package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs
 
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.*
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.AddCommodity
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.contractor.*
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.InformationDetailsScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.OverviewDetailsScreen
+import kotlinx.coroutines.runBlocking
 
 @Composable
-fun HomeNavGraph(warehouseViewModel: WarehouseViewModel, navController: NavHostController) {
+fun HomeNavGraph(navController: NavHostController) {
+    val commodityViewModel: CommodityViewModel = viewModel()
+    val contractorViewModel: ContractorViewModel = viewModel()
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -50,7 +48,7 @@ fun HomeNavGraph(warehouseViewModel: WarehouseViewModel, navController: NavHostC
         }
         composable(route = BottomBarScreen.Commodity.route) {
             CommodityContentScreen(
-                warehouseViewModel,
+                commodityViewModel,
                 name = BottomBarScreen.Commodity.route,
                 navController = navController
                 //{
@@ -63,19 +61,25 @@ fun HomeNavGraph(warehouseViewModel: WarehouseViewModel, navController: NavHostC
 
         composable(route = CommodityGraph.ADD_COMMODITY) {
            // val warehouseViewModel: WarehouseViewModel = viewModel()
-            AddCommodity(warehouseViewModel, navController = navController)
+            AddCommodity(commodityViewModel, navController = navController)
         }
 
         composable(route = BottomBarScreen.Persons.route) {
             PersonsContentScreen(
-                name = BottomBarScreen.Persons.route,
-                {
-                    navController.navigate(Graph.DETAIL)
-                }
+               contractorViewModel,
+                //name = BottomBarScreen.Persons.route,
+                navController
+                //navController.navigate(Graph.DETAIL)
+
             ) {
-                navController.navigate(Graph.DETAIL)
+                navController.navigate(ContractorGraph.ADD_CONTRACTOR)
             }
         }
+
+        composable(route = ContractorGraph.ADD_CONTRACTOR) {
+            AddContractor(contractorViewModel, navController)
+        }
+
         detailsNavGraph(navController = navController)
     }
 }

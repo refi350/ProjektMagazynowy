@@ -20,7 +20,7 @@ import com.example.warehousemanagerapp.data.Commodity
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
 
 @Composable
-fun AddCommodity(warehouseViewModel: WarehouseViewModel, navController: NavController) {
+fun AddCommodity(commodityViewModel: CommodityViewModel, navController: NavController) {
     var name by rememberSaveable { mutableStateOf("") }
     var code by rememberSaveable { mutableStateOf("") }
     var unit by rememberSaveable { mutableStateOf("") }
@@ -83,10 +83,10 @@ fun AddCommodity(warehouseViewModel: WarehouseViewModel, navController: NavContr
         Button(
             onClick = {
                 val commodity = Commodity(
-                    commoditiesName = name, code = code.toInt(),
+                    commoditiesName = name, code = if (code.isNotBlank()) code.toInt() else 0,
                     unit = unit, description = description
                 )
-                warehouseViewModel.postCommodity(commodity)
+                commodityViewModel.postCommodity(commodity)
                 navController.popBackStack()
             }, modifier = Modifier.align (Alignment.CenterHorizontally)
         ) {

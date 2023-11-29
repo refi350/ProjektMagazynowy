@@ -13,6 +13,8 @@ import com.example.warehousemanagerapp.view.StartScreen
 import com.example.warehousemanagerapp.view.createWarehouse.ConfigureLayout
 import com.example.warehousemanagerapp.view.createWarehouse.WarehouseData
 import com.example.warehousemanagerapp.view.createWarehouse.WarehouseOwner
+import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPicker
+import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPickerGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.LogScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 //import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.MainScreen
@@ -54,7 +56,11 @@ fun Navigation(logScreenViewModel: LogScreenViewModel, context: Context) {
         ) { ConfigureLayout(logScreenViewModel, navController) }
         composable(
             route = Screen.ConfigScreenWarehouseData.route + "/{config_screen_warehouse_data}"
-        ) { WarehouseData(navController) }
+        ) { WarehouseData(logScreenViewModel, navController) }
+
+        composable(route = ColorPickerGraph.ADD_COLOR_PICKER) {
+            ColorPicker(logScreenViewModel, navController)
+        }
 
         composable(
             route = Screen.ConfigScreenWarehouseOwner.route + "/{config_screen_warehouse_owner}"

@@ -2,6 +2,7 @@ package com.example.warehousemanagerapp.service
 
 import android.net.Uri.Builder
 import com.example.warehousemanagerapp.data.Commodity
+import com.example.warehousemanagerapp.data.Contractor
 import com.example.warehousemanagerapp.data.Warehouse
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -27,7 +28,6 @@ interface RestApi {
         @Query("name") name: String, @Query("password") password: String
     ): Call<Boolean>
 
-    //@Headers(ACCEPT, CONTENT_TYPE)
     @GET("warehouses/login")
     fun getWarehouses(
         @Query("name") name: String, @Query("password") password: String
@@ -39,11 +39,19 @@ interface RestApi {
     @GET("warehouses/{warehouseId}/commodities/all")
     fun getCommodities(@Path("warehouseId") warehouseId: Int): Call<List<Commodity>>
 
+    @GET("warehouses/{warehouseId}/contractors/all")
+    fun getContractors(@Path("warehouseId") warehouseId: Int): Call<List<Contractor>>
+
     @POST("warehouses")
     fun postWarehouse(@Body request: Warehouse): Call<Warehouse>
 
     @POST("warehouses/{warehouseId}/commodities")
     fun postCommodity(@Path("warehouseId") warehouseId: Int, @Body post: Commodity): Call<Commodity>
+
+    @POST("warehouses/{warehouseId}/contractors")
+    fun postContractor(
+        @Path("warehouseId") warehouseId: Int, @Body post: Contractor
+    ): Call<Contractor>
 
     companion object {
         const val ACCEPT = "Accept:application/json"

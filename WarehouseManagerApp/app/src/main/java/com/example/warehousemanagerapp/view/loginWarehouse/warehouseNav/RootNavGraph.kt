@@ -17,9 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs.authNavGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.HomeScreen
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
 
 @Composable
-fun RootNavigationGraph(warehouseViewModel: WarehouseViewModel, navController: NavHostController) {
+fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
@@ -27,7 +28,7 @@ fun RootNavigationGraph(warehouseViewModel: WarehouseViewModel, navController: N
     ) {
         authNavGraph(navController = navController)
         composable(route = Graph.HOME) {
-            HomeScreen(warehouseViewModel)
+            HomeScreen()
         }
     }
 }
