@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Magazyn.Data;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -38,8 +37,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<MagazynContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MagazynContext") ?? throw new InvalidOperationException("Connection string 'MagazynContext' not found.")));
+//builder.Services.AddDbContext<MagazynContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("MagazynContext") ?? throw new InvalidOperationException("Connection string 'MagazynContext' not found.")));
 builder.Services.AddHttpClient();
 //builder.Services.AddSingleton<IRepositoryProvider,RepositoryProvider>();
 var app = builder.Build();

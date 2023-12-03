@@ -8,13 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
     <Compile Remove="Interfaces\**" />
+    <Compile Remove="Migrations\**" />
     <Compile Remove="Repositories\**" />
+    <Content Remove="Data\**" />
     <Content Remove="Interfaces\**" />
+    <Content Remove="Migrations\**" />
     <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Data\**" />
     <None Remove="Interfaces\**" />
+    <None Remove="Migrations\**" />
     <None Remove="Repositories\**" />
   </ItemGroup>
 
@@ -46,10 +54,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

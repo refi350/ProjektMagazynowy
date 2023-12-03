@@ -55,7 +55,7 @@ namespace Magazyn.Controllers
                 var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/"+id.ToString());
                 if (model == null)
                 {
-                    return NotFound();
+                    return View("Index");
                 }
                 return View(model);
             }
@@ -66,7 +66,7 @@ namespace Magazyn.Controllers
         }
 
         // GET: WarehousesController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
