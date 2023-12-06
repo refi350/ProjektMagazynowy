@@ -1,43 +1,45 @@
-package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens
+package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity
 
+
+import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.*
-import androidx.compose.material.FabPosition
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.*
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.warehousemanagerapp.R
-import com.example.warehousemanagerapp.Screen
-import com.example.warehousemanagerapp.data.Commodity
-import com.example.warehousemanagerapp.data.Contractor
-import com.example.warehousemanagerapp.ui.theme.WarehouseManagerAppTheme
-import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
-import kotlinx.coroutines.delay
+import androidx.compose.material.FabPosition
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.Interaction
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import com.example.warehousemanagerapp.R
+import com.example.warehousemanagerapp.data.Commodity
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseItemCommodityGraph
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
@@ -58,7 +60,7 @@ fun CommodityContentScreen(
             data = commodityViewModel.getCommodities() ?: emptyList()
             isLoading = false
         }
-        WarehouseManagerAppTheme {
+       // WarehouseManagerAppTheme {
             // Wyświetl swoje dane po załadowaniu
             if (!isLoading) {
                 Box(
@@ -67,7 +69,9 @@ fun CommodityContentScreen(
                 ) {
                     // Tutaj umieść swój kod UI z wykorzystaniem danych z data
                     //val commodities = rememberSaveable { data }
-                    AnimatedExtendedFloatingActionButtonSample(data, navController) { function() }
+                    AnimatedExtendedFloatingActionButtonSample(
+                        data, navController, commodityViewModel
+                    ) { function() }
 
                 }
             } else {
@@ -84,10 +88,11 @@ fun CommodityContentScreen(
                 }
             }
         }
-}
+//}
 
 @Composable
 fun ClickableCard(
+    commodityViewModel: CommodityViewModel,
     item: Commodity,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -97,14 +102,23 @@ fun ClickableCard(
 //    val keyboardController = LocalSoftwareKeyboardController.current
     Card(
         modifier = Modifier
-            .padding(4.dp)
+            .padding(start = 2.dp, end = 2.dp, bottom = 4.dp)
+            .clip(CircleShape)
+            .border(1.dp, Color.Black, CircleShape)
+            .size(70.dp)
             .timedClick(
-                timeInMillis = 1000,
+                timeInMillis = 500,
             ) { passed: Boolean ->
+                commodityViewModel.commodity = item
                 if (passed) onLongClick()
-                else onClick()
+                else {
+                    val counter = item.counter
+                    if (counter?.let { it > 0 } == true) onClick()
+                    else Toast.makeText(context, "Brak towarów do wydania", Toast.LENGTH_SHORT)
+                        .show()
+                }
             },
-        backgroundColor = Color.LightGray
+        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
     ) {
         CommodityListItem(commodity = item)
     }
@@ -112,13 +126,76 @@ fun ClickableCard(
 
 @Composable
 fun CommodityListItem(commodity: Commodity) {
-    Row {
-        Column {
-            Text(text = commodity.commoditiesName ?: "", fontSize = 32.sp)
-            Text(text = commodity.counter.toString(), fontSize = 32.sp)
-            Text(text = commodity.unit ?: "", fontSize = 32.sp)
-            Text(text = commodity.code.toString(), fontSize = 32.sp)
+    var expanded by remember { mutableStateOf(false) }
+    Box (
+        modifier = Modifier
+            .wrapContentHeight(Alignment.CenterVertically),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = commodity.commoditiesName ?: "",
+                fontSize = 16.sp
+            )
+            Text(
+                text = commodity.counter.toString()
+                    .plus(" ")
+                    .plus(commodity.unit ?: ""),
+                fontSize = 16.sp
+            )
+            Text(
+                text = stringResource(id = R.string.bar_code_label)
+                    .plus(" ")
+                    .plus(commodity.code.toString()),
+                fontSize = 16.sp
+            )
         }
+    }
+    Box(
+        modifier = Modifier
+            .wrapContentWidth(Alignment.End)
+            .wrapContentHeight(Alignment.CenterVertically)
+            .background(Color.Transparent)
+            .clickable {
+                expanded = true
+            }
+    ) {
+        Icon(
+            imageVector = Icons.Default.MoreVert, contentDescription = null,
+            modifier = Modifier.size(32.dp)
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            content = {
+                DropdownMenuItem(
+                    onClick = {
+                        // Handle the action
+                        expanded = false
+                    }
+                ) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Edycja towaru")
+                }
+                DropdownMenuItem(
+                    onClick = {
+                        // Handle the action
+                        expanded = false
+                    }
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.baseline_delete_24),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Usuń towar")
+                }
+            }
+        )
     }
 }
 
@@ -161,6 +238,7 @@ fun Modifier.timedClick(
 fun AnimatedExtendedFloatingActionButtonSample(
     commodities: List<Commodity>,
     navController: NavHostController,
+    commodityViewModel: CommodityViewModel,
     onClick: () -> Unit
 ) {
     val listState = rememberLazyGridState()
@@ -191,8 +269,9 @@ fun AnimatedExtendedFloatingActionButtonSample(
         ) {
             items(commodities) {item ->
                 ClickableCard(
+                    commodityViewModel,
                     item = item,
-                    { navController.navigate(Graph.DETAIL) }
+                    { navController.navigate(ReleaseItemCommodityGraph.RELEASE_ITEM_COMMODITY) }
                 ) {
                     navController.navigate(Graph.HOME)
                 }

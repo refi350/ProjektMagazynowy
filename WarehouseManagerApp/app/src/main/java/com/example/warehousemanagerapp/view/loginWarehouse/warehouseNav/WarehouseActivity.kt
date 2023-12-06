@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagerapp.R
 import com.example.warehousemanagerapp.service.User
+import com.example.warehousemanagerapp.ui.theme.WarehouseManagerAppTheme
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
 import kotlinx.coroutines.runBlocking
 
@@ -19,8 +20,10 @@ class WarehouseActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //val commodityViewModel: CommodityViewModel = viewModel()
-            RootNavigationGraph( navController = rememberNavController())
+            WarehouseManagerAppTheme {
+                //val commodityViewModel: CommodityViewModel = viewModel()
+                RootNavigationGraph(navController = rememberNavController())
+            }
         }
     }
 }

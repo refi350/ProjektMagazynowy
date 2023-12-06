@@ -12,11 +12,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 class CommodityViewModel: ViewModel() {
     private val repository: WarehouseRepository = WarehouseRepository
     private val _commodities = MutableStateFlow<List<Commodity>?>(emptyList())
     val commodities: StateFlow<List<Commodity>?> = _commodities.asStateFlow()
+    var commodity: Commodity? = null
+    var localDateTime: String = ""
 
 //    init {
 //        runBlocking {

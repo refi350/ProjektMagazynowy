@@ -10,42 +10,56 @@ import androidx.navigation.navigation
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.*
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.AddCommodity
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.*
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseCommodity
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseCommodityGraph
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseItemCommodity
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseItemCommodityGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.contractor.*
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.InformationDetailsScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.detail.OverviewDetailsScreen
-import kotlinx.coroutines.runBlocking
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.document.DocumentContentScreen
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.document.DocumentInfoGraph
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.document.DocumentViewModel
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.document.StoreDocument
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
     val commodityViewModel: CommodityViewModel = viewModel()
     val contractorViewModel: ContractorViewModel = viewModel()
+    val documentViewModel: DocumentViewModel = viewModel()
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = BottomBarScreen.Commodity.route
     ) {
-        composable(route = BottomBarScreen.Orders.route) {
-                HomeContentScreen(
-                    name = BottomBarScreen.Orders.route,
-                    {
-                        navController.navigate(Graph.DETAIL)
-                    }
-                ) {
-                    navController.navigate(Graph.DETAIL)
-                }
-        }
+//        composable(route = BottomBarScreen.Orders.route) {
+//                HomeContentScreen(
+//                    name = BottomBarScreen.Orders.route,
+//                    {
+//                        navController.navigate(Graph.DETAIL)
+//                    }
+//                ) {
+//                    navController.navigate(Graph.DETAIL)
+//                }
+//        }
         composable(route = BottomBarScreen.Documents.route) {
             DocumentContentScreen(
-                name = BottomBarScreen.Documents.route,
-                {
-                    navController.navigate(Graph.DETAIL)
-                }
+                documentViewModel,
+                navController,
+                //name = BottomBarScreen.Documents.route,
+//                {
+//                    navController.navigate(Graph.DETAIL)
+//                }
             ) {
                 navController.navigate(Graph.DETAIL)
             }
         }
+
+        composable(route = DocumentInfoGraph.DOCUMENT_INFO) {
+            StoreDocument(documentViewModel, commodityViewModel)
+        }
+
         composable(route = BottomBarScreen.Commodity.route) {
             CommodityContentScreen(
                 commodityViewModel,
@@ -62,6 +76,15 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(route = CommodityGraph.ADD_COMMODITY) {
            // val warehouseViewModel: WarehouseViewModel = viewModel()
             AddCommodity(commodityViewModel, navController = navController)
+        }
+
+        composable(route = ReleaseItemCommodityGraph.RELEASE_ITEM_COMMODITY) {
+            ReleaseItemCommodity(commodityViewModel = commodityViewModel, contractorViewModel, navController = navController)
+        }
+
+        composable(route = ReleaseCommodityGraph.RELEASE_COMMODITY) {
+            //if (commodityViewModel.commodity?.counter?.let { it == 0 } == true)
+            ReleaseCommodity(commodityViewModel = commodityViewModel, contractorViewModel = contractorViewModel, navController = navController)
         }
 
         composable(route = BottomBarScreen.Persons.route) {

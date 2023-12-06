@@ -27,9 +27,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val context = applicationContext
         setContent {
-            val logScreenViewModel: LogScreenViewModel = viewModel()
-            // A surface container using the 'background' color from the theme
-            Navigation(logScreenViewModel, context)
+            WarehouseManagerAppTheme {
+                val logScreenViewModel: LogScreenViewModel = viewModel()
+                // A surface container using the 'background' color from the theme
+                Navigation(logScreenViewModel, context)
+            }
         }
     }
 }

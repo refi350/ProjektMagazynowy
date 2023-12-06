@@ -1,6 +1,6 @@
 package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.contractor
 
-import androidx.annotation.Sampled
+import com.example.warehousemanagerapp.view.loginWarehouse.annotation.Sampled
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,33 +20,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.Graph
 import androidx.compose.material.FabPosition
-import androidx.compose.ui.Alignment
 import com.example.warehousemanagerapp.data.Contractor
-import com.example.warehousemanagerapp.ui.theme.WarehouseManagerAppTheme
 
 
-
-
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.Favorite
+
+
+
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryScrollableTabRow
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.warehousemanagerapp.R
 
 
 @Composable
@@ -67,7 +61,7 @@ fun PersonsContentScreen(
         isLoading = false
     }
 
-    WarehouseManagerAppTheme {
+    //WarehouseManagerAppTheme {
         // Wyświetl swoje dane po załadowaniu
         if (!isLoading) {
             Box(
@@ -94,14 +88,38 @@ fun PersonsContentScreen(
             }
         }
     }
-}
+//}
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CommodityListItem(contractor: Contractor) {
-    Row {
-        Column {
-            Text(text = contractor.contractorName ?: "", fontSize = 32.sp)
-            Text(text = contractor.nip ?: "", fontSize = 32.sp)
+fun ContractorListItem(contractor: Contractor) {
+    Box (
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(Alignment.CenterVertically),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = contractor.contractorName ?: "", fontSize = 16.sp)
+            Text(text = stringResource(id = R.string.nip_label)
+                    .plus(contractor.nip ?: ""), fontSize = 16.sp
+            )
+        }
+    }
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentWidth(Alignment.End)
+    ) {
+        IconButton(onClick = {
+
+        }
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.baseline_delete_24),
+                contentDescription = null
+            )
         }
     }
 }
@@ -134,9 +152,9 @@ fun AnimatedExtendedFloatingActionButtonSample(
         floatingActionButtonPosition = FabPosition.End,
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(1),
             state = listState,
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(4.dp)
         ) {
             items(contractors) { item ->
                 ClickableCard(item = item) {
@@ -152,13 +170,15 @@ fun ClickableCard(
     item: Contractor,
     onClick: () -> Unit,
 ) {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .clickable { onClick() },
-        backgroundColor = Color.LightGray
+    Box(modifier = Modifier
+        .padding(start = 2.dp, end = 2.dp, bottom = 4.dp)
+        .clip(CircleShape)
+        .border(1.dp, Color.Black, CircleShape)
+        .size(50.dp)
+        .background(MaterialTheme.colorScheme.tertiaryContainer)
+        .clickable { onClick() }
     ) {
-        CommodityListItem(contractor = item)
+        ContractorListItem(contractor = item)
     }
 }
 

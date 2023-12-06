@@ -1,5 +1,6 @@
 package com.example.warehousemanagerapp.view.createWarehouse
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -8,12 +9,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.warehousemanagerapp.Screen
@@ -21,7 +26,6 @@ import com.example.warehousemanagerapp.view.Visibility
 import com.example.warehousemanagerapp.view.VisibilityOff
 import com.example.warehousemanagerapp.R
 import com.example.warehousemanagerapp.data.Address
-import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPicker
 import com.example.warehousemanagerapp.view.createWarehouse.colorPicker.ColorPickerGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
@@ -35,8 +39,9 @@ fun WarehouseData(logScreenViewModel: LogScreenViewModel, navController: NavCont
     var localNumber by rememberSaveable { mutableStateOf("") }
     var place by rememberSaveable { mutableStateOf("") }
     var code by rememberSaveable { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
+    var color by rememberSaveable { mutableStateOf("") }
     color = logScreenViewModel.color
+
     // var passwordHidden by rememberSaveable { mutableStateOf(true) }
     Text(
         text = stringResource(id = R.string.warehouse_data_label),
@@ -99,11 +104,10 @@ fun WarehouseData(logScreenViewModel: LogScreenViewModel, navController: NavCont
                 IconButton(
                     onClick = { navController.navigate(ColorPickerGraph.ADD_COLOR_PICKER) }
                 ) {
-                    val visibilityIcon = Icons.Filled.Visibility
-//                        if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-//                    // Please provide localized description for accessibility services
-                    val description = "Show password"
-                    Icon(imageVector = visibilityIcon, contentDescription = description)
+                    val visibilityIcon = ImageVector.vectorResource(
+                        id = R.drawable.baseline_palette_24
+                    )
+                    Icon(imageVector = visibilityIcon, null)
                 }
             }
         )

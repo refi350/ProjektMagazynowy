@@ -44,4 +44,7 @@ object JsonConst {
     const val STORE_ACTION_DATE = "date"
     const val STORE_ACTION_ID = "id"
     const val DOC_NUMBER = "doc_number"
+    const val COMMODITY_ID = "commodity"
+    const val QUANTITY = "quantity"
+    const val TYPE = "type" //Receipt or Release
 }
