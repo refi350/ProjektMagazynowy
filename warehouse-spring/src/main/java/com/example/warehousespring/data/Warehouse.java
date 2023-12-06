@@ -32,7 +32,7 @@ public class Warehouse {
     private List<Commodity> commodities = Collections.emptyList();
 
     @Column(name = "store_actions")
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     private List<StoreAction> store_actions = Collections.emptyList();
 
     @Column(name = "store_actions")

@@ -1,6 +1,7 @@
 package com.example.warehousespring.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -24,7 +25,9 @@ public abstract class StoreAction {
     @ManyToOne
     @JoinColumn(name = "contractor_ID")
     private Contractor contractor;
-    @OneToMany(mappedBy = "store_action")
+
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, mappedBy = "store_action")
+    @JsonManagedReference
     private List<ActionCommodity> commodities = Collections.emptyList();
 
     public Long getDoc_number() {

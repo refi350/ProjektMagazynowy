@@ -1,6 +1,8 @@
 package com.example.warehousespring.data;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 //Position on the store action list or order
@@ -11,15 +13,13 @@ public class ActionCommodity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "commodity_id")
-    private Commodity commodity;
+    private int commodity;
 
     private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "store_action_id")
-    @JsonIgnore
+    @JsonBackReference
     private StoreAction store_action;
 
     @ManyToOne
@@ -32,16 +32,16 @@ public class ActionCommodity {
     }
 
 
-    public ActionCommodity(Commodity commodity, int quantity) {
+    public ActionCommodity(int commodity, int quantity) {
         this.commodity = commodity;
         this.quantity = quantity;
     }
 
-    public Commodity getCommodity() {
+    public int getCommodity() {
         return commodity;
     }
 
-    public void setCommodity(Commodity commodity) {
+    public void setCommodity(int commodity) {
         this.commodity = commodity;
     }
 

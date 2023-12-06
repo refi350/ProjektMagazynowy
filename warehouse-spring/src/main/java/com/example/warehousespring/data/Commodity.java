@@ -36,7 +36,6 @@ public class Commodity {
     private Warehouse warehouse;
 
 
-
     public Commodity(String name) {
         this.name = name;
     }
@@ -117,4 +116,5 @@ public class Commodity {
             this.setUnit(editedCommodity.getUnit());
         }
     }
+
 }

@@ -16,6 +16,7 @@ public class StoreActionController {
 
     //------------------------------------ GET --------------------------------------------------------
 
+    // Load one store action by id
     @GetMapping("/storeactions/{id}")
     public ResponseEntity<StoreAction> one(@PathVariable Long id) {
         StoreAction storeAction = storeActionService.getStoreActionById(id);
@@ -24,6 +25,8 @@ public class StoreActionController {
         }
         return new ResponseEntity<>(storeAction, HttpStatus.OK);
     }
+
+    // Load all store actions by warehouse id
     @GetMapping("/warehouses/{warehouseId}/storeactions/all")
     public ResponseEntity<List<StoreAction>> getAll(@PathVariable Long warehouseId) {
         List<StoreAction> storeActions = storeActionService.getAllStoreActions(warehouseId);
@@ -35,6 +38,7 @@ public class StoreActionController {
 
     //------------------------------------ POST --------------------------------------------------------
 
+    // Add store action to warehouse
     @PostMapping("/warehouses/{warehouseId}/storeactions")
     public ResponseEntity<StoreAction> newStoreAction(@PathVariable Long warehouseId, @RequestBody StoreAction newStoreAction) {
         StoreAction storeAction = storeActionService.addStoreActionToWarehouse(warehouseId, newStoreAction);
@@ -58,6 +62,7 @@ public class StoreActionController {
 //    }
     //------------------------------------ DELETE --------------------------------------------------------
 
+    // Delete store action by id
     @DeleteMapping("/storeactions/{id}")
     public ResponseEntity<Void> deleteContractor(@PathVariable("id") Long id) {
         if (storeActionService.deleteStoreAction(id)) {

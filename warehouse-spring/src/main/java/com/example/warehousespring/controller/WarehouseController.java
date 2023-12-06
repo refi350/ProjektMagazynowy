@@ -18,6 +18,7 @@ class WarehouseController {
     private WarehouseService warehouseService;
 
     // ------------------ GET -----------------------------------------
+    // Load all warehouses from database
     @GetMapping("/warehouses/all")
     public ResponseEntity<List<Warehouse>> getAll() {
         List<Warehouse> warehouses = warehouseService.getAllWarehouses();
@@ -26,6 +27,8 @@ class WarehouseController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // Load all warehouses names from database
     @GetMapping("/warehouses/names")
     public ResponseEntity<List<String>> getAllNames() {
         List<String> warehousesNames = warehouseService.getAllWarehousesNames();
@@ -35,6 +38,7 @@ class WarehouseController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Load one warehouse from database by id
     @GetMapping("/warehouses/{id}")
     public ResponseEntity<Warehouse> one(@PathVariable Long id) {
         Warehouse warehouse = warehouseService.getWarehouseById(id);
@@ -44,6 +48,7 @@ class WarehouseController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Check if warehouse exists by name and password
     @GetMapping("/warehouses/check")
     public boolean checkWarehouse(@RequestParam String name, @RequestParam String password) {
         Warehouse warehouse = warehouseService.getWarehouseByNameAndPassword(name, password);

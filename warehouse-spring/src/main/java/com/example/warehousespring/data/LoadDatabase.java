@@ -20,7 +20,6 @@ class LoadDatabase {
             CommodityRepository commodityRepository,
             ContractorRepository contractorRepository,
             StoreActionRepository storeActionRepository,
-            ActionCommodityRepository actionCommodityRepository,
             OrderRepository orderRepository) {
 //        Address address = new Address("Lipowa", "17/19", 34, "Częstochowa", "42-216");
 //        byte [] bitki = new byte[] { (byte)0xe0, 0x4f, (byte)0xd0,
