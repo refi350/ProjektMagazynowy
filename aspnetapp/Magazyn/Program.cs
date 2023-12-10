@@ -1,47 +1,33 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Magazyn.Data;
-using System.Net.Http.Headers;
-using System.Text.Json;
-
-//Repository management
-//using HttpClient client = new();
-//client.DefaultRequestHeaders.Accept.Clear();
-//client.DefaultRequestHeaders.Accept.Add(
-//    new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-//client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
-
-//// Jak moge udostêpniæ to zewnêtrznemu skryptowi, bez nadawania mu typu public
-//List<WarehouseRepository> repositories = await ProcessRepositoryAsync(client);
-
-//static async Task<List<WarehouseRepository>> ProcessRepositoryAsync(HttpClient client)
-//{
-//    //HTTP GET do okreœlonego identyfikatora URI
-//    //Metoda uzyskania dostêpu do danych przy u¿yciu strumienia
-//    await using Stream stream =
-//        await client.GetStreamAsync("http://monika.alwaysdata.net/warehouses/all");
-
-//    //To przyjmuje repozytorium w formie streamu i zgodnie z plikiem Repository pobiera pole Name.
-//    //Jak chce wiêcej to muszê dodaæ wiêcej zgodnych pól, ale jako tako dzia³a
-//    var repositories =
-//        await JsonSerializer.DeserializeAsync<List<WarehouseRepository>>(stream);
-
-//    //Debug stuff
-//    //foreach (var repo in repositories ?? Enumerable.Empty<WarehouseRepository>())
-//    //{
-//    //    Console.WriteLine(repo.id + "\t" + repo.name + "\t" + repo.password + "\t" + repo.color);
-//    //}
-//    return repositories ?? new();
-//}
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<MagazynContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MagazynContext") ?? throw new InvalidOperationException("Connection string 'MagazynContext' not found.")));
+// Add http client to the container.
 builder.Services.AddHttpClient();
-//builder.Services.AddSingleton<IRepositoryProvider,RepositoryProvider>();
+
+//builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddMvc();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, "Magazyn.xml");
+    c.IncludeXmlComments(xmlCommentsPath);
+});
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Czas bezczynnoœci sesji (30 minut w tym przypadku)
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// b³¹d wystêpuje tutaj
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,19 +37,25 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseSession();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    //endpoints.MapControllers(); // Dodaj tê liniê
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-
-app.UseAuthorization();
-
 app.MapRazorPages();
 
-app.Run();
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 
+app.Run();
 

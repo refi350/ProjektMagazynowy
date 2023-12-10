@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Magazyn.styles.css" asp-append-version="true" />
     <link rel='stylesheet' href="~/css/spectrum.css" />
-    <!-- Dodaj Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Dodaj Bootstrap Colorpicker CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css">
 
 </head>
@@ -26,22 +24,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Towars" asp-action="Index" >Towary</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Warehouses" asp-action="Index" >Magazyny</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Dokumenty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">kontrachenci</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Raporty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Zamówienia</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="swagger" asp-action="Index">Dokumentacja</a>
                         </li>
                     </ul>
                 </div>
+                <!--
                 <div class="collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -52,6 +42,7 @@
                         </li>
                     </ul>
                 </div>
+                -->
             </div>
         </nav>
     </header>
