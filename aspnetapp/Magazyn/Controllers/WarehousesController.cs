@@ -5,16 +5,29 @@ using Newtonsoft.Json;
 using System.Text;
 
 namespace Magazyn.Controllers
-{
+{/// <summary>
+/// Controler for setting up Warehouses
+/// </summary>
+    [Route("/Warehouses/")]
+    [ApiController]
     public class WarehousesController : Controller
     {
         private readonly HttpClient _httpClient;
-
+        /// <summary>
+        /// Configure HttpClient to allow Access to a server
+        /// </summary>
+        /// <param name="httpClient">HttpClient used by the builder to connect to database</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public WarehousesController(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
-
+        /// <summary>
+        /// Converts chosen address of a database to a model
+        /// </summary>
+        /// <typeparam name="T">database type</typeparam>
+        /// <param name="address">address to a database</param>
+        /// <returns>T version of a database in a form of a model</returns>
         private async Task<T?> HttpToModel<T>(string address)
         {
             var response = await _httpClient.GetAsync(address);
@@ -26,8 +39,13 @@ namespace Magazyn.Controllers
             var model = JsonConvert.DeserializeObject<T>(content);
             return model;
         }
-
+        /// <summary>
+        /// GET: WarehousesController
+        /// Accesses a view of all Warehouses
+        /// </summary>
+        /// <returns></returns>
         // GET: WarehousesController
+        [Route("/Warehouses/Index/")]
         public async Task<IActionResult> Index()
         {
             try
@@ -46,8 +64,14 @@ namespace Magazyn.Controllers
                 return NotFound();
             }
         }
-
+        /// <summary>
+        /// GET: WarehousesController/Details/5
+        /// Accesses details of a specific database through their id
+        /// </summary>
+        /// <param name="id">unique id of a Warehouse</param>
+        /// <returns></returns>
         // GET: WarehousesController/Details/5
+        [Route("/Warehouses/Details/")]
         public async Task<IActionResult> Details(int id)
         {
             try
@@ -64,16 +88,27 @@ namespace Magazyn.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// GET: WarehousesController/Create
+        /// Opens a Create view
+        /// </summary>
+        /// <returns></returns>
         // GET: WarehousesController/Create
+        [Route("/Warehouses/Create/")]
         public IActionResult Create()
         {
             return View();
         }
-
+        /// <summary>
+        /// POST: WarehousesController/Create
+        /// Creates a new warehouse based on data filled in Create view
+        /// </summary>
+        /// <param name="newWarehouse"></param>
+        /// <returns></returns>
         // POST: WarehousesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("/Warehouses/Create/")]
         public async Task<IActionResult> Create(Warehouse newWarehouse)
         {
             try
@@ -98,8 +133,14 @@ namespace Magazyn.Controllers
                 return View();
             }
         }
-
+        /// <summary>
+        /// GET: WarehousesController/Edit/5
+        /// Opens an Edit View of an warehouse based on their id
+        /// </summary>
+        /// <param name="id">unique id of a warehouse</param>
+        /// <returns></returns>
         // GET: WarehousesController/Edit/5
+        [Route("/Warehouses/Edit/")]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -116,10 +157,17 @@ namespace Magazyn.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// POST: WarehousesController/Edit/5
+        /// Posts an updated version of a warehouse to a database
+        /// </summary>
+        /// <param name="id">unique id of a warehouse</param>
+        /// <param name="editedWarehouse">modified warehouse</param>
+        /// <returns></returns>
         // POST: WarehousesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("/Warehouses/Edit/")]
         public async Task<IActionResult> Edit(int id, Warehouse editedWarehouse)
         {
             try
@@ -148,8 +196,14 @@ namespace Magazyn.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// GET: WarehousesController/Delete/5
+        /// Opens a Delete view
+        /// </summary>
+        /// <param name="id">unique id of a warehouse</param>
+        /// <returns></returns>
         // GET: WarehousesController/Delete/5
+        [Route("/Warehouses/Delete/")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -166,10 +220,15 @@ namespace Magazyn.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// POST: WarehousesController/Delete/5
+        /// Deletes a warehouse from a database
+        /// </summary>
+        /// <returns></returns>
         // POST: WarehousesController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("/Warehouses/Delete/")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try

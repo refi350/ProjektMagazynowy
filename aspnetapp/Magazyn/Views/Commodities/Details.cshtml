@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    int? WareId = Context.Request.HttpContext.Session.GetInt32("WareId");
 }
 
 <h1>Details</h1>
@@ -44,5 +45,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-WarehouseId="@WareId">Back to List</a>
 </div>

@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Magazyn</name>
+    </assembly>
+    <members>
+        <member name="T:Magazyn.Controllers.CommoditiesController">
+            <summary>
+            Controller for setting up Commodities
+            </summary>
+        </member>
+        <member name="M:Magazyn.Controllers.CommoditiesController.#ctor(System.Net.Http.HttpClient)">
+            <summary>
+            Configure HttpClient to allow Access to a server
+            </summary>
+            <param name="httpClient">HttpClient used by the builder to connect to database</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Magazyn.Controllers.CommoditiesController.HttpToModel``1(System.String)">
+            <summary>
+            Converts chosen address of a database to a model
+            </summary>
+            <typeparam name="T">database type</typeparam>
+            <param name="address">address to a database</param>
+            <returns>T version of a database in a form of a model</returns>
+        </member>
+        <member name="M:Magazyn.Controllers.CommoditiesController.Index(System.Int32)">
+            <summary>
+            GET: Commodities
+            Gets a list of all commodities inside a specific warehouse
+            </summary>
+            <param name="WarehouseId">unique id of a warehouse</param>
+            <returns></returns>
+        </member>
+        <member name="T:Magazyn.Controllers.WarehousesController">
+            <summary>
+            Controler for setting up Warehouses
+            </summary>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.#ctor(System.Net.Http.HttpClient)">
+            <summary>
+            Configure HttpClient to allow Access to a server
+            </summary>
+            <param name="httpClient">HttpClient used by the builder to connect to database</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.HttpToModel``1(System.String)">
+            <summary>
+            Converts chosen address of a database to a model
+            </summary>
+            <typeparam name="T">database type</typeparam>
+            <param name="address">address to a database</param>
+            <returns>T version of a database in a form of a model</returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Index">
+            <summary>
+            GET: WarehousesController
+            Accesses a view of all Warehouses
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Details(System.Int32)">
+            <summary>
+            GET: WarehousesController/Details/5
+            Accesses details of a specific database through their id
+            </summary>
+            <param name="id">unique id of a Warehouse</param>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Create">
+            <summary>
+            GET: WarehousesController/Create
+            Opens a Create view
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Create(Magazyn.Models.Warehouse)">
+            <summary>
+            POST: WarehousesController/Create
+            Creates a new warehouse based on data filled in Create view
+            </summary>
+            <param name="newWarehouse"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Edit(System.Int32)">
+            <summary>
+            GET: WarehousesController/Edit/5
+            Opens an Edit View of an warehouse based on their id
+            </summary>
+            <param name="id">unique id of a warehouse</param>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Edit(System.Int32,Magazyn.Models.Warehouse)">
+            <summary>
+            POST: WarehousesController/Edit/5
+            Posts an updated version of a warehouse to a database
+            </summary>
+            <param name="id">unique id of a warehouse</param>
+            <param name="editedWarehouse">modified warehouse</param>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.Delete(System.Int32)">
+            <summary>
+            GET: WarehousesController/Delete/5
+            Opens a Delete view
+            </summary>
+            <param name="id">unique id of a warehouse</param>
+            <returns></returns>
+        </member>
+        <member name="M:Magazyn.Controllers.WarehousesController.DeleteConfirmed(System.Int32)">
+            <summary>
+            POST: WarehousesController/Delete/5
+            Deletes a warehouse from a database
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Magazyn.Models.Address">
+            <summary>
+            A model representing a physical adress, or location
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.Id">
+            <summary>
+            unique id of the Adress
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.StreetName">
+            <summary>
+            Street name of a specific location
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.HouseNumber">
+            <summary>
+            Number of the house
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.LocalNumber">
+            <summary>
+            Number of the exact local
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.Place">
+            <summary>
+            City name
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Address.code">
+            <summary>
+            Postal code
+            </summary>
+        </member>
+        <member name="T:Magazyn.Models.Commodity">
+            <summary>
+            A model representing currently stored contents inside a warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.Id">
+            <summary>
+            unique id of the Commodity
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.Name">
+            <summary>
+            Name of the Commodity
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.Counter">
+            <summary>
+            Current amount of the commodity
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.TempCounter">
+            <summary>
+            Updated amount of the commodity 
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.Code">
+            <summary>
+            Code of the commodity
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Commodity.Description">
+            <summary>
+            Detailed description of a commodity
+            </summary>
+        </member>
+        <member name="T:Magazyn.Models.Owner">
+            <summary>
+            A model representing a physical Owner of a warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Owner.Id">
+            <summary>
+            unique id of the Owner
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Owner.Name">
+            <summary>
+            Name of the Owner
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Owner.Email">
+            <summary>
+            Email of the Owner
+            </summary>
+        </member>
+        <member name="T:Magazyn.Models.Warehouse">
+            <summary>
+            A model representing a Warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Id">
+            <summary>
+            Unique id of a warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Name">
+            <summary>
+            Name of a warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Password">
+            <summary>
+            Password of a warehouse
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Address">
+            <summary>
+            Reference to a specific address model
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.ColorId">
+            <summary>
+            Color of a background hold in a hexcode
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Owner">
+            <summary>
+            Reference to a specific owner model
+            </summary>
+        </member>
+        <member name="P:Magazyn.Models.Warehouse.Commodity">
+            <summary>
+            List of all commodities
+            </summary>
+        </member>
+    </members>
+</doc>
