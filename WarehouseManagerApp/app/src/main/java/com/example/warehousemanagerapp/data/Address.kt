@@ -5,8 +5,10 @@ import android.os.Parcelable
 import com.example.warehousemanagerapp.util.JsonConst
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+@Parcelize
 data class Address(
     @SerializedName(JsonConst.ADDRESS_ID)
     @Expose
@@ -31,35 +33,34 @@ data class Address(
     @SerializedName(JsonConst.CODE)
     @Expose
     var code: String? = null
-): Parcelable, Serializable {
-    constructor(parcel: Parcel) : this(
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readString(),
-        parcel.readString()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(addressId)
-        parcel.writeString(streetName)
-        parcel.writeString(houseNumber)
-        parcel.writeValue(localNumber)
-        parcel.writeString(place)
-        parcel.writeString(code)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<Address> {
-        override fun createFromParcel(parcel: Parcel): Address {
-            return Address(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Address?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+): Parcelable
+//    constructor(parcel: Parcel) : this(
+//        parcel.readValue(Int::class.java.classLoader) as? Int,
+//        parcel.readString(),
+//        parcel.readString(),
+//        parcel.readValue(Int::class.java.classLoader) as? Int,
+//        parcel.readString(),
+//        parcel.readString()
+//    ) {
+//    }
+//
+//    override fun writeToParcel(parcel: Parcel, flags: Int) {
+//        parcel.writeValue(addressId)
+//        parcel.writeString(streetName)
+//        parcel.writeString(houseNumber)
+//        parcel.writeValue(localNumber)
+//        parcel.writeString(place)
+//        parcel.writeString(code)
+//    }
+//
+//    override fun describeContents(): Int = 0
+//
+//    companion object CREATOR : Parcelable.Creator<Address> {
+//        override fun createFromParcel(parcel: Parcel): Address {
+//            return Address(parcel)
+//        }
+//
+//        override fun newArray(size: Int): Array<Address?> {
+//            return arrayOfNulls(size)
+//        }
+//    }

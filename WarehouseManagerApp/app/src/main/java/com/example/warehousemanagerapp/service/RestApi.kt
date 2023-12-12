@@ -3,6 +3,7 @@ package com.example.warehousemanagerapp.service
 import android.net.Uri.Builder
 import com.example.warehousemanagerapp.data.Commodity
 import com.example.warehousemanagerapp.data.Contractor
+import com.example.warehousemanagerapp.data.StoreAction
 import com.example.warehousemanagerapp.data.Warehouse
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -41,6 +42,9 @@ interface RestApi {
 
     @GET("warehouses/{warehouseId}/contractors/all")
     fun getContractors(@Path("warehouseId") warehouseId: Int): Call<List<Contractor>>
+
+    @GET("warehouses/{warehouseId}/storeactions/all")
+    fun getDocuments(@Path("warehouseId") warehouseId: Int): Call<List<StoreAction>>
 
     @POST("warehouses")
     fun postWarehouse(@Body request: Warehouse): Call<Warehouse>

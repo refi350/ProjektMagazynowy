@@ -1,6 +1,6 @@
 ﻿namespace Magazyn.Models
 {
-    public class Raport
+    public class Document
     {
     }
 }

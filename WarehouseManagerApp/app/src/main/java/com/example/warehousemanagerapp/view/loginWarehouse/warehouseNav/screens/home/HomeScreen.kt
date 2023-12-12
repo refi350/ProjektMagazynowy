@@ -1,4 +1,4 @@
-package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens
+package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -29,16 +30,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagerapp.R
 import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.WarehouseViewModel
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs.HomeNavGraph
-import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.CommodityViewModel
+
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseCommodityGraph
 
 @Composable
 fun HomeScreen(
     navController: NavHostController = rememberNavController()
 ) {
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(navController = navController) },
         bottomBar = { BottomBar(navController = navController) },
         content = {
             Column(
@@ -56,7 +57,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavHostController) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
@@ -64,7 +65,7 @@ fun TopBar() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                val hexColor = WarehouseRepository.warehouseStateFlow.value?.color ?: "#ff0000"
+                val hexColor = WarehouseRepository.warehouseStateFlow.value?.color ?: "#ffffff"
                 println("ddddddd $hexColor")
                 Box(
                     modifier = Modifier
@@ -85,7 +86,9 @@ fun TopBar() {
                 Icon(imageVector = image, contentDescription = null)
             }
             Spacer(modifier = Modifier.width(16.dp))
-            IconButton(onClick = { }) {
+            IconButton(
+                onClick = { navController.navigate(ReleaseCommodityGraph.RELEASE_COMMODITY) }
+            ) {
                 val image = ImageVector.vectorResource(id = R.drawable.release_commodity_48)
                 Icon(imageVector = image, contentDescription = null)
             }
@@ -153,7 +156,7 @@ fun TopBar() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Orders,
+        //BottomBarScreen.Orders,
         BottomBarScreen.Documents,
         BottomBarScreen.Commodity,
         BottomBarScreen.Persons
@@ -162,7 +165,7 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
-        BottomNavigation {
+        BottomNavigation(backgroundColor = MaterialTheme.colorScheme.primary) {
             screens.forEach { screen ->
                 AddItem(
                     screen = screen,
@@ -181,11 +184,18 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     BottomNavigationItem(
-        label = { Text(text = stringResource(id = screen.title)) },
+        label = {
+            Text(
+                text = stringResource(id = screen.title),
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
         icon = {
             Icon(
-                imageVector = screen.icon,
-                contentDescription = "Navigation icon"
+                imageVector = ImageVector.vectorResource(id = screen.icon),
+                contentDescription = "Navigation icon",
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         },
         selected = currentDestination?.hierarchy?.any {

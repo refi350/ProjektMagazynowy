@@ -27,13 +27,14 @@
     <string name="description_commodity_label">Opis</string>
     <string name="contractor_data_label">Dane Odbiorcy/Dostawcy</string>
     <string name="add_contractor_label">Dodaj Kontrahenta</string>
+    <string name="bar_code_label">Kod</string>
 
     //BottomBar
     <string name="orders_bottom_bar_label">ZAMÓW.</string>
-    <string name="documents_bottom_bar_label">DOKUMENT</string>
-    <string name="commodity_bottom_bar_label">TOWAR</string>
-    <string name="persons_bottom_bar_label">OSOBA</string>
-    <string name="nip_label">Nip</string>
+    <string name="documents_bottom_bar_label">DOKUMENTY</string>
+    <string name="commodity_bottom_bar_label">TOWARY</string>
+    <string name="persons_bottom_bar_label">KONTRAHENCI</string>
+    <string name="nip_label">NIP </string>
 
     // color picker
     <string name="add">Dodaj</string>

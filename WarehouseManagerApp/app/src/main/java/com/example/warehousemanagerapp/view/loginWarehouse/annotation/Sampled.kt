@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.annotation
+package com.example.warehousemanagerapp.view.loginWarehouse.annotation
 /**
  * Denotes that the annotated function is considered a sample function, and is linked to from the
  * KDoc of a source module that matches one of the two permitted directory structures:

@@ -2,8 +2,10 @@
 
 @{
     ViewData["Title"] = "Index";
-}
+    string? Color = Context.Request.HttpContext.Session.GetString("BgColor");
 
+}
+<body style="background-color: @Color">
 <h1>Index</h1>
 
 <p>
@@ -27,15 +29,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpirationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Unit)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -58,15 +51,6 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpirationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Unit)
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -75,3 +59,4 @@
 }
     </tbody>
 </table>
+</body>

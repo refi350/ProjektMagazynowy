@@ -2,12 +2,21 @@ package com.example.warehousemanagerapp.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.warehousemanagerapp.service.StoreActionDeserializer
 import com.example.warehousemanagerapp.util.JsonConst
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
-data class StoreAction(
+@Parcelize
+@JsonAdapter(StoreActionDeserializer::class)
+open class StoreAction(
+    @SerializedName(JsonConst.TYPE)
+    @Expose
+    val type: String? = null,
+
     @SerializedName(JsonConst.STORE_ACTION_ID)
     @Expose
     var storeActionId: Int? = null,
@@ -22,37 +31,45 @@ data class StoreAction(
 
     @SerializedName(JsonConst.COMMODITIES)
     @Expose
-    var commodities: List<Commodity>? = null,
+    var actionCommodities: List<ActionCommodities>? = null,
 
     @SerializedName(JsonConst.DOC_NUMBER)
     @Expose
-    var docNumber: Int? = null
-): Parcelable, Serializable {
-    constructor(parcel: Parcel) : this(
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readString(),
-        parcel.readParcelable(Contractor::class.java.classLoader),
-        parcel.createTypedArrayList(Commodity),
-        parcel.readValue(Int::class.java.classLoader) as? Int
-    )
+    var docNumber: Int? = null,
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(storeActionId)
-        parcel.writeString(date)
-        parcel.writeParcelable(contractor, flags)
-        parcel.writeTypedList(commodities)
-        parcel.writeValue(docNumber)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<StoreAction> {
-        override fun createFromParcel(parcel: Parcel): StoreAction {
-            return StoreAction(parcel)
-        }
-
-        override fun newArray(size: Int): Array<StoreAction?> {
-            return arrayOfNulls(size)
-        }
+) : Parcelable {
+    override fun toString(): String {
+        return "StoreAction(type=$type, storeActionId=$storeActionId, date=$date," +
+                " contractor=$contractor, actionCommodities=$actionCommodities," +
+                " docNumber=$docNumber)"
     }
 }
+
+//    constructor(parcel: Parcel) : this(
+//        parcel.readValue(Int::class.java.classLoader) as? Int,
+//        parcel.readString(),
+//        parcel.readParcelable(Contractor::class.java.classLoader),
+//        parcel.createTypedArrayList(Commodity),
+//        parcel.readValue(Int::class.java.classLoader) as? Int
+//    )
+
+//    override fun writeToParcel(parcel: Parcel, flags: Int) {
+//        parcel.writeValue(storeActionId)
+//        parcel.writeString(date)
+//        parcel.writeParcelable(contractor, flags)
+//        parcel.writeTypedList(commodities)
+//        parcel.writeValue(docNumber)
+//    }
+//
+//    override fun describeContents(): Int = 0
+//
+//    companion object CREATOR : Parcelable.Creator<StoreAction> {
+//        override fun createFromParcel(parcel: Parcel): StoreAction {
+//            return StoreAction(parcel)
+//        }
+//
+//        override fun newArray(size: Int): Array<StoreAction?> {
+//            return arrayOfNulls(size)
+//        }
+//    }
+

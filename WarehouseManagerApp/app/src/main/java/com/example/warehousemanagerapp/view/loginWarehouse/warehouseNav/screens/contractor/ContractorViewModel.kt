@@ -12,6 +12,7 @@ class ContractorViewModel: ViewModel() {
     private val repository: WarehouseRepository = WarehouseRepository
     private val _contractor = MutableStateFlow<List<Contractor>?>(emptyList())
     val contractor: StateFlow<List<Contractor>?> = _contractor.asStateFlow()
+    var contractorName = ""
 
     fun postContractor(contractor: Contractor) {
         repository.warehouseStateFlow.value?.warehouseId?.let {

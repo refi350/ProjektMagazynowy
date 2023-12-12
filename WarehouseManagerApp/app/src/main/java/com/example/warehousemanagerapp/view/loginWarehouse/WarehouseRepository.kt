@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagerapp.data.Commodity
 import com.example.warehousemanagerapp.data.Contractor
+import com.example.warehousemanagerapp.data.StoreAction
 import com.example.warehousemanagerapp.data.Warehouse
 import com.example.warehousemanagerapp.service.RestApi
 import com.example.warehousemanagerapp.service.User
@@ -63,7 +64,7 @@ object WarehouseRepository {
                 val result: Warehouse? = response.body()
                 //_warehouseStateFlow.value = result
                 runBlocking { onResult(result) }
-                println("Fail1234444")
+                println("Response1234444")
                  println(result)
             }
 
@@ -218,6 +219,25 @@ object WarehouseRepository {
             override fun onFailure(call: Call<List<Contractor>>, t: Throwable) {
                 //Timber.tag("Fail123")
                 println("Fail1234545")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun getDocuments(id: Int, onResult: (List<StoreAction>?) -> Unit) {
+        val call = api?.getDocuments(id)
+        call?.enqueue(object : Callback<List<StoreAction>> {
+            override fun onResponse(call: Call<List<StoreAction>>, response: Response<List<StoreAction>>) {
+                val result: List<StoreAction>? = response.body()
+                onResult(result)
+                println("Result88888")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<List<StoreAction>>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail88888")
                 println(t.message)
                 //onResult(null)
             }
