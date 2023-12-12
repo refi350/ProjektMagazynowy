@@ -46,6 +46,7 @@ namespace Magazyn.Controllers
         /// <returns></returns>
         // GET: WarehousesController
         [Route("/Warehouses/Index/")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
@@ -72,11 +73,13 @@ namespace Magazyn.Controllers
         /// <returns></returns>
         // GET: WarehousesController/Details/5
         [Route("/Warehouses/Details/")]
-        public async Task<IActionResult> Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Details([FromQuery]int id)
         {
             try
             {
                 var model = await HttpToModel<Warehouse>("http://monika.alwaysdata.net/warehouses/"+id.ToString());
+                HttpContext.Session.SetString("BgColor", model!.ColorId!);
                 if (model == null)
                 {
                     return View("Index");
@@ -95,6 +98,7 @@ namespace Magazyn.Controllers
         /// <returns></returns>
         // GET: WarehousesController/Create
         [Route("/Warehouses/Create/")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -109,7 +113,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Warehouses/Create/")]
-        public async Task<IActionResult> Create(Warehouse newWarehouse)
+        public async Task<IActionResult> Create([FromBody]Warehouse newWarehouse)
         {
             try
             {
@@ -141,7 +145,8 @@ namespace Magazyn.Controllers
         /// <returns></returns>
         // GET: WarehousesController/Edit/5
         [Route("/Warehouses/Edit/")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromQuery]int id)
         {
             try
             {
@@ -168,7 +173,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Warehouses/Edit/")]
-        public async Task<IActionResult> Edit(int id, Warehouse editedWarehouse)
+        public async Task<IActionResult> Edit([FromQuery] int id,[FromBody] Warehouse editedWarehouse)
         {
             try
             {
@@ -204,7 +209,8 @@ namespace Magazyn.Controllers
         /// <returns></returns>
         // GET: WarehousesController/Delete/5
         [Route("/Warehouses/Delete/")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete([FromQuery] int id)
         {
             try
             {
@@ -224,12 +230,13 @@ namespace Magazyn.Controllers
         /// POST: WarehousesController/Delete/5
         /// Deletes a warehouse from a database
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
         // POST: WarehousesController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Route("/Warehouses/Delete/")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed([FromQuery]int id)
         {
             try
             {

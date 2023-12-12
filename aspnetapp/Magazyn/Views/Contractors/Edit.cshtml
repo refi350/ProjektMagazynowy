@@ -1,4 +1,4 @@
-﻿@model Magazyn.Models.Commodity
+﻿@model Magazyn.Models.Contractor
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,39 +7,39 @@
 
 }
 <body style="background-color: @Color">
+
 <h1>Edit</h1>
 
-<h4>Commodity</h4>
+<h4>Contractor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Counter" class="control-label"></label>
-                <input asp-for="Counter" class="form-control" />
-                <span asp-validation-for="Counter" class="text-danger"></span>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Recipient" /> @Html.DisplayNameFor(model => model.Recipient)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Supplier" /> @Html.DisplayNameFor(model => model.Supplier)
+                </label>
             </div>
             <div class="form-group">
-                <label asp-for="TempCounter" class="control-label"></label>
-                <input asp-for="TempCounter" class="form-control" />
-                <span asp-validation-for="TempCounter" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
-                <input asp-for="Code" class="form-control" />
-                <span asp-validation-for="Code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Nip" class="control-label"></label>
+                <input asp-for="Nip" class="form-control" />
+                <span asp-validation-for="Nip" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

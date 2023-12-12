@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Magazyn.Controllers
 {
-    [Route("/")]
-    [ApiController]
     public class HomeController : Controller
     {
 
@@ -15,7 +13,6 @@ namespace Magazyn.Controllers
 
         }
 
-        [HttpGet]
         // GET: TowarController
         public IActionResult Index()
         {

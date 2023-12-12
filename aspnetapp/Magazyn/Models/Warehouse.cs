@@ -51,5 +51,9 @@ namespace Magazyn.Models
         /// List of all commodities
         /// </summary>
         public List<Commodity> Commodity { get; set; } = new List<Commodity>();
+        /// <summary>
+        /// List of all contractors
+        /// </summary>
+        public List<Contractor> Contractors { get; set; } = new List<Contractor>();
     }
 }
