@@ -1,17 +1,25 @@
-﻿@model Magazyn.Models.Commodity
+﻿@model Magazyn.Models.Contractor
 
 @{
     ViewData["Title"] = "Details";
     int? WareId = Context.Request.HttpContext.Session.GetInt32("WareId");
     string? Color = Context.Request.HttpContext.Session.GetString("BgColor");
+
 }
 <body style="background-color: @Color">
+
 <h1>Details</h1>
 
 <div>
-    <h4>Commodity</h4>
+    <h4>Contractor</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -19,28 +27,22 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Counter)
+            @Html.DisplayNameFor(model => model.Recipient)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Counter)
+            @Html.DisplayFor(model => model.Recipient)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TempCounter)
+            @Html.DisplayNameFor(model => model.Supplier)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TempCounter)
+            @Html.DisplayFor(model => model.Supplier)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Code)
+            @Html.DisplayNameFor(model => model.Nip)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Nip)
         </dd>
     </dl>
 </div>

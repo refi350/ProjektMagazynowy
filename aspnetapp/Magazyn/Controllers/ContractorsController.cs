@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Magazyn.Models;
+﻿using Magazyn.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace Magazyn.Controllers
 {
     /// <summary>
-    /// Controller for setting up Commodities
+    /// Controller for setting up Contractors
     /// </summary>
     [ApiController]
-    [Route("/Commodities/")]
-    public class CommoditiesController : Controller
+    [Route("/Contractors/")]
+    public class ContractorsController : Controller
     {
         private readonly HttpClient _httpClient;
         /// <summary>
@@ -18,7 +19,8 @@ namespace Magazyn.Controllers
         /// </summary>
         /// <param name="httpClient">HttpClient used by the builder to connect to database</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public CommoditiesController(HttpClient httpClient) { 
+        public ContractorsController(HttpClient httpClient)
+        {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
         /// <summary>
@@ -39,23 +41,23 @@ namespace Magazyn.Controllers
             return model;
         }
         /// <summary>
-        /// GET: Commodities
-        /// Gets a list of all commodities inside a specific warehouse
+        /// GET: Contractors
+        /// Gets a list of all Contractors inside a specific warehouse
         /// </summary>
         /// <param name="WarehouseId">unique id of a warehouse</param>
         /// <returns></returns>
-        // GET: Commodities
+        // GET: Contractors
         [HttpGet]
-        [Route("/Commodities/Index/")]
+        [Route("/Contractors/Index/")]
         public async Task<IActionResult> Index(int WarehouseId)
         {
             try
             {
                 HttpContext.Session.SetInt32("WareId", WarehouseId);
-                var model = await HttpToModel<List<Commodity>>("http://monika.alwaysdata.net/warehouses/" + HttpContext.Session.GetInt32("WareId").ToString() + "/commodities/all");               
+                var model = await HttpToModel<List<Contractor>>("http://monika.alwaysdata.net/warehouses/" + HttpContext.Session.GetInt32("WareId").ToString() + "/contractors/all");
                 if (model == null)
                 {
-                    return View(new List<Commodity>());
+                    return View(new List<Contractor>());
                 }
 
                 // Przekazanie modelu do widoku
@@ -67,19 +69,19 @@ namespace Magazyn.Controllers
             }
         }
         /// <summary>
-        /// GET: Commodities/Details/5
+        /// GET: Contractors/Details/5
         /// Accesses details of a specific database through their id
         /// </summary>
-        /// <param name="id">unique id of a Commodity</param>
+        /// <param name="id">unique id of a Contractor</param>
         /// <returns></returns>
-        // GET: Commodities/Details/5
+        // GET: Contractors/Details/5
         [HttpGet]
-        [Route("/Commodities/Details/")]
+        [Route("/Contractors/Details/")]
         public async Task<IActionResult> Details(int? id)
         {
             try
             {
-                var model = await HttpToModel<Commodity>("http://monika.alwaysdata.net/commodities/"+id.ToString());
+                var model = await HttpToModel<Contractor>("http://monika.alwaysdata.net/contractors/" + id.ToString());
                 if (model == null)
                 {
                     return View("Index");
@@ -92,46 +94,46 @@ namespace Magazyn.Controllers
             }
         }
         /// <summary>
-        /// GET: Commodities/Create
+        /// GET: Contractors/Create
         /// Opens a Create view
         /// </summary>
         /// <returns></returns>
-        // GET: Commodities/Create
+        // GET: Contractors/Create
         [HttpGet]
-        [Route("/Commodities/Create/")]
+        [Route("/Contractors/Create/")]
         public IActionResult Create()
         {
             return View();
         }
         /// <summary>
-        /// POST: Commodities/Create
-        /// Creates a new Commodity based on data filled in Create view
+        /// POST: Contractors/Create
+        /// Creates a new Contractor based on data filled in Create view
         /// </summary>
-        /// <param name="commodity"></param>
+        /// <param name="Contractor"></param>
         /// <returns></returns>
-        // POST: Commodities/Create
+        // POST: Contractors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/Commodities/Create/")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Counter,TempCounter,Code,Description")] Commodity commodity)
+        [Route("/Contractors/Create/")]
+        public async Task<IActionResult> Create([Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
         {
             try
             {
-                var jsonCommodity = JsonConvert.SerializeObject(commodity);
-                var content = new StringContent(jsonCommodity, Encoding.UTF8, "application/json");
+                var jsonContractor = JsonConvert.SerializeObject(Contractor);
+                var content = new StringContent(jsonContractor, Encoding.UTF8, "application/json");
 
-                var postResponse = await _httpClient.PostAsync("http://monika.alwaysdata.net/warehouses/"+ HttpContext.Session.GetInt32("WareId").ToString() + "/commodities", content);
+                var postResponse = await _httpClient.PostAsync("http://monika.alwaysdata.net/warehouses/" + HttpContext.Session.GetInt32("WareId").ToString() + "/contractors", content);
                 if (postResponse.IsSuccessStatusCode)
                 {
-                    return RedirectToAction(nameof(Index), new {warehouseId = HttpContext.Session.GetInt32("WareId") ?? default});
+                    return RedirectToAction(nameof(Index), new { warehouseId = HttpContext.Session.GetInt32("WareId") ?? default });
                 }
                 else
                 {
                     // Wystąpił błąd podczas dodawania danych
                     Console.WriteLine(postResponse);
-                    return View(commodity);
+                    return View(Contractor);
                 }
             }
             catch
@@ -140,19 +142,19 @@ namespace Magazyn.Controllers
             }
         }
         /// <summary>
-        ///  GET: Commodities/Edit/5
-        ///  Opens an Edit View of an Commodity based on their id
+        ///  GET: Contractors/Edit/5
+        ///  Opens an Edit View of an Contractor based on their id
         /// </summary>
-        /// <param name="id">unique id of a commodity</param>
+        /// <param name="id">unique id of a Contractor</param>
         /// <returns></returns>
-        // GET: Commodities/Edit/5
+        // GET: Contractors/Edit/5
         [HttpGet]
-        [Route("/Commodities/Edit/")]
+        [Route("/Contractors/Edit/")]
         public async Task<IActionResult> Edit(int? id)
         {
             try
             {
-                var model = await HttpToModel<Commodity>("http://monika.alwaysdata.net/commodities/" + id.ToString());
+                var model = await HttpToModel<Contractor>("http://monika.alwaysdata.net/contractors/" + id.ToString());
                 if (model == null)
                 {
                     return NotFound();
@@ -166,28 +168,28 @@ namespace Magazyn.Controllers
         }
 
         /// <summary>
-        /// POST: Commodities/Edit/5
-        /// Posts an updated version of a commodity to a database
+        /// POST: Contractors/Edit/5
+        /// Posts an updated version of a Contractor to a database
         /// </summary>
-        /// <param name="id">unique id of a commodity</param>
-        /// <param name="commodity">modified commodity</param>
+        /// <param name="id">unique id of a Contractor</param>
+        /// <param name="Contractor">modified Contractor</param>
         /// <returns></returns>
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/Commodities/Edit/")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Counter,TempCounter,Code,Description")] Commodity commodity)
+        [Route("/Contractors/Edit/")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
         {
             try
             {
                 // W tym miejscu możesz dokonać modyfikacji obiektu przed wysłaniem go na serwer,
                 // na przykład używając JsonConvert.SerializeObject(editedWarehouse)
 
-                var jsonWarehouse = JsonConvert.SerializeObject(commodity);
+                var jsonWarehouse = JsonConvert.SerializeObject(Contractor);
                 var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
 
-                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/commodities/" + id, content);
+                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/contractors/" + id, content);
 
                 if (putResponse.IsSuccessStatusCode)
                 {
@@ -197,7 +199,7 @@ namespace Magazyn.Controllers
                 {
                     // Wystąpił błąd podczas edycji danych
                     Console.WriteLine(putResponse);
-                    return View(commodity);
+                    return View(Contractor);
                 }
             }
             catch (Exception)
@@ -207,18 +209,18 @@ namespace Magazyn.Controllers
         }
 
         /// <summary>
-        /// GET: Commodities/Delete/5
+        /// GET: Contractors/Delete/5
         /// Opens a Delete view
         /// </summary>
-        /// <param name="id">unique id of a commodity</param>
+        /// <param name="id">unique id of a Contractor</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("/Commodities/Delete/")]
+        [Route("/Contractors/Delete/")]
         public async Task<IActionResult> Delete(int? id)
         {
             try
             {
-                var model = await HttpToModel<Commodity>("http://monika.alwaysdata.net/commodities/" + id.ToString());
+                var model = await HttpToModel<Contractor>("http://monika.alwaysdata.net/contractors/" + id.ToString());
                 if (model == null)
                 {
                     return NotFound();
@@ -232,19 +234,19 @@ namespace Magazyn.Controllers
         }
 
         /// <summary>
-        /// POST: Commodities/Delete/5
-        /// Deletes a commodity from a database
+        /// POST: Contractors/Delete/5
+        /// Deletes a Contractor from a database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Route("/Commodities/Delete/")]
+        [Route("/Contractors/Delete/")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-                var deleteResponse = await _httpClient.DeleteAsync("http://monika.alwaysdata.net/commodities/" + id);
+                var deleteResponse = await _httpClient.DeleteAsync("http://monika.alwaysdata.net/contractors/" + id);
 
                 if (deleteResponse.IsSuccessStatusCode)
                 {

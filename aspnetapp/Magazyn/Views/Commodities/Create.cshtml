@@ -2,8 +2,9 @@
 @{
     ViewData["Title"] = "Create";
     int? WareId = Context.Request.HttpContext.Session.GetInt32("WareId");
+    string? Color = Context.Request.HttpContext.Session.GetString("BgColor");
 }
-
+<body style="background-color: @Color">
 <h1>Create</h1>
 
 <h4>Commodity</h4>
@@ -48,7 +49,7 @@
 <div>
     <a asp-action="Index" asp-route-WarehouseId="@WareId">Back to List</a>
 </div>
-
+</body>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -2,8 +2,10 @@
 
 @{
     ViewData["Title"] = "Index";
-}
+    string? Color = Context.Request.HttpContext.Session.GetString("BgColor");
 
+}
+<body style="background-color: @Color">
 <h1>Index</h1>
 
 <p>
@@ -57,3 +59,4 @@
 }
     </tbody>
 </table>
+</body>
