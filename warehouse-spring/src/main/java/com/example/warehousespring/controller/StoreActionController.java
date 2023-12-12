@@ -1,6 +1,6 @@
 package com.example.warehousespring.controller;
 
-import com.example.warehousespring.data.StoreAction;
+import com.example.warehousespring.data.store_action.StoreAction;
 import com.example.warehousespring.service.StoreActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

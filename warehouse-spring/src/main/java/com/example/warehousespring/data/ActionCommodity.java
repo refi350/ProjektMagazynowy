@@ -1,8 +1,8 @@
 package com.example.warehousespring.data;
 
+import com.example.warehousespring.data.store_action.StoreAction;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 //Position on the store action list or order

@@ -1,5 +1,6 @@
 package com.example.warehousespring.data;
 
+import com.example.warehousespring.data.store_action.StoreAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

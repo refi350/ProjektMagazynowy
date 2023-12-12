@@ -1,6 +1,7 @@
 package com.example.warehousespring.service;
 
 import com.example.warehousespring.data.*;
+import com.example.warehousespring.data.store_action.StoreAction;
 import com.example.warehousespring.repository.ActionCommodityRepository;
 import com.example.warehousespring.repository.OrderRepository;
 import com.example.warehousespring.repository.StoreActionRepository;

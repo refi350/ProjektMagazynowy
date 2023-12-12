@@ -1,9 +1,7 @@
 package com.example.warehousespring.service;
 
-import com.example.warehousespring.data.ActionCommodity;
-import com.example.warehousespring.data.Contractor;
-import com.example.warehousespring.data.StoreAction;
-import com.example.warehousespring.data.Warehouse;
+import com.example.warehousespring.data.*;
+import com.example.warehousespring.data.store_action.StoreAction;
 import com.example.warehousespring.repository.ActionCommodityRepository;
 import com.example.warehousespring.repository.ContractorRepository;
 import com.example.warehousespring.repository.StoreActionRepository;
@@ -60,20 +58,16 @@ public class StoreActionService {
             storeAction.setWarehouse(warehouse);
             if (storeAction.getCommodities() != null) {
                 for (ActionCommodity actionCommodity : storeAction.getCommodities()) {
-                    // Upewnij się, że towar jest zarządzany przez Hibernate
                     if (actionCommodity.getId() == null) {
                         entityManager.persist(actionCommodity);
                     } else {
                         actionCommodity = entityManager.merge(actionCommodity);
                     }
-
-                    // Ustaw relację
                     actionCommodity.setStore_action(storeAction);
                 }
             }
-            // Save the storeAction after handling the commodities
+            storeAction.setDocNumber();
             entityManager.persist(storeAction);
-            // Make sure the storeAction is in the persistence context
             entityManager.flush();
             entityManager.refresh(storeAction);
         }

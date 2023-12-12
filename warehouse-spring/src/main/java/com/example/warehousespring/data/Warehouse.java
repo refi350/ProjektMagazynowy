@@ -1,5 +1,7 @@
 package com.example.warehousespring.data;
 
+import com.example.warehousespring.data.store_action.StoreAction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Collections;
@@ -34,6 +36,12 @@ public class Warehouse {
     @Column(name = "store_actions")
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     private List<StoreAction> store_actions = Collections.emptyList();
+
+    @JsonIgnore
+    private Long releaseCounter = 1L;
+
+    @JsonIgnore
+    private Long receiptCounter = 1L;
 
     @Column(name = "store_actions")
     @OneToMany(mappedBy = "warehouse")
@@ -164,5 +172,32 @@ public class Warehouse {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Long getReleaseCounter() {
+        return releaseCounter;
+    }
+
+    public void setReleaseCounter(Long releaseCounter) {
+        this.releaseCounter = releaseCounter;
+    }
+
+    public Long getReceiptCounter() {
+        return receiptCounter;
+    }
+
+    public Long countReceiptNumber() {
+        Long number = getReceiptCounter();
+        receiptCounter++;
+        return number;
+    }
+
+    public Long countReleaseNumber() {
+        Long number = getReleaseCounter();
+        releaseCounter++;
+        return number;
+    }
+    public void setReceiptCounter(Long receiptCounter) {
+        this.receiptCounter = receiptCounter;
     }
 }

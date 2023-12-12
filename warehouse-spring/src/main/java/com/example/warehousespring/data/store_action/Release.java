@@ -1,18 +1,16 @@
-package com.example.warehousespring.data;
+package com.example.warehousespring.data.store_action;
 
+import com.example.warehousespring.data.Order;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-import java.time.LocalDateTime;
-import java.util.List;
 @Entity
-public class Release extends StoreAction{
+public class Release extends StoreAction implements ResolveNumbers {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
     public Order getOrder() {
         return order;
     }
@@ -24,8 +22,8 @@ public class Release extends StoreAction{
     public Release() {
     }
 
-    Release(LocalDateTime date, List<ActionCommodity> commodities, Contractor contractor, Long docNumber){
-        super(date, commodities, contractor, docNumber);
+    @Override
+    public void setDocNumber() {
+        this.doc_number = this.warehouse.countReleaseNumber();
     }
-
 }

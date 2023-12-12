@@ -1,9 +1,12 @@
-package com.example.warehousespring.data;
+package com.example.warehousespring.data.store_action;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.example.warehousespring.data.ActionCommodity;
+import com.example.warehousespring.data.Contractor;
+import com.example.warehousespring.data.Warehouse;
+import com.example.warehousespring.data.store_action.Receipt;
+import com.example.warehousespring.data.store_action.Release;
+import com.example.warehousespring.data.store_action.ResolveNumbers;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +18,7 @@ import java.util.List;
         @JsonSubTypes.Type(value = Receipt.class, name = "Receipt"),
         @JsonSubTypes.Type(value = Release.class, name = "Release")
 })
-public abstract class StoreAction {
+public abstract class StoreAction implements ResolveNumbers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -30,6 +33,8 @@ public abstract class StoreAction {
     @JsonManagedReference
     private List<ActionCommodity> commodities = Collections.emptyList();
 
+    protected Long doc_number;
+
     public Long getDoc_number() {
         return doc_number;
     }
@@ -38,11 +43,9 @@ public abstract class StoreAction {
         this.doc_number = doc_number;
     }
 
-    private Long doc_number;
-
     @ManyToOne
     @JsonIgnore
-    private Warehouse warehouse;
+    protected Warehouse warehouse;
 
     public Long getId() {
         return id;
@@ -53,21 +56,20 @@ public abstract class StoreAction {
     }
 
     public StoreAction() {
-
     }
 
-    StoreAction(LocalDateTime date, List<ActionCommodity> commodities, Contractor contractor, Long docNumber){
+    StoreAction(LocalDateTime date, List<ActionCommodity> commodities, Contractor contractor, Long doc_number){
         this.date = date;
         this.commodities = commodities;
         this.contractor = contractor;
-        this.doc_number = docNumber;
+        this.doc_number = doc_number;
     }
 
-    public StoreAction(LocalDateTime date, Contractor contractor, List<ActionCommodity> commodities, Long docNumber) {
+    public StoreAction(LocalDateTime date, Contractor contractor, List<ActionCommodity> commodities, Long doc_number) {
         this.date = date;
         this.contractor = contractor;
         this.commodities = commodities;
-        this.doc_number = docNumber;
+        this.doc_number = doc_number;
     }
 
     public LocalDateTime getDate() {

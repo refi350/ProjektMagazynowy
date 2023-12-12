@@ -111,6 +111,8 @@ public class Commodity {
     public void editCommodity(Commodity editedCommodity) {
         if(!this.equals(editedCommodity)) {
             this.setName(editedCommodity.getName());
+            this.setCounter(editedCommodity.getCounter());
+            this.setTemp_counter(editedCommodity.getTemp_counter());
             this.setCode(editedCommodity.getCode());
             this.setDescription(editedCommodity.getDescription());
             this.setUnit(editedCommodity.getUnit());
