@@ -63,7 +63,7 @@
             <param name="id">unique id of a commodity</param>
             <returns></returns>
         </member>
-        <member name="M:Magazyn.Controllers.CommoditiesController.Edit(System.Int32,Magazyn.Models.Commodity)">
+        <member name="M:Magazyn.Controllers.CommoditiesController.Edit(Magazyn.Models.Commodity)">
             <summary>
             POST: Commodities/Edit/5
             Posts an updated version of a commodity to a database
@@ -147,7 +147,7 @@
             <param name="id">unique id of a Contractor</param>
             <returns></returns>
         </member>
-        <member name="M:Magazyn.Controllers.ContractorsController.Edit(System.Int32,Magazyn.Models.Contractor)">
+        <member name="M:Magazyn.Controllers.ContractorsController.Edit(Magazyn.Models.Contractor)">
             <summary>
             POST: Contractors/Edit/5
             Posts an updated version of a Contractor to a database
@@ -230,7 +230,7 @@
             <param name="id">unique id of a warehouse</param>
             <returns></returns>
         </member>
-        <member name="M:Magazyn.Controllers.WarehousesController.Edit(System.Int32,Magazyn.Models.Warehouse)">
+        <member name="M:Magazyn.Controllers.WarehousesController.Edit(Magazyn.Models.Warehouse)">
             <summary>
             POST: WarehousesController/Edit/5
             Posts an updated version of a warehouse to a database

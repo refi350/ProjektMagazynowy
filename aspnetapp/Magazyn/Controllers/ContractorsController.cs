@@ -117,7 +117,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Contractors/Create/")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
+        public async Task<IActionResult> Create([FromForm][Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Contractors/Edit/")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
+        public async Task<IActionResult> Edit([FromForm] [Bind("Id,Name,Counter,TempCounter,Code,Description")] Contractor Contractor)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace Magazyn.Controllers
                 var jsonWarehouse = JsonConvert.SerializeObject(Contractor);
                 var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
 
-                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/contractors/" + id, content);
+                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/contractors/" + Contractor.Id.ToString(), content);
 
                 if (putResponse.IsSuccessStatusCode)
                 {

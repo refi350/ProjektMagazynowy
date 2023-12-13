@@ -113,7 +113,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Warehouses/Create/")]
-        public async Task<IActionResult> Create([FromBody]Warehouse newWarehouse)
+        public async Task<IActionResult> Create([FromForm]Warehouse newWarehouse)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace Magazyn.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Warehouses/Edit/")]
-        public async Task<IActionResult> Edit([FromQuery] int id,[FromBody] Warehouse editedWarehouse)
+        public async Task<IActionResult> Edit([FromForm] Warehouse editedWarehouse)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace Magazyn.Controllers
                 var jsonWarehouse = JsonConvert.SerializeObject(editedWarehouse);
                 var content = new StringContent(jsonWarehouse, Encoding.UTF8, "application/json");
 
-                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/warehouses/" + id, content);
+                var putResponse = await _httpClient.PutAsync("http://monika.alwaysdata.net/warehouses/" + editedWarehouse.Id.ToString(), content);
 
                 if (putResponse.IsSuccessStatusCode)
                 {
