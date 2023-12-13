@@ -1,4 +1,4 @@
-package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity
+package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.receiptCommodity
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -52,17 +52,17 @@ import androidx.compose.material.SnackbarHost
 
 
 @Composable
-fun ReleaseCommodity(
+fun ReceiptCommodity(
     commodityViewModel: CommodityViewModel, contractorViewModel: ContractorViewModel,
     navController: NavHostController
 ) {
     var date by rememberSaveable { mutableStateOf("") }
-    var releaseContractor by rememberSaveable { mutableStateOf(Contractor()) }
-    var release by rememberSaveable { mutableStateOf("") }
+    var receiptContractor by rememberSaveable { mutableStateOf(Contractor()) }
+    var receipt by rememberSaveable { mutableStateOf("") }
     var releaseCommodity by rememberSaveable { mutableStateOf(Commodity()) }
     var commodity by rememberSaveable { mutableStateOf("") }
     var quantity by remember { mutableIntStateOf(0) }
-    Text(text = "Wydanie", fontSize = 36.sp)
+    Text(text = "Przyjecie", fontSize = 36.sp)
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -86,17 +86,17 @@ fun ReleaseCommodity(
         )
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = release,
-            onValueChange = { release = it },
+            value = receipt,
+            onValueChange = { receipt = it },
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(
-                    text = "Odbiorca"
+                    text = "Dostawca"
                 )
             },
             trailingIcon = {
-                releaseContractor = MenuWithContractors(contractorViewModel)
-                release = releaseContractor.contractorName ?: ""
+                receiptContractor = MenuWithContractors(contractorViewModel)
+                receipt = receiptContractor.contractorName ?: ""
             }
 
         )
@@ -133,7 +133,7 @@ fun ReleaseCommodity(
 //        Box {
 //            showCommodityAndQuantityField(commodityViewModel, navController)
 //        }
-        Spacer(modifier = Modifier.height(16.dp))
+        //Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = commodity,
@@ -153,7 +153,6 @@ fun ReleaseCommodity(
         Spacer(modifier = Modifier.height(16.dp))
 
         Box {
-            if (commodityViewModel.commodity?.counter?.let { it > 0 } == true) {
                 quantity = SliderAdvancedCommodities(commodityViewModel)
                 println("sliderrrr " + quantity)
                 // runBlocking { commodityViewModel.emitPair(releaseCommodities.toMutableSet()) }
@@ -167,22 +166,17 @@ fun ReleaseCommodity(
 
                 //}
                 //commodityViewModel.releaseCommodities.add(Pair(releaseCommodity, quantity))
-            } else {
-                quantity = 0
-                Toast.makeText(
-                    LocalContext.current, "Brak towarów do wydania", Toast.LENGTH_SHORT
-                ).show()
-            }
+
         }
         Button(
             onClick = {
-                val actualCounter = commodityViewModel.commodity?.counter?.minus(quantity)
+                val actualCounter = commodityViewModel.commodity?.counter?.plus(quantity)
                 val actionCommodities = ActionCommodities(
                     commodityId = commodityViewModel.commodity?.commodities?.toLong(),
                     quantity = quantity
                 )
                 val storeAction = StoreAction(
-                    actionCommodities, date = date, contractor = releaseContractor, type = "Release"
+                    actionCommodities, date = date, contractor = receiptContractor, type = "Receipt"
                 )
                 commodityViewModel.commodity?.counter = actualCounter
                 commodityViewModel.putCommodity()
@@ -192,7 +186,7 @@ fun ReleaseCommodity(
             modifier = Modifier.align (Alignment.CenterHorizontally),
             enabled = quantity > 0
         ) {
-            Text(text = "Wydaj")
+            Text(text = "Przyjmij")
         }
 
 
@@ -306,7 +300,7 @@ fun DatePickerDialogSample(): String {
 fun MenuWithContractors(contractorViewModel: ContractorViewModel): Contractor {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val recipientContractors = contractorViewModel.contractors()?.filter { it.recipient!! }
+    val supplierContractors = contractorViewModel.contractors()?.filter { it.supplier!! }
     var release by rememberSaveable { mutableStateOf(Contractor()) }
 
     Box {
@@ -318,11 +312,11 @@ fun MenuWithContractors(contractorViewModel: ContractorViewModel): Contractor {
             onDismissRequest = { expanded = false },
             scrollState = scrollState
         ) {
-            repeat(recipientContractors?.size ?: 0) {
+            repeat(supplierContractors?.size ?: 0) {
                 DropdownMenuItem(
-                    text = { Text(text = recipientContractors?.get(it)?.contractorName ?: "brak") },
+                    text = { Text(text = supplierContractors?.get(it)?.contractorName ?: "brak") },
                     onClick = {
-                        release = recipientContractors?.get(it) ?: Contractor()
+                        release = supplierContractors?.get(it) ?: Contractor()
                         expanded = false
                     },
                     leadingIcon = {
@@ -408,12 +402,12 @@ fun SliderAdvancedCommodities(commodityViewModel: CommodityViewModel): Int {
     }
     //val a = commodityViewModel.releaseCommodities .forEach { it.second.toFloat() }
     var isLoaded by remember { mutableStateOf(false) }
-    var counter by remember { mutableStateOf(0) }
+    var counter by remember { mutableStateOf(30) }
     LaunchedEffect(key1 = true) {
         isLoaded = true
     }
     if (isLoaded) {
-        counter = commodityViewModel.commodity?.counter ?: 0
+       // counter = commodityViewModel.commodity?.counter ?: 0
         val desc = " z ${commodityViewModel.commodity?.counter}"
                 .plus(" (${commodityViewModel.commodity?.unit})")
         Column {
@@ -716,6 +710,6 @@ fun showCommodityAndQuantityField(commodityViewModel: CommodityViewModel, navCon
 //}
 
 
-object ReleaseCommodityGraph {
-    const val RELEASE_COMMODITY = "release_commodity_graph"
+object ReceiptCommodityGraph {
+    const val RECEIPT_COMMODITY = "receipt_commodity_graph"
 }

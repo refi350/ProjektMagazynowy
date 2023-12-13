@@ -42,7 +42,7 @@ object WarehouseRepository {
         api = WarehouseApiClient.warehouse
     }
 
-    suspend fun loadData() = postWarehouseDelivery(user) { response ->
+    fun loadData() = postWarehouseDelivery(user) { response ->
         _warehouseStateFlow.emit(response)
     }
 
@@ -149,7 +149,7 @@ object WarehouseRepository {
         })
     }
 
-    fun getCommodities(id: Int, onResult: suspend (List<Commodity>?) -> Unit) {
+    fun getCommodities(id: Int, onResult: suspend(List<Commodity>?) -> Unit) {
         val call = api?.getCommodities(id)
         call?.enqueue(object : Callback<List<Commodity>> {
             override fun onResponse(call: Call<List<Commodity>>, response: Response<List<Commodity>>) {
@@ -238,6 +238,82 @@ object WarehouseRepository {
             override fun onFailure(call: Call<List<StoreAction>>, t: Throwable) {
                 //Timber.tag("Fail123")
                 println("Fail88888")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun postDocument(id: Int, storeAction: StoreAction, onResult: (StoreAction?) -> Unit) {
+        val call = api?.postStoreAction(id, storeAction)
+        call?.enqueue(object : Callback<StoreAction> {
+            override fun onResponse(call: Call<StoreAction>, response: Response<StoreAction>) {
+                val result: StoreAction? = response.body()
+                onResult(result)
+                println("Result9999999")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<StoreAction>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail9999999")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun putCommodity(id: Int, commodity: Commodity, onResult: (Commodity?) -> Unit) {
+        val call = api?.putCommodity(id, commodity)
+        call?.enqueue(object : Callback<Commodity> {
+            override fun onResponse(call: Call<Commodity>, response: Response<Commodity>) {
+                val result: Commodity? = response.body()
+                onResult(result)
+                println("Result888884444")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<Commodity>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail888884444")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+    fun contractorDelete(id: Int, onResult: (Int) -> Unit) {
+        val call = api?.contractorDelete(id)
+        call?.enqueue(object : Callback<Int> {
+            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                val result: Int = response.code()
+                onResult(result)
+                println("Result888884444")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail888884444")
+                println(t.message)
+                //onResult(null)
+            }
+        })
+    }
+
+   fun commodityDelete(id: Int, onResult: (Int) -> Unit) {
+        val call = api?.commodityDelete(id)
+        call?.enqueue(object : Callback<Int> {
+            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                val result: Int = response.code()
+                onResult(result)
+                println("Result888884444222")
+                println(result)
+            }
+
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                //Timber.tag("Fail123")
+                println("Fail888884444222")
                 println(t.message)
                 //onResult(null)
             }

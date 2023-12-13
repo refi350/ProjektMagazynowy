@@ -97,9 +97,9 @@ fun LogScreen(logScreenViewModel: LogScreenViewModel, navController: NavControll
             //logScreenViewModel.getWarehousesNames()
 
             WarehouseRepository.user = logScreenViewModel.createUser(name, password)
-            runBlocking {
+
                 WarehouseRepository.loadData()
-            }
+
 
 
             //logScreenViewModel.initIsUser()
@@ -134,7 +134,7 @@ fun LogScreen(logScreenViewModel: LogScreenViewModel, navController: NavControll
 //            }
 //        } else Toast.makeText(context, "Brak Magazynu", Toast.LENGTH_SHORT).show()
 
-        Timber.tag("warehouseName").e("asd")
+        //Timber.tag("warehouseName").e("asd")
         //Text(text = "hello, $name")
     }
 }

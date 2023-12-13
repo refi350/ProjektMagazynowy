@@ -39,7 +39,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.example.warehousemanagerapp.R
 import com.example.warehousemanagerapp.data.Commodity
+import com.example.warehousemanagerapp.data.Contractor
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.receiptCommodity.ReceiptItemCommodityGraph
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseItemCommodityGraph
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.contractor.ContractorViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
@@ -52,12 +56,16 @@ fun CommodityContentScreen(
     navController: NavHostController,
     function: () -> Unit
 ) {
-    runBlocking { commodityViewModel.getCommodity() }
+    //runBlocking { commodityViewModel.getCommodity() }
     //val data by commodityViewModel.commodities.collectAsState() //{ mutableStateOf(emptyList<Commodity>()) }
-    var data by remember { mutableStateOf(emptyList<Commodity>()) }
+    //val preData = mutableStateOf(  )
+    val data by rememberUpdatedState(commodityViewModel.commodities.collectAsState())// { mutableStateOf(emptyList<Commodity>()) }
     var isLoading by remember { mutableStateOf(true) }
         LaunchedEffect(true) {
-            data = commodityViewModel.getCommodities() ?: emptyList()
+            commodityViewModel.getCommodity()
+            data.value
+            //data = commodityViewModel.getCommodities() ?: emptyList()
+            delay(500)
             isLoading = false
         }
        // WarehouseManagerAppTheme {
@@ -70,7 +78,7 @@ fun CommodityContentScreen(
                     // Tutaj umieść swój kod UI z wykorzystaniem danych z data
                     //val commodities = rememberSaveable { data }
                     AnimatedExtendedFloatingActionButtonSample(
-                        data, navController, commodityViewModel
+                        data.value ?: emptyList(), navController, commodityViewModel
                     ) { function() }
 
                 }
@@ -114,19 +122,21 @@ fun ClickableCard(
                 else {
                     val counter = item.counter
                     if (counter?.let { it > 0 } == true) onClick()
-                    else Toast.makeText(context, "Brak towarów do wydania", Toast.LENGTH_SHORT)
+                    else Toast
+                        .makeText(context, "Brak towarów do wydania", Toast.LENGTH_SHORT)
                         .show()
                 }
             },
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
     ) {
-        CommodityListItem(commodity = item)
+        CommodityListItem(commodity = item, commodityViewModel)
     }
 }
 
 @Composable
-fun CommodityListItem(commodity: Commodity) {
+fun CommodityListItem(commodity: Commodity, commodityViewModel: CommodityViewModel) {
     var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
     Box (
         modifier = Modifier
             .wrapContentHeight(Alignment.CenterVertically),
@@ -168,7 +178,7 @@ fun CommodityListItem(commodity: Commodity) {
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = { expanded = false; showDialog = false },
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
             content = {
                 DropdownMenuItem(
@@ -184,6 +194,7 @@ fun CommodityListItem(commodity: Commodity) {
                 DropdownMenuItem(
                     onClick = {
                         // Handle the action
+                        showDialog = true
                         expanded = false
                     }
                 ) {
@@ -194,8 +205,10 @@ fun CommodityListItem(commodity: Commodity) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(text = "Usuń towar")
                 }
+
             }
         )
+        if (showDialog) dialog(commodity, commodityViewModel)
     }
 }
 
@@ -249,6 +262,7 @@ fun AnimatedExtendedFloatingActionButtonSample(
             listState.firstVisibleItemIndex == 0
         }
     }
+
     Scaffold(
         //modifier = Modifier.padding(bottom = 48.dp),
         floatingActionButton = {
@@ -267,16 +281,61 @@ fun AnimatedExtendedFloatingActionButtonSample(
             state = listState,
             contentPadding = PaddingValues(8.dp)
         ) {
-            items(commodities) {item ->
+            items(commodities) { item ->
                 ClickableCard(
                     commodityViewModel,
                     item = item,
                     { navController.navigate(ReleaseItemCommodityGraph.RELEASE_ITEM_COMMODITY) }
                 ) {
-                    navController.navigate(Graph.HOME)
+                    navController.navigate(ReceiptItemCommodityGraph.RECEIPT_ITEM_COMMODITY)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun dialog(commodity: Commodity, viewModel: CommodityViewModel) {
+    val openDialog = remember { mutableStateOf(true) }
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text(text = "Usunąć Produkt o nazwie " +
+                        "${commodity.commoditiesName?.uppercase() ?: ""}?"
+                )
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(end = 16.dp),
+                        onClick = { openDialog.value = false },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text("Anuluj", color = Color.White)
+                    }
+                    Button(
+                        modifier = Modifier.wrapContentWidth(Alignment.End),
+                        onClick = {
+                            commodity.commodities?.let { viewModel.commodityDelete(it) }
+                            openDialog.value = false
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text("Ok", color = Color.White)
+                    }
+                }
+            }
+        )
     }
 }
 

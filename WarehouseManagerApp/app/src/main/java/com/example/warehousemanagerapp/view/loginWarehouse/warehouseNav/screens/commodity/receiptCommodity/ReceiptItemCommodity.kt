@@ -1,4 +1,4 @@
-package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity
+package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.receiptCommodity
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -33,13 +33,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun ReleaseItemCommodity(
+fun ReceiptItemCommodity(
     commodityViewModel: CommodityViewModel, contractorViewModel: ContractorViewModel,
     navController: NavController
 ) {
     var date by rememberSaveable { mutableStateOf("") }
-    var recipientContractor by rememberSaveable { mutableStateOf(Contractor()) }
-    var recipient by rememberSaveable { mutableStateOf("") }
+    var supplierContractor by rememberSaveable { mutableStateOf(Contractor()) }
+    var supplier by rememberSaveable { mutableStateOf("") }
     //var commodity by rememberSaveable { mutableStateOf("") }
     var quantity by rememberSaveable { mutableIntStateOf(1) }
     //var showDialog by remember { mutableStateOf(false) }
@@ -47,7 +47,7 @@ fun ReleaseItemCommodity(
 
 
     Text(
-        text = "Wydanie ".plus(commodityViewModel.commodity?.commoditiesName),
+        text = "Przyjecie ".plus(commodityViewModel.commodity?.commoditiesName),
         fontSize = 36.sp
     )
 
@@ -76,17 +76,17 @@ fun ReleaseItemCommodity(
         )
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = recipient,
-            onValueChange = { recipient = it },
+            value = supplier,
+            onValueChange = { supplier = it },
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(
-                    text = "Odbiorca"
+                    text = "Dostawca"
                 )
             },
             trailingIcon = {
-                recipientContractor = MenuWithScrollStateSample(contractorViewModel)
-                recipient = recipientContractor.contractorName ?: ""
+                supplierContractor = MenuWithScrollStateSample(contractorViewModel)
+                supplier = supplierContractor.contractorName ?: ""
             }
 
         )
@@ -96,13 +96,13 @@ fun ReleaseItemCommodity(
         }
         Button(
             onClick = {
-                val actualCounter = commodityViewModel.commodity?.counter?.minus(quantity)
+                val actualCounter = commodityViewModel.commodity?.counter?.plus(quantity)
                 val actionCommodities = ActionCommodities(
                     commodityId = commodityViewModel.commodity?.commodities?.toLong(),
                     quantity = quantity
                 )
                 val storeAction = StoreAction(
-                    actionCommodities, date = date, contractor = recipientContractor, type = "Release"
+                    actionCommodities, date = date, contractor = supplierContractor, type = "Receipt"
                 )
                 commodityViewModel.commodity?.counter = actualCounter
                 commodityViewModel.putCommodity()
@@ -112,7 +112,7 @@ fun ReleaseItemCommodity(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             enabled = quantity > 0
         ) {
-            androidx.compose.material3.Text(text = "Wydaj")
+            androidx.compose.material3.Text(text = "Przyjmij")
         }
     }
 }
@@ -191,8 +191,8 @@ fun DatePickerDialog(): String {
 fun MenuWithScrollStateSample(contractorViewModel: ContractorViewModel): Contractor {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val recipientContractors = contractorViewModel.contractors()?.filter { it.recipient!! }
-    var recipient by rememberSaveable { mutableStateOf(Contractor()) }
+    val supplierContractors = contractorViewModel.contractors()?.filter { it.supplier!! }
+    var supplier by rememberSaveable { mutableStateOf(Contractor()) }
 
     Box {
         IconButton(onClick = { expanded = true }) {
@@ -203,11 +203,11 @@ fun MenuWithScrollStateSample(contractorViewModel: ContractorViewModel): Contrac
             onDismissRequest = { expanded = false },
             scrollState = scrollState
         ) {
-            repeat(recipientContractors?.size ?: 0) {
+            repeat(supplierContractors?.size ?: 0) {
                 DropdownMenuItem(
-                    text = { Text(text = recipientContractors?.get(it)?.contractorName ?: "brak") },
+                    text = { Text(text = supplierContractors?.get(it)?.contractorName ?: "brak") },
                     onClick = {
-                        recipient = recipientContractors?.get(it) ?: Contractor()
+                        supplier = supplierContractors?.get(it) ?: Contractor()
                         expanded = false
                     },
                     leadingIcon = {
@@ -227,7 +227,7 @@ fun MenuWithScrollStateSample(contractorViewModel: ContractorViewModel): Contrac
         }
     }
 
-    return recipient
+    return supplier
 }
 
 private fun getDate(milliSeconds: Long, dateFormat: String?): String? {
@@ -243,7 +243,7 @@ private fun getDate(milliSeconds: Long, dateFormat: String?): String? {
 @Composable
 fun SliderAdvanced(commodityViewModel: CommodityViewModel): Int {
     var sliderPosition by remember { mutableFloatStateOf(1f) }
-    val counter by remember { mutableStateOf(commodityViewModel.commodity?.counter!!) }
+    val counter by remember { mutableStateOf(30) }
     Column {
         Slider(
             value = sliderPosition,
@@ -267,6 +267,6 @@ fun SliderAdvanced(commodityViewModel: CommodityViewModel): Int {
     return sliderPosition.toInt()
 }
 
-object ReleaseItemCommodityGraph {
-    const val RELEASE_ITEM_COMMODITY = "release_item_commodity_graph"
+object ReceiptItemCommodityGraph {
+    const val RECEIPT_ITEM_COMMODITY = "receipt_item_commodity_graph"
 }

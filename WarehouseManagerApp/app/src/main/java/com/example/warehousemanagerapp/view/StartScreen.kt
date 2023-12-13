@@ -5,13 +5,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.warehousemanagerapp.Screen
@@ -21,11 +26,35 @@ import com.example.warehousemanagerapp.view.loginWarehouse.LogScreenViewModel
 @Composable
 fun StartScreen(logScreenViewModel: LogScreenViewModel, navController: NavController) {
     //val logScreenViewModel: LogScreenViewModel = viewModel()
-    var text by remember {
+    val text by remember {
         mutableStateOf("")
     }
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentWidth(Alignment.CenterHorizontally)
+    ) {
+        Text(text = "Warehouse Manager App", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+    }
+//    Box(modifier = Modifier
+//        .fillMaxWidth()
+//        .wrapContentWidth(Alignment.CenterHorizontally)
+//    ) {
+//        Text(text = "App")
+//    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentWidth(Alignment.CenterHorizontally)
+        .wrapContentHeight(Alignment.CenterVertically)
+    ) {
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.commodity_box_150),
+            contentDescription = "logo",
+            tint = MaterialTheme.colorScheme.secondary
+        )
+    }
     Column(
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             //.fillMaxWidth()
             .fillMaxSize()
@@ -40,9 +69,12 @@ fun StartScreen(logScreenViewModel: LogScreenViewModel, navController: NavContro
 //        )
         Button(onClick = {
             logScreenViewModel.getWarehousesNames()
+           // logScreenViewModel.getCommodity()
             navController.navigate(Screen.ConfigScreenBasic.route + "/{config_screen_basic}")
         },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
         ) {
             Text(text = stringResource(id = R.string.create_warehouse_label))
         }
@@ -52,10 +84,13 @@ fun StartScreen(logScreenViewModel: LogScreenViewModel, navController: NavContro
         Button(onClick = {
             navController.navigate(Screen.LogScreen.withArgs(text.ifBlank { " " } ))
         },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
         ) {
             Text(text = stringResource(id = R.string.sign_in_warehouse_label))
         }
+        Spacer(modifier = Modifier.height(48.dp))
     }
 }
 

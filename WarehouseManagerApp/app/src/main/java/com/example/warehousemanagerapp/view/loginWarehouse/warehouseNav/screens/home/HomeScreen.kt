@@ -1,5 +1,6 @@
 package com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.home
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -28,9 +30,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagerapp.R
+import com.example.warehousemanagerapp.Screen
 import com.example.warehousemanagerapp.view.loginWarehouse.WarehouseRepository
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.BottomBarScreen
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.graphs.HomeNavGraph
+import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.receiptCommodity.ReceiptCommodityGraph
 
 import com.example.warehousemanagerapp.view.loginWarehouse.warehouseNav.screens.commodity.releaseCommodity.ReleaseCommodityGraph
 
@@ -59,6 +63,7 @@ fun HomeScreen(
 @Composable
 fun TopBar(navController: NavHostController) {
     var expanded by remember { mutableStateOf(false) }
+    var exitApp by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Row(
@@ -81,7 +86,7 @@ fun TopBar(navController: NavHostController) {
             }
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { navController.navigate(ReceiptCommodityGraph.RECEIPT_COMMODITY) }) {
                 val image = ImageVector.vectorResource(id = R.drawable.receipt_commodity_48)
                 Icon(imageVector = image, contentDescription = null)
             }
@@ -106,7 +111,7 @@ fun TopBar(navController: NavHostController) {
                 )
                 DropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false },
+                    onDismissRequest = { expanded = false; exitApp = false },
                     modifier = Modifier.background(MaterialTheme.colorScheme.background),
                     content = {
                         DropdownMenuItem(
@@ -135,6 +140,7 @@ fun TopBar(navController: NavHostController) {
                         DropdownMenuItem(
                             onClick = {
                                 // Handle the action
+                                exitApp = true
                                 expanded = false
                             }
                         ) {
@@ -144,6 +150,7 @@ fun TopBar(navController: NavHostController) {
                         }
                     }
                 )
+                if (exitApp) HomePage(navController)
             }
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -151,6 +158,18 @@ fun TopBar(navController: NavHostController) {
             titleContentColor = Color.White,
         ),
     )
+}
+
+@Composable
+fun HomePage(navController: NavHostController) {
+    val activity = (LocalContext.current as? Activity)
+    activity?.finish()
+    navController.popBackStack()
+//    navController.navigate(BottomBarScreen.Documents.route) {
+//        popUpTo(navController.graph.findStartDestination().id)
+//        launchSingleTop = true
+//    }
+    //navController.popBackStack()
 }
 
 @Composable

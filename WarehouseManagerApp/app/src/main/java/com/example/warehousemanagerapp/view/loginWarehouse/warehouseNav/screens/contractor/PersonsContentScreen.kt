@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.warehousemanagerapp.R
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -51,15 +52,22 @@ fun PersonsContentScreen(
     function: () -> Unit
 ) {
     //val contractorViewModel: ContractorViewModel = viewModel()
-    var data by remember { mutableStateOf(emptyList<Contractor>()) }
+    val data by rememberUpdatedState(contractorViewModel.contractor.collectAsState())// { mutableStateOf(emptyList<Contractor>()) }
     var isLoading by remember { mutableStateOf(true) }
+
     //val commodities by contractorViewModel.contractor.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(true) {
-        data = contractorViewModel.contractors() ?: emptyList()
+        //data = contractorViewModel.contractors() ?: emptyList()
+        contractorViewModel.getContractors()
+        data.value
+        delay(500)
         isLoading = false
     }
+//    LaunchedEffect(true){
+//
+//    }
 
     //WarehouseManagerAppTheme {
         // Wyświetl swoje dane po załadowaniu
@@ -72,7 +80,7 @@ fun PersonsContentScreen(
                 //val commodities = rememberSaveable { data }
                 //val contractor = listOf(Contractor(0, "asdasd", Address(), true, false, "asdasd" ))
                 //AnimatedExtendedFloatingActionButtonSample(data, navController) { function() }
-                SecondaryTextTabs(contractorViewModel, data, navController) { function() } //ok
+                SecondaryTextTabs(contractorViewModel, data.value ?: emptyList(), navController) { function() } //ok
             }
         } else {
             // Wyświetl spinner lub jakiś inny wskaźnik ładowania
@@ -92,7 +100,8 @@ fun PersonsContentScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContractorListItem(contractor: Contractor) {
+fun ContractorListItem(contractor: Contractor, viewModel: ContractorViewModel,) {
+    var showDialog by remember { mutableStateOf(false) }
     Box (
         modifier = Modifier
             .fillMaxWidth()
@@ -112,22 +121,29 @@ fun ContractorListItem(contractor: Contractor) {
         .fillMaxSize()
         .wrapContentWidth(Alignment.End)
     ) {
-        IconButton(onClick = {
-
-        }
-        ) {
+        IconButton(onClick = { showDialog = true })
+        {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.baseline_delete_24),
                 contentDescription = null
             )
         }
+        DropdownMenu(
+        expanded = showDialog,
+        //properties = PopupProperties(focusable = true),
+        onDismissRequest = { showDialog = false }
+    ) { }
+        viewModel.cont = contractor
+        if (showDialog) dialog(contractor, viewModel)
     }
+
 }
 
 @Composable
 fun AnimatedExtendedFloatingActionButtonSample(
     contractors: List<Contractor>,
     navController: NavHostController,
+    viewModel: ContractorViewModel,
     onClick: () -> Unit
 ) {
     val listState = rememberLazyGridState()
@@ -157,8 +173,9 @@ fun AnimatedExtendedFloatingActionButtonSample(
             contentPadding = PaddingValues(4.dp)
         ) {
             items(contractors) { item ->
-                ClickableCard(item = item) {
-                    navController.navigate(Graph.DETAIL)
+               // viewModel.cont = item
+                ClickableCard(item = item, viewModel) {
+                    navController.navigate(ContractorDetailGraph.CONTRACTOR_INFO)
                 }
             }
         }
@@ -168,6 +185,7 @@ fun AnimatedExtendedFloatingActionButtonSample(
 @Composable
 fun ClickableCard(
     item: Contractor,
+    viewModel: ContractorViewModel,
     onClick: () -> Unit,
 ) {
     Box(modifier = Modifier
@@ -178,7 +196,7 @@ fun ClickableCard(
         .background(MaterialTheme.colorScheme.tertiaryContainer)
         .clickable { onClick() }
     ) {
-        ContractorListItem(contractor = item)
+        ContractorListItem(contractor = item, viewModel)
     }
 }
 
@@ -202,7 +220,6 @@ fun SecondaryTextTabs(
                     selected = state == index,
                     onClick = {
                         state = index
-                        viewModel.getContractors()
                         peoples = when (index) {
                             1 -> contractors.filter { contractor -> contractor.supplier == true }
                             2 -> contractors.filter { contractor -> contractor.recipient == true }
@@ -215,7 +232,8 @@ fun SecondaryTextTabs(
         }
         AnimatedExtendedFloatingActionButtonSample(
             contractors = peoples,
-            navController = navController
+            navController = navController,
+            viewModel
         ) {
             onClick()
         }
@@ -224,6 +242,61 @@ fun SecondaryTextTabs(
 ////            text = "Secondary tab ${state + 1} selected",
 ////            style = MaterialTheme.typography.bodyLarge
 //        //)
+    }
+}
+
+@Composable
+fun dialog(contractor: Contractor, viewModel: ContractorViewModel) {
+    val openDialog = remember { mutableStateOf(true) }
+    LaunchedEffect(true) {
+        //data = contractorViewModel.contractors() ?: emptyList()
+        viewModel.getContractors()
+        delay(1000)
+    }
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text(text = "Usunąć Kontrahenta o nazwie " +
+                        "${contractor.contractorName?.uppercase() ?: ""}?"
+                )
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(end = 16.dp),
+                        onClick = { openDialog.value = false },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text( "Anuluj", color = Color.White)
+                    }
+                    Button(
+                        modifier = Modifier.wrapContentWidth(Alignment.End),
+                        onClick = {
+                            contractor.contractorId?.let { viewModel.contractorDelete(it) }
+                            openDialog.value = false
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Text("Ok", color = Color.White)
+                    }
+                }
+                LaunchedEffect(true) {
+                    //data = contractorViewModel.contractors() ?: emptyList()
+                    viewModel.getContractors()
+                    delay(1000)
+                }
+            }
+        )
     }
 }
 
