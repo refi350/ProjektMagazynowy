@@ -10,4 +10,6 @@ Our system is composed of three parts:
 - Mobile App for Android with Jetpack Compose
 - .NET Web Application with ASP .NET
 
+https://docs.google.com/document/d/15eEVvB3RD5A9w_SFG3mibRFaFT2TUTNau_wCpe8jK1g/edit#heading=h.e3tkcowo4kv1
+
 
