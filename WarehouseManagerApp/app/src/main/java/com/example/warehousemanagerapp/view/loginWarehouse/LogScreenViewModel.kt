@@ -33,6 +33,17 @@ class LogScreenViewModel : ViewModel() {
         }
     }
 
+    fun getCommodity() {
+        val warehouse = repository.warehouseStateFlow.value
+        warehouse?.warehouseId?.let {
+            repository.getCommodities(it) { response ->
+                warehouse.commodities = response!!
+                //_commodities.emit(response)
+                repository.setWarehouse(warehouse)
+            }
+        }
+    }
+
     fun isOccupiedName(userName: String): Boolean {
         return listWarehousesNames?.contains(userName) ?: true
     }

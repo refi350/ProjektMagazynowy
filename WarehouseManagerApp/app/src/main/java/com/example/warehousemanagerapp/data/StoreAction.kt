@@ -15,7 +15,7 @@ import java.io.Serializable
 open class StoreAction(
     @SerializedName(JsonConst.TYPE)
     @Expose
-    val type: String? = null,
+    var type: String? = null,
 
     @SerializedName(JsonConst.STORE_ACTION_ID)
     @Expose
@@ -31,13 +31,22 @@ open class StoreAction(
 
     @SerializedName(JsonConst.COMMODITIES)
     @Expose
-    var actionCommodities: List<ActionCommodities>? = null,
+    var actionCommodities: MutableList<ActionCommodities> = mutableListOf(), //List?
 
     @SerializedName(JsonConst.DOC_NUMBER)
     @Expose
-    var docNumber: Int? = null,
+    var docNumber: Long? = null,
 
-) : Parcelable {
+    ) : Parcelable {
+    constructor(
+        actionCommodities: ActionCommodities, date: String?, contractor: Contractor?, type: String?
+    ): this() {
+        this.actionCommodities.add(actionCommodities)
+        this.date = date
+        this.contractor = contractor
+        this.type = type
+    }
+
     override fun toString(): String {
         return "StoreAction(type=$type, storeActionId=$storeActionId, date=$date," +
                 " contractor=$contractor, actionCommodities=$actionCommodities," +

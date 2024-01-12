@@ -14,9 +14,11 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import timber.log.Timber
@@ -46,6 +48,14 @@ interface RestApi {
     @GET("warehouses/{warehouseId}/storeactions/all")
     fun getDocuments(@Path("warehouseId") warehouseId: Int): Call<List<StoreAction>>
 
+    @POST("warehouses/{warehouseId}/storeactions")
+    fun postStoreAction(
+        @Path("warehouseId") warehouseId: Int, @Body post: StoreAction
+    ): Call<StoreAction>
+
+    @PUT("commodities/{commodityId}")
+    fun putCommodity(@Path("commodityId") commodityId: Int, @Body post: Commodity): Call<Commodity>
+
     @POST("warehouses")
     fun postWarehouse(@Body request: Warehouse): Call<Warehouse>
 
@@ -56,6 +66,12 @@ interface RestApi {
     fun postContractor(
         @Path("warehouseId") warehouseId: Int, @Body post: Contractor
     ): Call<Contractor>
+
+    @DELETE("contractors/{contractorId}")
+    fun contractorDelete(@Path("contractorId") contractorId: Int): Call<Int>
+
+    @DELETE("commodities/{commodityId}")
+    fun commodityDelete(@Path("commodityId") commodityId: Int): Call<Int>
 
     companion object {
         const val ACCEPT = "Accept:application/json"

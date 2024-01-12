@@ -40,6 +40,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import com.example.warehousemanagerapp.data.Receipt
 import com.example.warehousemanagerapp.data.Release
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -50,13 +51,16 @@ fun DocumentContentScreen(
     function: () -> Unit
 ) {
     //val contractorViewModel: ContractorViewModel = viewModel()
+    val preData = mutableStateOf(documentViewModel.getDocuments())
     var data by remember { mutableStateOf(emptyList<StoreAction>()) }
     var isLoading by remember { mutableStateOf(true) }
     //val commodities by contractorViewModel.contractor.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(true) {
+        preData.value
         data = documentViewModel.documents() ?: emptyList()
+        delay(500)
         isLoading = false
     }
 
@@ -197,7 +201,6 @@ fun SecondaryTextTab(
     navController: NavHostController,
     onClick: () -> Unit
 ) {
-    val listState = rememberLazyGridState()
     var docs by remember { mutableStateOf(documents) }
     var state by remember { mutableStateOf(0) }
     val titles = listOf("Wszyscy", "Wydania", "Przyjecia")
@@ -208,7 +211,7 @@ fun SecondaryTextTab(
                     selected = state == index,
                     onClick = {
                         state = index
-                        viewModel.getDocuments()
+                        //viewModel.getDocuments()
                         docs = when (index) {
                             1 -> documents.filterIsInstance<Release>()
                             2 -> documents.filterIsInstance<Receipt>()
@@ -219,23 +222,28 @@ fun SecondaryTextTab(
                 )
             }
         }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(1),
-            state = listState,
-            contentPadding = PaddingValues(4.dp)
-        ) {
-            items(docs) { item ->
-                ClickableItem(item = item) {
-                    viewModel.storeAction = item
-                    navController.navigate(DocumentInfoGraph.DOCUMENT_INFO)
-                }
+        ListOfDocuments(docs, viewModel, navController)
+    }
+}
+
+@Composable
+fun ListOfDocuments(
+    documents: List<StoreAction>,
+    viewModel: DocumentViewModel,
+    navController: NavHostController
+) {
+    val listState = rememberLazyGridState()
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(1),
+        state = listState,
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        items(documents) { item ->
+            ClickableItem(item = item) {
+                viewModel.storeAction = item
+                navController.navigate(DocumentInfoGraph.DOCUMENT_INFO)
             }
         }
-//        Text(
-////            modifier = Modifier.align(Alignment.CenterHorizontally),
-////            text = "Secondary tab ${state + 1} selected",
-////            style = MaterialTheme.typography.bodyLarge
-//        //)
     }
 }
 
